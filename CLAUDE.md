@@ -22,17 +22,24 @@ npm run dev:simple
 # Production mode
 npm start
 
-# Build (placeholder)
+# Build (placeholder - to be configured)
 npm run build
 
-# Test (placeholder)
-npm run test
+# Testing
+npm test                      # Run basic app test
+npm run test:init            # Initialize test database
+npm run test:e2e             # Run all E2E tests (Playwright)
+npm run test:e2e:smoke       # Quick smoke tests (~2 min)
+npm run test:e2e:ui          # UI navigation tests
+npm run test:e2e:docs        # Document-related tests
+npm run test:e2e:templates   # Template & validation tests
+npm run test:report          # Generate test report
 
-# Lint (placeholder)
+# Lint (placeholder - to be configured)
 npm run lint
 ```
 
-Note: Build, test, and lint commands are currently placeholder implementations and need to be configured.
+Note: Build and lint commands are placeholder implementations. Testing infrastructure is fully operational with Playwright E2E tests.
 
 ## Architecture Overview
 
@@ -111,43 +118,58 @@ src/
 └── database/               # SQLite schemas and migrations
 ```
 
-## Development Status (Updated: 2025-10-03)
+## Development Status (Updated: 2025-10-16)
 
 ### Completed ✅
-- ✅ Basic Electron architecture with security configuration
+
+**Infrastructure (Week 1-2)**
+- ✅ Electron architecture with security configuration
 - ✅ Main process with IPC handlers
 - ✅ Renderer process structure
 - ✅ StorageManager for SQLite operations
-- ✅ Base UI HTML/CSS structure
-- ✅ XMLEditorApp class foundation
-- ✅ FormManager with full form rendering and validation
-- ✅ UI components (Accordion, InputField)
-- ✅ Document autosave functionality (30s intervals)
-- ✅ **Template system (TemplateManager + TemplateBrowser + TemplateDialog)**
-- ✅ **Database migrations for templates (migration 3 & 4)**
-- ✅ **XML generation and export**
-- ✅ **Document loading/saving system**
-- ✅ **Universal UI cleanup system (cleanupUI method)**
-- ✅ **Toast notification system**
-- ✅ **NEW: 3-Level Navigation Architecture (Oct 2025)**
-- ✅ **NEW: Scalable UI for millions of services**
-- ✅ **NEW: UI Architecture documentation (docs/UI_ARCHITECTURE.md)**
-- ✅ **NEW: Updated agent contexts (UI-DESIGNER v2.1, UX-ANALYST v2.1)**
+- ✅ Database migrations (templates, history)
+- ✅ Form System with validation
+- ✅ Document autosave (30s intervals)
+- ✅ XML generation and export
+- ✅ Template system (Browser + Dialog)
+- ✅ Toast notification system
+
+**UI/UX Architecture (Week 3-4, Oct 2025)**
+- ✅ **3-Level Navigation Architecture** (App Nav → Sidebar → Content)
+- ✅ **Activity Bar** (vertical icon bar)
+- ✅ **Tab Bar** (document tabs with dirty indicators)
+- ✅ **Dynamic Sidebar** (4 sections: Home, Documents, Services, Settings)
+- ✅ **Service Store** (marketplace UI with cards, filters, search)
+- ✅ **Context Toolbar** (conditional bottom toolbar) - CSS completed Oct 16
+- ✅ **Transitions & Animations** (fade-in, hover effects, modal animations) - Added Oct 16
+- ✅ **Responsive Design** foundation
+
+**Documentation & AI Agents**
+- ✅ **17 AI Agents v2.1** (including Ollama integration)
+- ✅ **UI Architecture docs** (docs/UI_ARCHITECTURE.md)
+- ✅ **Updated agent contexts** (UI-DESIGNER v2.1, UX-ANALYST v2.1)
+- ✅ **91 documentation files**
+
+**Testing Infrastructure**
+- ✅ **Playwright E2E tests** (11 test suites)
+- ✅ **Test automation** (smoke, docs, templates, UI, modules)
+- ✅ **Basic app test** (database, schemas, XSD validation)
+
+**Version Control**
+- ✅ **Git repository initialized** (Oct 16, 2025)
+- ✅ **First commit** (569d0b6, 258 files)
 
 ### In Progress 🔄
-- **NEW: App Nav implementation (4-section navigation)**
-- **NEW: Dynamic Sidebar with categories**
-- **NEW: Service Store (marketplace UI)**
-- **NEW: Context Toolbar (conditional display)**
+- UI polish and refinements
+- Module system (Week 5 - scheduled)
 - PDF generation via XSLT transformation
-- Comprehensive testing
-- Build and deployment pipeline
 
 ### Planned ⏳
+- Week 5+: Module ПЗ v01.05 implementation
 - Advanced XML validation with business rules
-- Document versioning and history
+- Document versioning and history UI
 - XML import functionality
-- User settings and preferences
+- Build and deployment pipeline
 - Performance optimizations
 - **NEW: Service installation system**
 - **NEW: Search and filters for services**
@@ -228,6 +250,86 @@ document.getElementById('save-as-template').addEventListener('click', () => {
 3. **Ministry Compliance**: XML output must strictly conform to Russian Ministry of Construction schemas
 4. **Performance**: Implement lazy loading and caching for large XML documents
 5. **Autosave**: Implement 30-second autosave intervals for data protection
+
+## Testing the Application
+
+### Quick Start
+```bash
+# 1. Install dependencies (if not already done)
+npm install
+
+# 2. Run basic tests
+npm test
+
+# 3. Start the application in dev mode
+npm run dev
+
+# 4. Run E2E smoke tests (quick validation)
+npm run test:e2e:smoke
+```
+
+### Manual UI Testing Checklist
+
+**3-Level Navigation (Priority 1)**
+1. ✅ App Nav (top bar) switches between Home/Documents/Services/Settings
+2. ✅ Sidebar content changes when App Nav item is clicked
+3. ✅ Service cards appear in Service Store with hover effects
+4. ✅ Context Toolbar appears only when document is open
+
+**Animations & Transitions (Priority 2)**
+1. ✅ Content areas fade in smoothly when switching sections
+2. ✅ Service cards have enhanced hover shadow effect
+3. ✅ Modal dialogs slide up with animation
+4. ✅ Tab bar tabs lift slightly on hover
+
+**Document Operations (Core Features)**
+1. ✅ Create new document → fills form → saves to database
+2. ✅ Load existing document from list
+3. ✅ Autosave triggers every 30 seconds
+4. ✅ XML generation and export works
+5. ✅ Validation panel shows errors
+
+### Automated E2E Tests
+
+Run specific test suites:
+```bash
+# UI navigation tests (3-level architecture)
+npm run test:e2e:ui
+
+# Document CRUD operations
+npm run test:e2e:docs
+
+# Template system
+npm run test:e2e:templates
+
+# Full test suite (10-15 minutes)
+npm run test:e2e
+
+# Generate HTML report
+npm run test:report
+```
+
+Test results are saved to:
+- `test-results/screenshots/` - Visual snapshots
+- `test-results/html-report/` - Interactive HTML report
+- `test-results/test-results.json` - Raw test data
+
+### Debugging UI Issues
+
+**CSS not loading?**
+- Check `src/renderer/css/main.css` exists
+- Verify `<link rel="stylesheet" href="css/main.css">` in `index.html`
+- Open DevTools (Ctrl/Cmd+Shift+I) and check Console for errors
+
+**Animations not working?**
+- Check browser supports CSS animations (all modern browsers do)
+- Verify `@keyframes` are defined in main.css (lines 2785+)
+- Check elements have correct CSS classes (`.content-area`, `.service-card`, etc.)
+
+**Context Toolbar not appearing?**
+- Toolbar only appears when document is open
+- Check `context-toolbar--visible` class is added via JavaScript
+- Verify `display: flex` is applied when visible
 
 ## Known Limitations (Updated: 2025-10-16)
 
