@@ -1,0 +1,372 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://xmlonline.ru/schemas/pz-01.05-schema.json",
+  "title": "Пояснительная записка",
+  "description": "JSON Schema для пояснительной записки МинСтрой РФ версии 01.05",
+  "version": "01.05",
+  "type": "object",
+  "properties": {
+    "generalInfo": {
+      "title": "1. Общие сведения",
+      "description": "Раздел 1. Общие сведения о проекте",
+      "type": "object",
+      "required": ["projectName", "projectType", "customerInfo"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "title": "Наименование объекта капитального строительства",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "projectType": {
+          "type": "string",
+          "title": "Тип проекта",
+          "enum": [
+            "Новое строительство",
+            "Реконструкция",
+            "Капитальный ремонт",
+            "Техническое перевооружение"
+          ]
+        },
+        "projectPurpose": {
+          "type": "string",
+          "title": "Назначение объекта",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "customerInfo": {
+          "type": "object",
+          "title": "Сведения о заказчике",
+          "required": ["name", "inn"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Наименование заказчика",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "inn": {
+              "type": "string",
+              "title": "ИНН",
+              "pattern": "^[0-9]{10,12}$",
+              "validation": "inn"
+            },
+            "ogrn": {
+              "type": "string",
+              "title": "ОГРН/ОГРНИП",
+              "pattern": "^[0-9]{13,15}$",
+              "validation": "ogrn"
+            },
+            "address": {
+              "type": "string",
+              "title": "Юридический адрес",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          }
+        },
+        "designerInfo": {
+          "type": "object",
+          "title": "Сведения о проектировщике",
+          "required": ["name", "inn"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Наименование проектной организации",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "inn": {
+              "type": "string",
+              "title": "ИНН",
+              "pattern": "^[0-9]{10,12}$",
+              "validation": "inn"
+            }
+          }
+        }
+      }
+    },
+    "siteInfo": {
+      "title": "2. Сведения о земельном участке",
+      "description": "Раздел 2. Сведения о земельном участке и строительной площадке",
+      "type": "object",
+      "required": ["cadastralNumber", "area"],
+      "properties": {
+        "cadastralNumber": {
+          "type": "string",
+          "title": "Кадастровый номер земельного участка",
+          "pattern": "^\\d{2}:\\d{2}:\\d{6,7}:\\d{1,}$",
+          "validation": "cadastral"
+        },
+        "area": {
+          "type": "number",
+          "title": "Площадь земельного участка (м²)",
+          "minimum": 0
+        },
+        "category": {
+          "type": "string",
+          "title": "Категория земель",
+          "enum": [
+            "Земли населённых пунктов",
+            "Земли сельскохозяйственного назначения",
+            "Земли промышленности",
+            "Земли особо охраняемых территорий",
+            "Земли лесного фонда",
+            "Земли водного фонда",
+            "Земли запаса"
+          ]
+        }
+      }
+    },
+    "climaticConditions": {
+      "title": "3. Климатические условия",
+      "description": "Раздел 3. Природно-климатические характеристики района строительства",
+      "type": "object",
+      "properties": {
+        "climateZone": {
+          "type": "string",
+          "title": "Климатический район",
+          "enum": ["I", "IА", "IБ", "IВ", "IГ", "IД", "II", "IIА", "IIБ", "IIВ", "IIГ", "III", "IIIА", "IIIБ", "IIIВ", "IV", "IVА", "IVБ", "IVВ", "IVГ"]
+        },
+        "seismicity": {
+          "type": "string",
+          "title": "Сейсмичность площадки (баллы)",
+          "enum": ["5", "6", "7", "8", "9", "10"]
+        }
+      }
+    },
+    "architecturalSolutions": {
+      "title": "4. Архитектурные решения",
+      "description": "Раздел 4. Архитектурно-планировочные и объёмно-пространственные решения",
+      "type": "object",
+      "properties": {
+        "totalArea": {
+          "type": "number",
+          "title": "Общая площадь здания (м²)",
+          "minimum": 0
+        },
+        "buildingVolume": {
+          "type": "number",
+          "title": "Строительный объём (м³)",
+          "minimum": 0
+        },
+        "floors": {
+          "type": "object",
+          "title": "Этажность",
+          "properties": {
+            "aboveGround": {
+              "type": "integer",
+              "title": "Количество надземных этажей",
+              "minimum": 0
+            },
+            "underground": {
+              "type": "integer",
+              "title": "Количество подземных этажей",
+              "minimum": 0
+            }
+          }
+        },
+        "architecturalStyle": {
+          "type": "string",
+          "title": "Архитектурный стиль и композиция",
+          "fieldType": "richtext",
+          "maxLength": 5000
+        }
+      }
+    },
+    "constructiveSolutions": {
+      "title": "5. Конструктивные решения",
+      "description": "Раздел 5. Конструктивные и объёмно-планировочные решения",
+      "type": "object",
+      "properties": {
+        "foundationType": {
+          "type": "string",
+          "title": "Тип фундамента",
+          "enum": [
+            "Ленточный",
+            "Столбчатый",
+            "Свайный",
+            "Плитный",
+            "Комбинированный"
+          ]
+        },
+        "wallsType": {
+          "type": "string",
+          "title": "Материал стен",
+          "enum": [
+            "Кирпич",
+            "Бетон монолитный",
+            "Бетон сборный",
+            "Деревянный брус",
+            "Каркас металлический",
+            "Каркас железобетонный",
+            "Комбинированный"
+          ]
+        },
+        "structuralScheme": {
+          "type": "string",
+          "title": "Конструктивная схема здания",
+          "fieldType": "richtext",
+          "maxLength": 10000
+        }
+      }
+    },
+    "engineeringSystems": {
+      "title": "6. Инженерное оборудование",
+      "description": "Раздел 6. Системы инженерно-технического обеспечения",
+      "type": "object",
+      "properties": {
+        "waterSupply": {
+          "type": "object",
+          "title": "Система водоснабжения",
+          "properties": {
+            "source": {
+              "type": "string",
+              "title": "Источник водоснабжения",
+              "enum": [
+                "Центральное водоснабжение",
+                "Автономное водоснабжение (скважина)",
+                "Автономное водоснабжение (колодец)"
+              ]
+            },
+            "description": {
+              "type": "string",
+              "title": "Описание системы водоснабжения",
+              "fieldType": "richtext",
+              "maxLength": 5000
+            }
+          }
+        },
+        "powerSupply": {
+          "type": "object",
+          "title": "Электроснабжение",
+          "properties": {
+             "source": {
+              "type": "string",
+              "title": "Источник электроснабжения",
+              "enum": [
+                "Центральные сети",
+                "Автономная генерация",
+                "Комбинированное"
+              ]
+            },
+            "power": {
+              "type": "number",
+              "title": "Расчётная мощность (кВт)",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "fireProtection": {
+      "title": "7. Пожарная безопасность",
+      "description": "Раздел 7. Мероприятия по обеспечению пожарной безопасности",
+      "type": "object",
+      "properties": {
+        "fireResistanceDegree": {
+          "type": "string",
+          "title": "Степень огнестойкости здания",
+          "enum": ["I", "II", "III", "IV", "V"]
+        },
+        "functionalFireHazardClass": {
+          "type": "string",
+          "title": "Класс функциональной пожарной опасности",
+          "enum": [
+            "Ф1.1", "Ф1.2", "Ф1.3", "Ф1.4",
+            "Ф2.1", "Ф2.2", "Ф2.3", "Ф2.4",
+            "Ф3.1", "Ф3.2", "Ф3.3", "Ф3.4", "Ф3.5", "Ф3.6",
+            "Ф4.1", "Ф4.2", "Ф4.3", "Ф4.4",
+            "Ф5.1", "Ф5.2", "Ф5.3"
+          ]
+        }
+      }
+    },
+    "accessibility": {
+      "title": "8. Доступность для инвалидов",
+      "description": "Раздел 8. Мероприятия по обеспечению доступа инвалидов",
+      "type": "object",
+      "properties": {
+        "accessibilityProvided": {
+          "type": "boolean",
+          "title": "Обеспечена доступность для инвалидов"
+        },
+        "additionalMeasures": {
+          "type": "string",
+          "title": "Дополнительные мероприятия",
+          "fieldType": "richtext",
+          "maxLength": 5000
+        }
+      }
+    },
+    "energyEfficiency": {
+      "title": "9. Энергоэффективность",
+      "description": "Раздел 9. Мероприятия по энергоэффективности и ресурсосбережению",
+      "type": "object",
+      "properties": {
+        "energyEfficiencyClass": {
+          "type": "string",
+          "title": "Класс энергетической эффективности",
+          "enum": ["Не классифицируется", "A++", "A+", "A", "B", "C", "D", "E", "F", "G"]
+        },
+        "energySavingMeasures": {
+          "type": "string",
+          "title": "Энергосберегающие мероприятия",
+          "fieldType": "richtext",
+          "maxLength": 5000
+        }
+      }
+    },
+    "environmentalProtection": {
+      "title": "10. Охрана окружающей среды",
+      "description": "Раздел 10. Мероприятия по охране окружающей среды",
+      "type": "object",
+      "properties": {
+        "wasteManagement": {
+          "type": "string",
+          "title": "Обращение с отходами производства и потребления",
+          "fieldType": "richtext",
+          "maxLength": 5000
+        },
+        "landscaping": {
+          "type": "string",
+          "title": "Озеленение территории",
+          "fieldType": "richtext",
+          "maxLength": 5000
+        }
+      }
+    },
+    "technicalSolutions": {
+      "title": "11. Технические решения",
+      "description": "Раздел 11. Иные вопросы и технические решения",
+      "type": "object",
+      "properties": {
+        "otherSolutions": {
+          "type": "string",
+          "title": "Прочие технические решения",
+          "fieldType": "richtext",
+          "maxLength": 10000
+        }
+      }
+    },
+    "economicIndicators": {
+      "title": "12. Сведения о лицах (ТЭП)",
+      "description": "Раздел 12. Сведения о лицах, осуществивших подготовку разделов проектной документации",
+      "type": "object",
+      "properties": {
+        "signers": {
+          "type": "array",
+          "title": "Подписанты",
+          "items": {
+            "type": "object",
+            "properties": {
+              "fullName": { "type": "string", "title": "ФИО" },
+              "inn": { "type": "string", "title": "ИНН", "validation": "inn" },
+              "position": { "type": "string", "title": "Должность" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

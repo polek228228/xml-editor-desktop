@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://xmlonline.ru/schemas/pz-01.04-schema.json",
+  "title": "Пояснительная записка",
+  "description": "JSON Schema для пояснительной записки МинСтрой РФ версии 01.04",
+  "version": "01.04",
+  "type": "object",
+  "required": ["generalInfo"],
+  "properties": {
+    "generalInfo": {
+      "title": "1. Общие сведения",
+      "description": "Раздел 1. Общие сведения о проекте",
+      "type": "object",
+      "required": ["projectName", "projectType"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "title": "Наименование объекта капитального строительства",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "projectType": {
+          "type": "string",
+          "title": "Тип проекта",
+          "enum": [
+            "Новое строительство",
+            "Реконструкция",
+            "Капитальный ремонт",
+            "Техническое перевооружение"
+          ]
+        },
+        "projectPurpose": {
+          "type": "string",
+          "title": "Назначение объекта",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "projectStage": {
+          "type": "string",
+          "title": "Стадия проектирования",
+          "enum": [
+            "П",
+            "Р",
+            "РД"
+          ]
+        }
+      }
+    },
+    "objectInfo": {
+      "title": "2. Сведения об объекте",
+      "description": "Раздел 2. Характеристики объекта капитального строительства",
+      "type": "object",
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "title": "Вид объекта капитального строительства",
+          "enum": [
+            "linear",
+            "nonlinear"
+          ]
+        },
+        "constructionAddress": {
+          "type": "object",
+          "title": "Адрес строительства",
+          "required": ["region", "locality"],
+          "properties": {
+            "region": {
+              "type": "string",
+              "title": "Регион (код)",
+              "pattern": "^[0-9]{2}$"
+            },
+            "locality": {
+              "type": "string",
+              "title": "Населенный пункт",
+              "maxLength": 200
+            },
+            "street": {
+              "type": "string",
+              "title": "Улица",
+              "maxLength": 200
+            }
+          }
+        },
+        "technicalParameters": {
+          "type": "object",
+          "title": "Технические параметры",
+          "properties": {
+            "totalArea": {
+              "type": "number",
+              "title": "Общая площадь, м²",
+              "minimum": 0
+            },
+            "buildingHeight": {
+              "type": "number",
+              "title": "Высота здания, м",
+              "minimum": 0
+            },
+            "floors": {
+              "type": "integer",
+              "title": "Количество этажей",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "contractor": {
+      "title": "3. Подрядчик",
+      "description": "Раздел 3. Сведения о застройщике",
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Наименование организации",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "inn": {
+          "type": "string",
+          "title": "ИНН",
+          "pattern": "^[0-9]{10,12}$",
+          "validation": "inn"
+        }
+      }
+    },
+    "designer": {
+      "title": "4. Проектировщик",
+      "description": "Раздел 4. Сведения о проектной организации",
+      "type": "object",
+      "required": ["name", "sroNumber"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Наименование организации",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "inn": {
+          "type": "string",
+          "title": "ИНН",
+          "pattern": "^[0-9]{10,12}$",
+          "validation": "inn"
+        },
+        "sroNumber": {
+          "type": "string",
+          "title": "Номер в реестре СРО",
+          "maxLength": 50
+        }
+      }
+    }
+  }
+}

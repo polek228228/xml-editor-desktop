@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "mappings/explanatory-note-01.04",
+  "title": "JSON to XML Mapping для Пояснительной записки v01.04",
+  "description": "Маппинг между JSON формой и XML структурой согласно XSD схеме Минстроя",
+
+  "version": "01.04",
+  "xmlNamespace": "http://minstroyrf.gov.ru/schemas/explanatorynote/01.04",
+  "rootElement": "ExplanatoryNote",
+
+  "mappings": {
+    "generalInfo.documentNumber": {
+      "xmlPath": "ExplanatoryNote/GeneralInfo/DocNumber",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "generalInfo.documentDate": {
+      "xmlPath": "ExplanatoryNote/GeneralInfo/DocDate",
+      "xmlType": "date",
+      "required": true,
+      "transformer": "formatDate"
+    },
+    "generalInfo.projectName": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/ObjectName",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "generalInfo.projectStage": {
+      "xmlPath": "ExplanatoryNote/GeneralInfo/ProjectStage",
+      "xmlType": "enum",
+      "required": false,
+      "transformer": null,
+      "enumMapping": {
+        "П": "P",
+        "Р": "W",
+        "РД": "WD"
+      }
+    },
+    "objectInfo.objectType": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/ObjectType",
+      "xmlType": "enum",
+      "required": true,
+      "transformer": null,
+      "enumMapping": {
+        "linear": "1",
+        "nonlinear": "2"
+      }
+    },
+    "objectInfo.constructionAddress.region": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/ConstructionAddress/RegionCode",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "objectInfo.constructionAddress.locality": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/ConstructionAddress/Locality",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "objectInfo.constructionAddress.street": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/ConstructionAddress/Street",
+      "xmlType": "string",
+      "required": false,
+      "transformer": null
+    },
+    "objectInfo.technicalParameters.totalArea": {
+      "xmlPath": "ExplanatoryNote/ObjectInfo/TechnicalIndicators/TotalArea",
+      "xmlType": "decimal",
+      "required": false,
+      "transformer": "formatDecimal",
+      "unit": "м²",
+      "unitCode": "055"
+    },
+    "contractor.name": {
+      "xmlPath": "ExplanatoryNote/Participants/Contractor/OrganizationName",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "contractor.inn": {
+      "xmlPath": "ExplanatoryNote/Participants/Contractor/INN",
+      "xmlType": "string",
+      "required": false,
+      "transformer": null
+    },
+    "designer.name": {
+      "xmlPath": "ExplanatoryNote/Participants/Designer/OrganizationName",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    },
+    "designer.sroNumber": {
+      "xmlPath": "ExplanatoryNote/Participants/Designer/SRONumber",
+      "xmlType": "string",
+      "required": true,
+      "transformer": null
+    }
+  },
+
+  "transformers": {
+    "formatDate": {
+      "description": "Конвертация даты из ISO 8601 в формат XML (YYYY-MM-DD)",
+      "function": "formatDate"
+    },
+    "formatDecimal": {
+      "description": "Форматирование числа с точностью до 2 знаков",
+      "function": "formatDecimal"
+    },
+    "normalizePhone": {
+      "description": "Нормализация телефонного номера",
+      "function": "normalizePhone"
+    }
+  },
+
+  "xmlTemplate": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<ExplanatoryNote xmlns=\"http://minstroyrf.gov.ru/schemas/explanatorynote/01.04\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://minstroyrf.gov.ru/schemas/explanatorynote/01.04 explanatorynote-01-04.xsd\" Version=\"01.04\">\n  <GeneralInfo>\n    <!-- Generated content -->\n  </GeneralInfo>\n  <ObjectInfo>\n    <!-- Generated content -->\n  </ObjectInfo>\n  <Participants>\n    <!-- Generated content -->\n  </Participants>\n</ExplanatoryNote>"
+}

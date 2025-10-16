@@ -1,0 +1,46 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:xmlonline.ru)",
+      "WebFetch(domain:minstroyrf.gov.ru)",
+      "WebFetch(domain:xml1.ru)",
+      "WebFetch(domain:sseopz.ru)",
+      "WebFetch(domain:learn.javascript.ru)",
+      "WebFetch(domain:htmlacademy.ru)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:electronjs.org)",
+      "WebSearch",
+      "Bash(npm:*)",
+      "Bash(electron:*)",
+      "Bash(sqlite3:*)",
+      "Bash(node:*)",
+      "Bash(ps aux | grep electron)",
+      "Bash(lsof -p:*)",
+      "Read(/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/**)",
+      "Write(/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/**)",
+      "Edit(/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(format:*)",
+      "Write(/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/node_modules/**)"
+    ],
+    "ask": [
+      "Bash(kill:*)",
+      "Write(/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/.env*)"
+    ]
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "ELECTRON_ENABLE_LOGGING": "true",
+    "SQLITE_TRACE": "false"
+  },
+  "hooks": {
+    "pre_edit": [
+      "echo 'Backing up file before edit...'"
+    ],
+    "post_bash": [
+      "echo 'Command executed: $CLAUDE_COMMAND'"
+    ]
+  }
+}

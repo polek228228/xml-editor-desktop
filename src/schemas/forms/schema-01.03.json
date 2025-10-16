@@ -1,0 +1,72 @@
+{
+  "version": "01.03",
+  "title": "Пояснительная записка к проектной документации (схема 01.03)",
+  "description": "Устаревшая схема Минстроя РФ для пояснительных записок (до марта 2025)",
+  "sections": [
+    {
+      "id": "general_info",
+      "title": "1. Общие сведения",
+      "required": true,
+      "description": "Основная информация о проекте и участниках",
+      "fields": [
+        {
+          "name": "project_title",
+          "label": "Наименование объекта капитального строительства",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 400,
+          "placeholder": "Введите наименование объекта строительства",
+          "tooltip": "Указывается наименование объекта в соответствии с заданием на проектирование (схема 01.03)",
+          "validation": {
+            "required": true,
+            "maxLength": 400,
+            "minLength": 10,
+            "message": "Наименование объекта обязательно (от 10 до 400 символов, схема 01.03)"
+          },
+          "xmlPath": "GeneralInfo/ProjectTitle"
+        },
+        {
+          "name": "developer_name",
+          "label": "Наименование организации-разработчика",
+          "type": "text",
+          "required": true,
+          "maxLength": 250,
+          "placeholder": "ООО «Проектная организация»",
+          "tooltip": "Наименование организации, выполняющей проектирование (схема 01.03)",
+          "validation": {
+            "required": true,
+            "maxLength": 250,
+            "minLength": 5,
+            "message": "Наименование организации обязательно (от 5 до 250 символов)"
+          },
+          "xmlPath": "GeneralInfo/DeveloperName"
+        }
+      ]
+    },
+    {
+      "id": "construction_info",
+      "title": "2. Сведения о строительстве",
+      "required": false,
+      "description": "Информация о характеристиках объекта строительства",
+      "fields": [
+        {
+          "name": "construction_type",
+          "label": "Тип строительства",
+          "type": "select",
+          "required": true,
+          "options": [
+            {"value": "new", "label": "Новое строительство"},
+            {"value": "reconstruction", "label": "Реконструкция"},
+            {"value": "extension", "label": "Расширение"}
+          ],
+          "tooltip": "Выберите тип строительства (схема 01.03)",
+          "validation": {
+            "required": true,
+            "message": "Тип строительства обязателен для выбора"
+          },
+          "xmlPath": "ConstructionInfo/Type"
+        }
+      ]
+    }
+  ]
+}

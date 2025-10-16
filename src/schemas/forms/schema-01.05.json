@@ -1,0 +1,436 @@
+{
+  "version": "01.05",
+  "title": "Пояснительная записка к проектной документации (схема 01.05)",
+  "description": "Актуальная схема Минстроя РФ для пояснительных записок",
+  "sections": [
+    {
+      "id": "general_info",
+      "title": "1. Общие сведения",
+      "required": true,
+      "description": "Основная информация о проекте и участниках",
+      "fields": [
+        {
+          "name": "project_title",
+          "label": "Наименование объекта капитального строительства",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 500,
+          "placeholder": "Введите полное наименование объекта строительства",
+          "tooltip": "Указывается полное наименование объекта в соответствии с заданием на проектирование",
+          "validation": {
+            "required": true,
+            "maxLength": 500,
+            "minLength": 10,
+            "message": "Наименование объекта обязательно и должно содержать от 10 до 500 символов"
+          },
+          "xmlPath": "GeneralInfo/ProjectTitle"
+        },
+        {
+          "name": "project_code",
+          "label": "Номер (шифр) проекта",
+          "type": "text",
+          "required": false,
+          "maxLength": 50,
+          "placeholder": "123-45-ГП",
+          "tooltip": "Номер или шифр проектной документации согласно принятой в организации системе обозначений",
+          "validation": {
+            "maxLength": 50,
+            "pattern": "^[A-Za-zА-Яа-я0-9\\-\\/\\.\\s]+$",
+            "message": "Номер проекта может содержать буквы, цифры, дефисы, слеши и точки"
+          },
+          "xmlPath": "GeneralInfo/ProjectCode"
+        },
+        {
+          "name": "developer_name",
+          "label": "Наименование организации-разработчика",
+          "type": "text",
+          "required": true,
+          "maxLength": 300,
+          "placeholder": "ООО «Проектная организация»",
+          "tooltip": "Полное наименование организации, выполняющей проектирование",
+          "validation": {
+            "required": true,
+            "maxLength": 300,
+            "minLength": 5,
+            "message": "Наименование организации-разработчика обязательно"
+          },
+          "xmlPath": "GeneralInfo/DeveloperInfo/Name"
+        },
+        {
+          "name": "developer_address",
+          "label": "Адрес организации-разработчика",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 400,
+          "placeholder": "123456, г. Москва, ул. Примерная, д. 1, оф. 10",
+          "tooltip": "Полный почтовый адрес организации-разработчика",
+          "validation": {
+            "required": true,
+            "maxLength": 400,
+            "minLength": 10,
+            "message": "Адрес организации-разработчика обязателен"
+          },
+          "xmlPath": "GeneralInfo/DeveloperInfo/Address"
+        },
+        {
+          "name": "developer_inn",
+          "label": "ИНН организации-разработчика",
+          "type": "text",
+          "required": true,
+          "maxLength": 12,
+          "placeholder": "1234567890",
+          "tooltip": "Идентификационный номер налогоплательщика (10 или 12 цифр)",
+          "validation": {
+            "required": true,
+            "pattern": "^\\d{10}$|^\\d{12}$",
+            "inn": true,
+            "message": "ИНН должен содержать 10 или 12 цифр и иметь правильную контрольную сумму"
+          },
+          "xmlPath": "GeneralInfo/DeveloperInfo/INN"
+        },
+        {
+          "name": "customer_name",
+          "label": "Наименование заказчика",
+          "type": "text",
+          "required": true,
+          "maxLength": 300,
+          "placeholder": "ООО «Строительная компания»",
+          "tooltip": "Полное наименование организации-заказчика проектных работ",
+          "validation": {
+            "required": true,
+            "maxLength": 300,
+            "minLength": 5,
+            "message": "Наименование заказчика обязательно"
+          },
+          "xmlPath": "GeneralInfo/CustomerInfo/Name"
+        },
+        {
+          "name": "document_date",
+          "label": "Дата составления пояснительной записки",
+          "type": "date",
+          "required": true,
+          "tooltip": "Дата подготовки данной пояснительной записки",
+          "validation": {
+            "required": true,
+            "maxDate": "today",
+            "message": "Дата составления документа обязательна и не может быть в будущем"
+          },
+          "xmlPath": "GeneralInfo/DocumentDate"
+        }
+      ]
+    },
+    {
+      "id": "object_info",
+      "title": "2. Сведения об объекте капитального строительства",
+      "required": true,
+      "description": "Подробная информация о строящемся объекте",
+      "fields": [
+        {
+          "name": "object_name",
+          "label": "Наименование объекта",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 500,
+          "placeholder": "Жилой дом переменной этажности",
+          "tooltip": "Краткое функциональное наименование объекта строительства",
+          "validation": {
+            "required": true,
+            "maxLength": 500,
+            "minLength": 5,
+            "message": "Наименование объекта обязательно"
+          },
+          "xmlPath": "ObjectInfo/ObjectName"
+        },
+        {
+          "name": "object_address",
+          "label": "Адрес (местоположение) объекта",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 500,
+          "placeholder": "г. Москва, район Хамовники, ул. Льва Толстого, вл. 16",
+          "tooltip": "Полный адрес или описание местоположения объекта строительства",
+          "validation": {
+            "required": true,
+            "maxLength": 500,
+            "minLength": 10,
+            "message": "Адрес объекта обязателен"
+          },
+          "xmlPath": "ObjectInfo/Address"
+        },
+        {
+          "name": "object_type",
+          "label": "Тип объекта капитального строительства",
+          "type": "select",
+          "required": true,
+          "tooltip": "Функциональное назначение объекта согласно градостроительному кодексу",
+          "options": [
+            { "value": "", "label": "Выберите тип объекта" },
+            { "value": "residential", "label": "Жилое здание" },
+            { "value": "residential_complex", "label": "Жилой комплекс" },
+            { "value": "public_building", "label": "Общественное здание" },
+            { "value": "administrative", "label": "Административное здание" },
+            { "value": "industrial", "label": "Производственное здание" },
+            { "value": "warehouse", "label": "Складское здание" },
+            { "value": "commercial", "label": "Торговое здание" },
+            { "value": "mixed_use", "label": "Здание смешанного назначения" },
+            { "value": "infrastructure", "label": "Объект инфраструктуры" },
+            { "value": "other", "label": "Прочее" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите тип объекта капитального строительства"
+          },
+          "xmlPath": "ObjectInfo/ObjectType"
+        },
+        {
+          "name": "building_class",
+          "label": "Класс объекта",
+          "type": "select",
+          "required": false,
+          "tooltip": "Класс здания согласно техническому регламенту",
+          "dependsOn": "object_type",
+          "showWhen": ["residential", "public_building", "administrative", "commercial"],
+          "options": [
+            { "value": "", "label": "Не указан" },
+            { "value": "economy", "label": "Эконом" },
+            { "value": "comfort", "label": "Комфорт" },
+            { "value": "comfort_plus", "label": "Комфорт+" },
+            { "value": "business", "label": "Бизнес" },
+            { "value": "premium", "label": "Премиум" }
+          ],
+          "validation": {
+            "message": "Выберите класс объекта из списка"
+          },
+          "xmlPath": "ObjectInfo/BuildingClass"
+        },
+        {
+          "name": "floors_count",
+          "label": "Количество этажей",
+          "type": "number",
+          "required": true,
+          "min": 1,
+          "max": 200,
+          "placeholder": "5",
+          "tooltip": "Общее количество надземных этажей объекта",
+          "validation": {
+            "required": true,
+            "min": 1,
+            "max": 200,
+            "integer": true,
+            "message": "Количество этажей должно быть от 1 до 200"
+          },
+          "xmlPath": "ObjectInfo/FloorsCount"
+        },
+        {
+          "name": "underground_floors",
+          "label": "Количество подземных этажей",
+          "type": "number",
+          "required": false,
+          "min": 0,
+          "max": 10,
+          "placeholder": "0",
+          "tooltip": "Количество подземных этажей (подвалы, технические этажи)",
+          "validation": {
+            "min": 0,
+            "max": 10,
+            "integer": true,
+            "message": "Количество подземных этажей должно быть от 0 до 10"
+          },
+          "xmlPath": "ObjectInfo/UndergroundFloors"
+        },
+        {
+          "name": "total_area",
+          "label": "Общая площадь объекта, м²",
+          "type": "number",
+          "required": true,
+          "min": 10,
+          "max": 1000000,
+          "step": 0.01,
+          "placeholder": "1000.50",
+          "tooltip": "Общая площадь всех помещений объекта в квадратных метрах",
+          "validation": {
+            "required": true,
+            "min": 10,
+            "max": 1000000,
+            "numeric": true,
+            "message": "Общая площадь должна быть от 10 до 1 000 000 м²"
+          },
+          "xmlPath": "ObjectInfo/TotalArea"
+        },
+        {
+          "name": "building_volume",
+          "label": "Строительный объем объекта, м³",
+          "type": "number",
+          "required": false,
+          "min": 50,
+          "max": 10000000,
+          "step": 0.01,
+          "placeholder": "3500.00",
+          "tooltip": "Строительный объем здания в кубических метрах",
+          "validation": {
+            "min": 50,
+            "max": 10000000,
+            "numeric": true,
+            "message": "Строительный объем должен быть от 50 до 10 000 000 м³"
+          },
+          "xmlPath": "ObjectInfo/BuildingVolume"
+        }
+      ]
+    },
+    {
+      "id": "technical_characteristics",
+      "title": "3. Технические характеристики",
+      "required": true,
+      "description": "Технические параметры и характеристики объекта",
+      "fields": [
+        {
+          "name": "structural_system",
+          "label": "Конструктивная система",
+          "type": "select",
+          "required": true,
+          "tooltip": "Основная конструктивная система здания",
+          "options": [
+            { "value": "", "label": "Выберите конструктивную систему" },
+            { "value": "frame", "label": "Каркасная" },
+            { "value": "panel", "label": "Панельная" },
+            { "value": "brick", "label": "Кирпичная" },
+            { "value": "monolithic", "label": "Монолитная" },
+            { "value": "frame_monolithic", "label": "Каркасно-монолитная" },
+            { "value": "wooden", "label": "Деревянная" },
+            { "value": "mixed", "label": "Смешанная" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите конструктивную систему"
+          },
+          "xmlPath": "TechnicalCharacteristics/StructuralSystem"
+        },
+        {
+          "name": "foundation_type",
+          "label": "Тип фундамента",
+          "type": "select",
+          "required": true,
+          "tooltip": "Основной тип фундамента объекта",
+          "options": [
+            { "value": "", "label": "Выберите тип фундамента" },
+            { "value": "strip", "label": "Ленточный" },
+            { "value": "pile", "label": "Свайный" },
+            { "value": "slab", "label": "Плитный" },
+            { "value": "columnar", "label": "Столбчатый" },
+            { "value": "combined", "label": "Комбинированный" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите тип фундамента"
+          },
+          "xmlPath": "TechnicalCharacteristics/FoundationType"
+        },
+        {
+          "name": "wall_material",
+          "label": "Материал стен",
+          "type": "select",
+          "required": true,
+          "tooltip": "Основной материал наружных стен",
+          "options": [
+            { "value": "", "label": "Выберите материал стен" },
+            { "value": "brick", "label": "Кирпич" },
+            { "value": "concrete", "label": "Железобетон" },
+            { "value": "aerated_concrete", "label": "Газобетон" },
+            { "value": "ceramic_blocks", "label": "Керамические блоки" },
+            { "value": "wood", "label": "Дерево" },
+            { "value": "metal", "label": "Металл" },
+            { "value": "combined", "label": "Комбинированный" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите материал стен"
+          },
+          "xmlPath": "TechnicalCharacteristics/WallMaterial"
+        },
+        {
+          "name": "roof_type",
+          "label": "Тип кровли",
+          "type": "select",
+          "required": true,
+          "tooltip": "Конструкция и тип кровли здания",
+          "options": [
+            { "value": "", "label": "Выберите тип кровли" },
+            { "value": "flat", "label": "Плоская" },
+            { "value": "pitched", "label": "Скатная" },
+            { "value": "mansard", "label": "Мансардная" },
+            { "value": "shed", "label": "Односкатная" },
+            { "value": "gable", "label": "Двускатная" },
+            { "value": "hip", "label": "Вальмовая" },
+            { "value": "complex", "label": "Сложной формы" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите тип кровли"
+          },
+          "xmlPath": "TechnicalCharacteristics/RoofType"
+        },
+        {
+          "name": "ceiling_height",
+          "label": "Высота потолков, м",
+          "type": "number",
+          "required": false,
+          "min": 2.4,
+          "max": 6.0,
+          "step": 0.1,
+          "placeholder": "3.0",
+          "tooltip": "Средняя высота потолков в жилых/рабочих помещениях",
+          "validation": {
+            "min": 2.4,
+            "max": 6.0,
+            "numeric": true,
+            "message": "Высота потолков должна быть от 2.4 до 6.0 м"
+          },
+          "xmlPath": "TechnicalCharacteristics/CeilingHeight"
+        },
+        {
+          "name": "fire_resistance_class",
+          "label": "Класс огнестойкости",
+          "type": "select",
+          "required": true,
+          "tooltip": "Класс огнестойкости здания согласно техническому регламенту",
+          "options": [
+            { "value": "", "label": "Выберите класс огнестойкости" },
+            { "value": "I", "label": "I (наивысший)" },
+            { "value": "II", "label": "II (высокий)" },
+            { "value": "III", "label": "III (средний)" },
+            { "value": "IV", "label": "IV (пониженный)" },
+            { "value": "V", "label": "V (низкий)" }
+          ],
+          "validation": {
+            "required": true,
+            "message": "Выберите класс огнестойкости"
+          },
+          "xmlPath": "TechnicalCharacteristics/FireResistanceClass"
+        }
+      ]
+    }
+  ],
+  "crossValidationRules": [
+    {
+      "name": "building_class_floors_validation",
+      "description": "Проверка соответствия класса здания и этажности",
+      "condition": "object_type === 'residential' && building_class === 'economy'",
+      "validation": {
+        "floors_count": { "max": 17 },
+        "message": "Жилые дома эконом-класса не могут иметь более 17 этажей"
+      }
+    },
+    {
+      "name": "area_floors_consistency",
+      "description": "Проверка соответствия площади и количества этажей",
+      "condition": "floors_count > 0 && total_area > 0",
+      "validation": {
+        "total_area": {
+          "min": "floors_count * 50",
+          "max": "floors_count * 3000",
+          "message": "Общая площадь не соответствует количеству этажей"
+        }
+      }
+    }
+  ]
+}

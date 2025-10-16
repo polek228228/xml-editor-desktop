@@ -1,0 +1,310 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "forms/explanatory-note-01.05-basic",
+  "title": "Пояснительная записка v01.05 (базовая форма)",
+  "description": "JSON Schema для автогенерации формы пояснительной записки",
+  "type": "object",
+  "required": [
+    "generalInfo",
+    "objectInfo"
+  ],
+  "properties": {
+    "generalInfo": {
+      "type": "object",
+      "title": "Общие сведения",
+      "description": "Общие сведения о проектной документации",
+      "required": ["documentNumber", "documentDate", "projectName"],
+      "properties": {
+        "documentNumber": {
+          "type": "string",
+          "title": "Номер документа",
+          "description": "Номер пояснительной записки",
+          "minLength": 1,
+          "maxLength": 50,
+          "examples": ["ПЗ-001-2025"]
+        },
+        "documentDate": {
+          "type": "string",
+          "title": "Дата документа",
+          "description": "Дата составления пояснительной записки",
+          "format": "date",
+          "examples": ["2025-10-01"]
+        },
+        "projectName": {
+          "type": "string",
+          "title": "Наименование объекта",
+          "description": "Наименование объекта капитального строительства",
+          "minLength": 1,
+          "maxLength": 1000,
+          "examples": ["Многоквартирный жилой дом по адресу: г. Москва, ул. Примерная, д. 1"]
+        },
+        "projectStage": {
+          "type": "string",
+          "title": "Стадия проектирования",
+          "description": "Стадия проектной документации",
+          "enum": ["П", "Р", "РД"],
+          "enumNames": ["Проектная документация", "Рабочая документация", "Рабочая документация (для повторного применения)"],
+          "default": "П"
+        }
+      }
+    },
+    "objectInfo": {
+      "type": "object",
+      "title": "Сведения об объекте",
+      "description": "Характеристики объекта капитального строительства",
+      "required": ["objectType", "constructionAddress"],
+      "properties": {
+        "objectType": {
+          "type": "string",
+          "title": "Вид объекта",
+          "description": "Линейный или нелинейный объект",
+          "enum": ["linear", "nonlinear"],
+          "enumNames": ["Линейный объект", "Нелинейный объект"],
+          "default": "nonlinear"
+        },
+        "constructionAddress": {
+          "type": "object",
+          "title": "Адрес строительства",
+          "description": "Местоположение объекта капитального строительства",
+          "required": ["region", "locality"],
+          "properties": {
+            "region": {
+              "type": "string",
+              "title": "Субъект РФ",
+              "description": "Код субъекта Российской Федерации по ОКТМО",
+              "enum": [
+                "77",
+                "50",
+                "47",
+                "78",
+                "66"
+              ],
+              "enumNames": [
+                "г. Москва",
+                "Московская область",
+                "Ленинградская область",
+                "г. Санкт-Петербург",
+                "Свердловская область"
+              ]
+            },
+            "locality": {
+              "type": "string",
+              "title": "Населённый пункт",
+              "description": "Наименование населённого пункта",
+              "minLength": 1,
+              "maxLength": 255,
+              "examples": ["г. Москва"]
+            },
+            "street": {
+              "type": "string",
+              "title": "Улица",
+              "description": "Наименование улицы",
+              "maxLength": 255,
+              "examples": ["ул. Примерная"]
+            },
+            "house": {
+              "type": "string",
+              "title": "Дом",
+              "description": "Номер дома",
+              "maxLength": 20,
+              "examples": ["1"]
+            },
+            "cadastralNumber": {
+              "type": "string",
+              "title": "Кадастровый номер",
+              "description": "Кадастровый номер земельного участка",
+              "pattern": "^\\d{2}:\\d{2}:\\d{6,7}:\\d+$",
+              "examples": ["77:01:0001001:1234"]
+            }
+          }
+        },
+        "buildingPurpose": {
+          "type": "string",
+          "title": "Назначение объекта",
+          "description": "Функциональное назначение объекта",
+          "enum": [
+            "residential",
+            "public",
+            "industrial",
+            "agricultural",
+            "transport"
+          ],
+          "enumNames": [
+            "Жилое",
+            "Общественное",
+            "Производственное",
+            "Сельскохозяйственное",
+            "Транспортное"
+          ]
+        },
+        "technicalParameters": {
+          "type": "object",
+          "title": "Технико-экономические показатели",
+          "description": "Основные технико-экономические показатели объекта",
+          "properties": {
+            "totalArea": {
+              "type": "number",
+              "title": "Общая площадь, м²",
+              "description": "Общая площадь здания",
+              "minimum": 0,
+              "examples": [5000]
+            },
+            "buildingHeight": {
+              "type": "number",
+              "title": "Высота здания, м",
+              "description": "Высота здания от уровня земли",
+              "minimum": 0,
+              "examples": [25.5]
+            },
+            "floors": {
+              "type": "integer",
+              "title": "Этажность",
+              "description": "Количество надземных этажей",
+              "minimum": 1,
+              "maximum": 150,
+              "examples": [9]
+            },
+            "undergroundFloors": {
+              "type": "integer",
+              "title": "Подземная этажность",
+              "description": "Количество подземных этажей",
+              "minimum": 0,
+              "maximum": 10,
+              "default": 0,
+              "examples": [1]
+            },
+            "capacity": {
+              "type": "integer",
+              "title": "Вместимость",
+              "description": "Количество мест/человек (для общественных зданий)",
+              "minimum": 0,
+              "examples": [500]
+            }
+          }
+        }
+      }
+    },
+    "contractor": {
+      "type": "object",
+      "title": "Застройщик",
+      "description": "Сведения о застройщике (заказчике)",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Наименование организации",
+          "description": "Полное наименование застройщика",
+          "minLength": 1,
+          "maxLength": 500,
+          "examples": ["ООО 'Строительная компания'"]
+        },
+        "inn": {
+          "type": "string",
+          "title": "ИНН",
+          "description": "ИНН застройщика",
+          "pattern": "^\\d{10}|\\d{12}$",
+          "examples": ["7701234567"]
+        },
+        "address": {
+          "type": "string",
+          "title": "Юридический адрес",
+          "description": "Адрес застройщика",
+          "maxLength": 500,
+          "examples": ["123456, г. Москва, ул. Примерная, д. 10"]
+        },
+        "contact": {
+          "type": "object",
+          "title": "Контактная информация",
+          "properties": {
+            "phone": {
+              "type": "string",
+              "title": "Телефон",
+              "pattern": "^\\+?[0-9\\s\\-\\(\\)]+$",
+              "examples": ["+7 (495) 123-45-67"]
+            },
+            "email": {
+              "type": "string",
+              "title": "Email",
+              "format": "email",
+              "examples": ["info@example.com"]
+            }
+          }
+        }
+      }
+    },
+    "designer": {
+      "type": "object",
+      "title": "Проектная организация",
+      "description": "Сведения о проектной организации",
+      "required": ["name", "sroNumber"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Наименование организации",
+          "description": "Полное наименование проектировщика",
+          "minLength": 1,
+          "maxLength": 500,
+          "examples": ["ООО 'Проектное бюро'"]
+        },
+        "inn": {
+          "type": "string",
+          "title": "ИНН",
+          "description": "ИНН проектной организации",
+          "pattern": "^\\d{10}|\\d{12}$",
+          "examples": ["7702345678"]
+        },
+        "sroNumber": {
+          "type": "string",
+          "title": "Номер в реестре СРО",
+          "description": "Регистрационный номер в реестре саморегулируемой организации",
+          "minLength": 1,
+          "maxLength": 50,
+          "examples": ["СРО-П-123-45678900"]
+        },
+        "chiefEngineer": {
+          "type": "object",
+          "title": "Главный инженер проекта",
+          "required": ["fullName"],
+          "properties": {
+            "fullName": {
+              "type": "string",
+              "title": "ФИО",
+              "description": "Полное имя главного инженера проекта",
+              "minLength": 1,
+              "maxLength": 200,
+              "examples": ["Иванов Иван Иванович"]
+            },
+            "position": {
+              "type": "string",
+              "title": "Должность",
+              "maxLength": 200,
+              "examples": ["Главный инженер проекта"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+
+  "ui:order": ["generalInfo", "objectInfo", "contractor", "designer"],
+
+  "ui:options": {
+    "generalInfo": {
+      "ui:widget": "accordion",
+      "ui:expanded": true
+    },
+    "objectInfo": {
+      "ui:widget": "accordion",
+      "ui:expanded": true
+    },
+    "contractor": {
+      "ui:widget": "accordion",
+      "ui:expanded": false
+    },
+    "designer": {
+      "ui:widget": "accordion",
+      "ui:expanded": false
+    }
+  }
+}

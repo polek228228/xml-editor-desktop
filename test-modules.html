@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Module Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .test { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Testing XML Editor Modules</h1>
+    <div id="results"></div>
+
+    <!-- Load scripts in order -->
+    <script src="src/renderer/js/components/accordion.js"></script>
+    <script src="src/renderer/js/components/input-field.js"></script>
+    <script src="src/renderer/js/components/document-selector.js"></script>
+    <script src="src/renderer/js/validators.js"></script>
+    <script src="src/renderer/js/schema-loader.js"></script>
+    <script src="src/renderer/js/rich-text-editor.js"></script>
+    <script src="src/renderer/js/form-manager.js"></script>
+    <script src="src/renderer/js/xml-generator.js"></script>
+
+    <script>
+        const results = document.getElementById('results');
+
+        function log(message, isError = false) {
+            const div = document.createElement('div');
+            div.className = 'test ' + (isError ? 'error' : 'success');
+            div.textContent = (isError ? '❌ ' : '✅ ') + message;
+            results.appendChild(div);
+        }
+
+        function test(name, fn) {
+            try {
+                fn();
+                log(`${name}: OK`);
+            } catch (error) {
+                log(`${name}: ${error.message}`, true);
+            }
+        }
+
+        // Test all classes are defined
+        test('Accordion class', () => {
+            if (typeof Accordion === 'undefined') throw new Error('Accordion is not defined');
+        });
+
+        test('InputField class', () => {
+            if (typeof InputField === 'undefined') throw new Error('InputField is not defined');
+        });
+
+        test('DocumentSelector class', () => {
+            if (typeof DocumentSelector === 'undefined') throw new Error('DocumentSelector is not defined');
+        });
+
+        test('Validators object', () => {
+            if (typeof Validators === 'undefined') throw new Error('Validators is not defined');
+        });
+
+        test('SchemaLoader class', () => {
+            if (typeof SchemaLoader === 'undefined') throw new Error('SchemaLoader is not defined');
+        });
+
+        test('RichTextEditor class', () => {
+            if (typeof RichTextEditor === 'undefined') throw new Error('RichTextEditor is not defined');
+        });
+
+        test('FormManager class', () => {
+            if (typeof FormManager === 'undefined') throw new Error('FormManager is not defined');
+        });
+
+        test('XMLGenerator class', () => {
+            if (typeof XMLGenerator === 'undefined') throw new Error('XMLGenerator is not defined');
+        });
+
+        // Test XMLGenerator instantiation
+        test('XMLGenerator instantiation', () => {
+            const generator = new XMLGenerator();
+            if (!generator) throw new Error('Failed to create XMLGenerator instance');
+            if (typeof generator.generateXML !== 'function') throw new Error('generateXML method missing');
+        });
+
+        // Test SchemaLoader instantiation
+        test('SchemaLoader instantiation', () => {
+            const loader = new SchemaLoader();
+            if (!loader) throw new Error('Failed to create SchemaLoader instance');
+            if (typeof loader.loadSchema !== 'function') throw new Error('loadSchema method missing');
+        });
+
+        // Test DocumentSelector instantiation
+        test('DocumentSelector instantiation', () => {
+            const selector = new DocumentSelector({
+                documents: [],
+                onSelect: () => {},
+                onCancel: () => {}
+            });
+            if (!selector) throw new Error('Failed to create DocumentSelector instance');
+            if (typeof selector.show !== 'function') throw new Error('show method missing');
+        });
+
+        log('=== All tests completed ===');
+    </script>
+</body>
+</html>

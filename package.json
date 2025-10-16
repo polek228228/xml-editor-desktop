@@ -1,0 +1,68 @@
+{
+  "name": "xml-editor-desktop",
+  "version": "1.0.0",
+  "description": "Десктопное приложение для создания пояснительных записок в формате XML - клон xmlonline.ru",
+  "main": "src/main/main.js",
+  "homepage": "./",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development electron . 2>&1 | tee logs/electron.log",
+    "dev:simple": "NODE_ENV=development electron .",
+    "start": "electron .",
+    "build": "echo 'Build process'",
+    "test": "node test-app.js",
+    "test:init": "node scripts/clean-test-db.js && node init-database.js",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "PWDEBUG=1 playwright test",
+    "test:e2e:report": "playwright show-report test-results/html-report",
+    "test:e2e:smoke": "playwright test e2e/00-smoke.e2e.js",
+    "test:e2e:docs": "playwright test e2e/01-documents.e2e.js e2e/02-xml-generation.e2e.js",
+    "test:e2e:templates": "playwright test e2e/03-validation-templates.e2e.js",
+    "test:e2e:ui": "playwright test e2e/04-ui-navigation.e2e.js",
+    "test:e2e:full": "playwright test e2e/99-full-scenario.e2e.js",
+    "test:e2e:ci": "npm run test:init && playwright test --reporter=json --output-dir=test-results/ci",
+    "test:report": "node scripts/generate-test-report.js",
+    "test:report:view": "cat E2E_TEST_REPORT.md",
+    "db:init": "node init-database.js",
+    "db:clean": "node scripts/clean-test-db.js",
+    "lint": "echo 'Lint process'"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "electron": "^27.0.0",
+    "electron-rebuild": "^3.2.9",
+    "playwright": "^1.55.1"
+  },
+  "dependencies": {
+    "fs-extra": "^11.0.0",
+    "libxmljs2": "^0.33.0",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.1"
+  },
+  "build": {
+    "appId": "com.xmleditor.desktop",
+    "productName": "XML Editor Desktop",
+    "directories": {
+      "output": "dist/"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ]
+  },
+  "keywords": [
+    "xml",
+    "electron",
+    "desktop",
+    "construction",
+    "ministry",
+    "explanatory-note"
+  ],
+  "author": "XML Editor Team",
+  "license": "MIT"
+}

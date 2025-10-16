@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; font-src 'self' https://cdn.tiny.cloud data:; img-src 'self' data: https://cdn.tiny.cloud; connect-src 'self' https://cdn.tiny.cloud">
+    <title>XML Editor Desktop</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- ============================================ -->
+    <!-- 3-LEVEL NAVIGATION ARCHITECTURE             -->
+    <!-- ============================================ -->
+
+    <div class="app-container">
+        <!-- ============================================ -->
+        <!-- LEVEL 1: APP NAVIGATION (60px height)      -->
+        <!-- Main sections: Home, Documents, Services, Settings -->
+        <!-- ============================================ -->
+        <nav class="app-nav" role="navigation" aria-label="Главная навигация">
+            <div class="app-nav__container">
+                <a href="#home"
+                   class="app-nav__item app-nav__item--active"
+                   id="nav-home"
+                   data-section="home"
+                   aria-label="Главная">
+                    <span class="app-nav__icon">🏠</span>
+                    <span class="app-nav__label">Главная</span>
+                </a>
+                <a href="#documents"
+                   class="app-nav__item"
+                   id="nav-documents"
+                   data-section="documents"
+                   aria-label="Документы">
+                    <span class="app-nav__icon">📄</span>
+                    <span class="app-nav__label">Документы</span>
+                </a>
+                <a href="#services"
+                   class="app-nav__item"
+                   id="nav-services"
+                   data-section="services"
+                   aria-label="Сервисы">
+                    <span class="app-nav__icon">🔧</span>
+                    <span class="app-nav__label">Сервисы</span>
+                </a>
+                <a href="#settings"
+                   class="app-nav__item"
+                   id="nav-settings"
+                   data-section="settings"
+                   aria-label="Настройки">
+                    <span class="app-nav__icon">⚙️</span>
+                    <span class="app-nav__label">Настройки</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- ============================================ -->
+        <!-- LEVEL 2: DYNAMIC SIDEBAR (240px width)     -->
+        <!-- Content changes based on active section    -->
+        <!-- ============================================ -->
+        <aside class="sidebar" id="sidebar">
+            <!-- ========================================== -->
+            <!-- HOME SIDEBAR SECTION                      -->
+            <!-- Quick actions and statistics              -->
+            <!-- ========================================== -->
+            <div class="sidebar__section sidebar__section--home" id="sidebar-home">
+                <div class="sidebar__header">
+                    <h2 class="sidebar__title">Главная</h2>
+                </div>
+                <div class="sidebar__content">
+                    <div class="sidebar__actions">
+                        <button class="btn btn--primary btn--block" id="quick-new-document">
+                            <span class="btn__icon">+</span>
+                            <span class="btn__text">Создать документ</span>
+                        </button>
+                        <button class="btn btn--secondary btn--block" id="quick-open-document">
+                            <span class="btn__icon">📂</span>
+                            <span class="btn__text">Открыть</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Статистика</h3>
+                        <div class="sidebar__stats">
+                            <div class="stat-item">
+                                <span class="stat-item__value" id="stat-documents">0</span>
+                                <span class="stat-item__label">Документов</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-item__value" id="stat-templates">0</span>
+                                <span class="stat-item__label">Шаблонов</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Последние документы</h3>
+                        <div class="sidebar__list" id="home-recent-documents">
+                            <div class="sidebar__empty">
+                                <p>Нет документов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- DOCUMENTS SIDEBAR SECTION                 -->
+            <!-- Document list and filters                 -->
+            <!-- ========================================== -->
+            <div class="sidebar__section sidebar__section--documents" id="sidebar-documents" style="display: none;">
+                <div class="sidebar__header">
+                    <h2 class="sidebar__title">Документы</h2>
+                </div>
+                <div class="sidebar__content">
+                    <div class="sidebar__actions">
+                        <button class="btn btn--primary btn--block" id="new-document">
+                            <span class="btn__icon">+</span>
+                            <span class="btn__text">Создать документ</span>
+                        </button>
+                        <button class="btn btn--secondary btn--block" id="open-document">
+                            <span class="btn__icon">📂</span>
+                            <span class="btn__text">Открыть</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar__search">
+                        <input type="text"
+                               class="sidebar__search-input"
+                               id="document-search"
+                               placeholder="Поиск документов...">
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Фильтры</h3>
+                        <div class="sidebar__filters">
+                            <button class="sidebar__filter sidebar__filter--active" data-filter="all">
+                                Все документы
+                            </button>
+                            <button class="sidebar__filter" data-filter="01.05">
+                                ПЗ 01.05
+                            </button>
+                            <button class="sidebar__filter" data-filter="01.04">
+                                ПЗ 01.04
+                            </button>
+                            <button class="sidebar__filter" data-filter="draft">
+                                Черновики
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Недавние документы</h3>
+                        <div class="sidebar__list" id="documents-list">
+                            <div class="sidebar__empty">
+                                <p>Нет документов</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Быстрый доступ</h3>
+                        <button class="sidebar__list-item" id="load-from-template-sidebar">
+                            <span class="sidebar__list-icon">📋</span>
+                            <span class="sidebar__list-text">Создать из шаблона</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SERVICES SIDEBAR SECTION                  -->
+            <!-- Service categories and filters            -->
+            <!-- ========================================== -->
+            <div class="sidebar__section sidebar__section--services" id="sidebar-services" style="display: none;">
+                <div class="sidebar__header">
+                    <h2 class="sidebar__title">Сервисы</h2>
+                </div>
+                <div class="sidebar__content">
+                    <div class="sidebar__search">
+                        <input type="text"
+                               class="sidebar__search-input"
+                               id="service-search"
+                               placeholder="Поиск сервисов...">
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Категории</h3>
+
+                        <!-- Documents Category -->
+                        <div class="sidebar__category">
+                            <button class="sidebar__category-header" data-category="documents">
+                                <span class="sidebar__category-icon">📄</span>
+                                <span class="sidebar__category-title">Документы</span>
+                                <span class="sidebar__category-count">12</span>
+                                <span class="sidebar__category-toggle">▼</span>
+                            </button>
+                            <ul class="sidebar__category-list">
+                                <li class="sidebar__category-item" data-service="pz-01.05">
+                                    <span class="sidebar__category-item-icon">✅</span>
+                                    <span class="sidebar__category-item-title">ПЗ 01.05</span>
+                                </li>
+                                <li class="sidebar__category-item" data-service="expertise">
+                                    <span class="sidebar__category-item-icon">🔒</span>
+                                    <span class="sidebar__category-item-title">Экспертиза</span>
+                                    <span class="sidebar__category-item-badge">Pro</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Utilities Category -->
+                        <div class="sidebar__category">
+                            <button class="sidebar__category-header" data-category="utilities">
+                                <span class="sidebar__category-icon">🔧</span>
+                                <span class="sidebar__category-title">Утилиты</span>
+                                <span class="sidebar__category-count">6</span>
+                                <span class="sidebar__category-toggle">▼</span>
+                            </button>
+                            <ul class="sidebar__category-list" style="display: none;">
+                                <li class="sidebar__category-item" data-service="validator">
+                                    <span class="sidebar__category-item-icon">✅</span>
+                                    <span class="sidebar__category-item-title">Валидатор XML</span>
+                                </li>
+                                <li class="sidebar__category-item" data-service="converter">
+                                    <span class="sidebar__category-item-icon">✅</span>
+                                    <span class="sidebar__category-item-title">Конвертер</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Integrations Category -->
+                        <div class="sidebar__category">
+                            <button class="sidebar__category-header" data-category="integrations">
+                                <span class="sidebar__category-icon">🔌</span>
+                                <span class="sidebar__category-title">Интеграции</span>
+                                <span class="sidebar__category-count">5</span>
+                                <span class="sidebar__category-toggle">▼</span>
+                            </button>
+                            <ul class="sidebar__category-list" style="display: none;">
+                                <li class="sidebar__category-item" data-service="dadata">
+                                    <span class="sidebar__category-item-icon">🔒</span>
+                                    <span class="sidebar__category-item-title">Dadata API</span>
+                                    <span class="sidebar__category-item-badge">Pro</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Быстрые фильтры</h3>
+                        <div class="sidebar__filters">
+                            <button class="sidebar__filter sidebar__filter--active" data-filter="all">
+                                Все
+                            </button>
+                            <button class="sidebar__filter" data-filter="installed">
+                                Установленные
+                            </button>
+                            <button class="sidebar__filter" data-filter="available">
+                                Доступные
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- SETTINGS SIDEBAR SECTION                  -->
+            <!-- Settings categories                       -->
+            <!-- ========================================== -->
+            <div class="sidebar__section sidebar__section--settings" id="sidebar-settings" style="display: none;">
+                <div class="sidebar__header">
+                    <h2 class="sidebar__title">Настройки</h2>
+                </div>
+                <div class="sidebar__content">
+                    <div class="sidebar__group">
+                        <h3 class="sidebar__group-title">Разделы</h3>
+                        <button class="sidebar__list-item sidebar__list-item--active" data-settings="general">
+                            <span class="sidebar__list-icon">⚙️</span>
+                            <span class="sidebar__list-text">Общие</span>
+                        </button>
+                        <button class="sidebar__list-item" data-settings="appearance">
+                            <span class="sidebar__list-icon">🎨</span>
+                            <span class="sidebar__list-text">Внешний вид</span>
+                        </button>
+                        <button class="sidebar__list-item" data-settings="integrations">
+                            <span class="sidebar__list-icon">🔌</span>
+                            <span class="sidebar__list-text">Интеграции</span>
+                        </button>
+                        <button class="sidebar__list-item" data-settings="security">
+                            <span class="sidebar__list-icon">🔒</span>
+                            <span class="sidebar__list-text">Безопасность</span>
+                        </button>
+                        <button class="sidebar__list-item" data-settings="about">
+                            <span class="sidebar__list-icon">ℹ️</span>
+                            <span class="sidebar__list-text">О программе</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============================================ -->
+        <!-- LEVEL 3: MAIN CONTENT AREA                 -->
+        <!-- Dynamic content based on section/state     -->
+        <!-- ============================================ -->
+        <main class="content">
+            <!-- ========================================== -->
+            <!-- CONTEXT TOOLBAR (conditional)             -->
+            <!-- Shown only when document is open          -->
+            <!-- ========================================== -->
+            <div class="toolbar" id="context-toolbar" style="display: none;">
+                <div class="toolbar__left">
+                    <input
+                        type="text"
+                        class="toolbar__title-input"
+                        id="document-title"
+                        placeholder="Название документа"
+                    >
+                    <select class="toolbar__schema-select" id="schema-version-select">
+                        <option value="">Версия схемы</option>
+                        <option value="01.03">01.03 (устаревшая)</option>
+                        <option value="01.04">01.04 (переходная)</option>
+                        <option value="01.05">01.05 (актуальная)</option>
+                    </select>
+                </div>
+                <div class="toolbar__right">
+                    <button class="btn btn--secondary btn--sm" id="save-document" disabled>
+                        <span class="btn__icon">💾</span>
+                        <span class="btn__text">Сохранить</span>
+                    </button>
+                    <button class="btn btn--secondary btn--sm" id="save-as-template" disabled>
+                        <span class="btn__icon">📋</span>
+                        <span class="btn__text">Как шаблон</span>
+                    </button>
+                    <button class="btn btn--warning btn--sm" id="validate-xml" disabled>
+                        <span class="btn__icon">✓</span>
+                        <span class="btn__text">Проверить</span>
+                    </button>
+                    <button class="btn btn--accent btn--sm" id="export-xml" disabled>
+                        <span class="btn__icon">📤</span>
+                        <span class="btn__text">Экспорт</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content__wrapper">
+                <!-- ========================================== -->
+                <!-- HOME DASHBOARD VIEW                       -->
+                <!-- Default landing page                      -->
+                <!-- ========================================== -->
+                <div class="home-dashboard" id="home-dashboard">
+                    <div class="dashboard">
+                        <header class="dashboard__header">
+                            <h1 class="dashboard__title">Добро пожаловать в XML Editor Desktop</h1>
+                            <p class="dashboard__subtitle">Создавайте пояснительные записки в формате XML для Министерства строительства РФ</p>
+                        </header>
+
+                        <div class="dashboard__quick-actions">
+                            <button class="quick-action-card" id="dashboard-new-document">
+                                <span class="quick-action-card__icon">➕</span>
+                                <span class="quick-action-card__title">Создать документ</span>
+                                <span class="quick-action-card__desc">Новая пояснительная записка</span>
+                            </button>
+                            <button class="quick-action-card" id="dashboard-open-document">
+                                <span class="quick-action-card__icon">📂</span>
+                                <span class="quick-action-card__title">Открыть документ</span>
+                                <span class="quick-action-card__desc">Продолжить работу</span>
+                            </button>
+                            <button class="quick-action-card" id="dashboard-from-template">
+                                <span class="quick-action-card__icon">🎨</span>
+                                <span class="quick-action-card__title">Из шаблона</span>
+                                <span class="quick-action-card__desc">Использовать шаблон</span>
+                            </button>
+                        </div>
+
+                        <div class="dashboard__widgets">
+                            <div class="widget">
+                                <h3 class="widget__title">Статистика</h3>
+                                <div class="widget__content">
+                                    <div class="stat-item">
+                                        <span class="stat-item__value" id="widget-documents">0</span>
+                                        <span class="stat-item__label">Документов</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-item__value" id="widget-templates">0</span>
+                                        <span class="stat-item__label">Шаблонов</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="widget">
+                                <h3 class="widget__title">Последняя активность</h3>
+                                <div class="widget__content">
+                                    <ul class="activity-list" id="activity-list">
+                                        <li class="activity-list__empty">
+                                            Нет активности
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="widget">
+                                <h3 class="widget__title">Поддерживаемые версии схем</h3>
+                                <div class="widget__content">
+                                    <ul class="info-list">
+                                        <li class="info-list__item">
+                                            <strong>01.03</strong> — Устаревшая версия (до марта 2025)
+                                        </li>
+                                        <li class="info-list__item">
+                                            <strong>01.04</strong> — Переходная версия (до марта 2025)
+                                        </li>
+                                        <li class="info-list__item">
+                                            <strong>01.05</strong> — Актуальная версия (с марта 2025)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- SERVICE STORE VIEW                        -->
+                <!-- Service marketplace (hidden by default)   -->
+                <!-- ========================================== -->
+                <div class="service-store" id="service-store" style="display: none;">
+                    <header class="service-store__header">
+                        <h1 class="service-store__title">Магазин сервисов</h1>
+                        <input type="text"
+                               class="service-store__search"
+                               placeholder="Поиск сервисов...">
+                        <div class="service-store__filters">
+                            <button class="service-store__filter service-store__filter--active" data-filter="all">Все</button>
+                            <button class="service-store__filter" data-filter="installed">Установленные</button>
+                            <button class="service-store__filter" data-filter="free">Бесплатные</button>
+                            <button class="service-store__filter" data-filter="pro">Pro & Enterprise</button>
+                        </div>
+                    </header>
+
+                    <div class="service-store__featured">
+                        <h2 class="service-store__section-title">⭐ Рекомендуемые</h2>
+                        <div class="service-store__grid">
+                            <!-- Заполняется динамически из ServiceStore.js -->
+                        </div>
+                    </div>
+
+                    <div class="service-store__all">
+                        <h2 class="service-store__section-title">📦 Все сервисы</h2>
+                        <div class="service-store__grid">
+                            <!-- Заполняется динамически из ServiceStore.js -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- DOCUMENT EDITOR VIEW                      -->
+                <!-- (Hidden by default, shown when document opens) -->
+                <!-- ========================================== -->
+                <div class="editor" id="editor-screen" style="display: none;">
+                    <div class="editor__content">
+                        <div class="editor__form" id="editor-form">
+                            <!-- Form fields will be dynamically inserted here -->
+                            <div class="editor__placeholder">
+                                <p>Выберите версию схемы для начала работы</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- FOOTER                                      -->
+    <!-- ============================================ -->
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__info">
+                <span class="footer__text">XML Editor Desktop v2.0.0</span>
+                <span class="footer__separator">|</span>
+                <span class="footer__text" id="footer-status">Готов к работе</span>
+            </div>
+            <div class="footer__autosave">
+                <span class="footer__autosave-indicator" id="autosave-indicator">
+                    <span class="footer__autosave-icon">💾</span>
+                    <span class="footer__autosave-text">Автосохранение включено</span>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- OVERLAYS & MODALS                           -->
+    <!-- ============================================ -->
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Загрузка...</p>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ============================================ -->
+    <!-- SCRIPTS                                     -->
+    <!-- ============================================ -->
+
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <!-- Plugin System Core -->
+    <script src="../core/plugin-system/event-bus.js"></script>
+    <script src="../core/plugin-system/command-registry.js"></script>
+    <script src="../core/plugin-system/plugin-api.js"></script>
+    <script src="../core/plugin-system/service-registry.js"></script>
+    <script src="../core/plugin-system/lifecycle-manager.js"></script>
+
+    <!-- State Management -->
+    <script src="../core/state/workspace-manager.js"></script>
+    <script src="../core/state/tab-manager.js"></script>
+
+    <!-- Auth (disabled) -->
+    <script src="../core/auth/auth-dialog.js"></script>
+
+    <!-- Components -->
+    <script src="js/components/navigation.js"></script>
+    <script src="js/components/accordion.js"></script>
+    <script src="js/components/input-field.js"></script>
+    <script src="js/components/document-selector.js"></script>
+    <script src="js/components/validation-panel.js"></script>
+    <script src="js/components/template-browser.js"></script>
+    <script src="js/components/template-dialog.js"></script>
+    <!-- Week 3-4: UI Components -->
+    <script src="js/components/activity-bar.js"></script>
+    <script src="js/components/tab-bar.js"></script>
+    <script src="js/components/dynamic-sidebar.js"></script>
+    <script src="js/components/context-toolbar.js"></script>
+    <script src="js/components/service-store.js"></script>
+
+    <!-- Form System -->
+    <script src="js/validators.js"></script>
+    <script src="js/schema-loader.js"></script>
+    <script src="js/rich-text-editor.js"></script>
+    <script src="js/form-manager.js"></script>
+
+    <!-- XML Generation -->
+    <script src="js/xml-generator.js"></script>
+
+    <!-- Main Application -->
+    <script src="js/app.js"></script>
+
+    <!-- ============================================ -->
+    <!-- NAVIGATION INITIALIZATION                   -->
+    <!-- Basic event handlers for 3-level navigation -->
+    <!-- ============================================ -->
+    <script>
+        // Initialize navigation on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // ========================================
+            // APP NAV SWITCHING
+            // ========================================
+            const appNavItems = document.querySelectorAll('.app-nav__item');
+            const sidebarSections = document.querySelectorAll('.sidebar__section');
+            const contentViews = {
+                home: document.getElementById('home-dashboard'),
+                documents: null, // Will show document grid or editor
+                services: document.getElementById('service-store'),
+                settings: null // To be implemented
+            };
+
+            appNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+
+                    // Update active nav item
+                    appNavItems.forEach(nav => nav.classList.remove('app-nav__item--active'));
+                    this.classList.add('app-nav__item--active');
+
+                    // Update sidebar
+                    sidebarSections.forEach(sidebar => {
+                        sidebar.style.display = 'none';
+                    });
+                    const activeSidebar = document.getElementById(`sidebar-${section}`);
+                    if (activeSidebar) {
+                        activeSidebar.style.display = 'block';
+                    }
+
+                    // Update main content
+                    if (contentViews.home) contentViews.home.style.display = section === 'home' ? 'block' : 'none';
+                    if (contentViews.services) contentViews.services.style.display = section === 'services' ? 'block' : 'none';
+
+                    // Hide editor when switching sections (unless in documents section)
+                    if (section !== 'documents') {
+                        const editor = document.getElementById('editor-screen');
+                        const toolbar = document.getElementById('context-toolbar');
+                        if (editor) editor.style.display = 'none';
+                        if (toolbar) toolbar.style.display = 'none';
+                    }
+
+                    // Update footer status
+                    const footerStatus = document.getElementById('footer-status');
+                    if (footerStatus) {
+                        const statusTexts = {
+                            home: 'Главная страница',
+                            documents: 'Документы',
+                            services: 'Магазин сервисов',
+                            settings: 'Настройки'
+                        };
+                        footerStatus.textContent = statusTexts[section] || 'Готов к работе';
+                    }
+                });
+            });
+
+            // ========================================
+            // SIDEBAR CATEGORY TOGGLE
+            // ========================================
+            const categoryHeaders = document.querySelectorAll('.sidebar__category-header');
+            categoryHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const list = this.nextElementSibling;
+                    const toggle = this.querySelector('.sidebar__category-toggle');
+
+                    if (list && list.classList.contains('sidebar__category-list')) {
+                        const isVisible = list.style.display !== 'none';
+                        list.style.display = isVisible ? 'none' : 'block';
+                        if (toggle) {
+                            toggle.textContent = isVisible ? '▶' : '▼';
+                        }
+                    }
+                });
+            });
+
+            // ========================================
+            // QUICK ACTION HANDLERS (Dashboard)
+            // ========================================
+            const dashboardNewDoc = document.getElementById('dashboard-new-document');
+            const dashboardOpenDoc = document.getElementById('dashboard-open-document');
+            const dashboardFromTemplate = document.getElementById('dashboard-from-template');
+
+            if (dashboardNewDoc) {
+                dashboardNewDoc.addEventListener('click', function() {
+                    // Trigger new document - will be handled by app.js
+                    const newDocBtn = document.getElementById('new-document');
+                    if (newDocBtn) newDocBtn.click();
+                });
+            }
+
+            if (dashboardOpenDoc) {
+                dashboardOpenDoc.addEventListener('click', function() {
+                    // Trigger open document - will be handled by app.js
+                    const openDocBtn = document.getElementById('open-document');
+                    if (openDocBtn) openDocBtn.click();
+                });
+            }
+
+            if (dashboardFromTemplate) {
+                dashboardFromTemplate.addEventListener('click', function() {
+                    // Trigger template browser - will be handled by app.js
+                    const templateBtn = document.getElementById('load-from-template-sidebar');
+                    if (templateBtn) templateBtn.click();
+                });
+            }
+
+            // ========================================
+            // QUICK ACTIONS IN HOME SIDEBAR
+            // ========================================
+            const quickNewDoc = document.getElementById('quick-new-document');
+            const quickOpenDoc = document.getElementById('quick-open-document');
+
+            if (quickNewDoc) {
+                quickNewDoc.addEventListener('click', function() {
+                    const newDocBtn = document.getElementById('new-document');
+                    if (newDocBtn) newDocBtn.click();
+                });
+            }
+
+            if (quickOpenDoc) {
+                quickOpenDoc.addEventListener('click', function() {
+                    const openDocBtn = document.getElementById('open-document');
+                    if (openDocBtn) openDocBtn.click();
+                });
+            }
+
+            console.log('3-level navigation architecture initialized');
+        });
+    </script>
+</body>
+</html>

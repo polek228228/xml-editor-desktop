@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExplanatoryNote xmlns="http://minstroyrf.gov.ru/schemas/explanatorynote/01.05" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="01.05">
+  <GeneralInfo>
+    <DocNumber>TEST-001</DocNumber>
+    <DocDate>2025-10-02</DocDate>
+  </GeneralInfo>
+  <ObjectInfo>
+    <ObjectName>Test Project</ObjectName>
+    <ObjectType>Residential</ObjectType>
+  </ObjectInfo>
+  <Participants>
+    <Contractor>
+      <OrganizationName>Test Contractor LLC</OrganizationName>
+    </Contractor>
+    <Designer>
+      <OrganizationName>Test Designer LLC</OrganizationName>
+    </Designer>
+  </Participants>
+</ExplanatoryNote>

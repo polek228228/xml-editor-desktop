@@ -1,0 +1,100 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation "Главная навигация" [ref=e3]:
+      - generic [ref=e4]:
+        - link "Главная" [ref=e5] [cursor=pointer]:
+          - /url: "#home"
+          - generic [ref=e6] [cursor=pointer]: 🏠
+          - generic [ref=e7] [cursor=pointer]: Главная
+        - link "Документы" [ref=e8] [cursor=pointer]:
+          - /url: "#documents"
+          - generic [ref=e9] [cursor=pointer]: 📄
+          - generic [ref=e10] [cursor=pointer]: Документы
+        - link "Сервисы" [ref=e11] [cursor=pointer]:
+          - /url: "#services"
+          - generic [ref=e12] [cursor=pointer]: 🔧
+          - generic [ref=e13] [cursor=pointer]: Сервисы
+        - link "Настройки" [ref=e14] [cursor=pointer]:
+          - /url: "#settings"
+          - generic [ref=e15] [cursor=pointer]: ⚙️
+          - generic [ref=e16] [cursor=pointer]: Настройки
+    - complementary [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Главная" [level=2] [ref=e20]
+        - generic [ref=e21]:
+          - generic [ref=e22]:
+            - button "+ Создать документ" [ref=e23] [cursor=pointer]:
+              - generic [ref=e24] [cursor=pointer]: +
+              - generic [ref=e25] [cursor=pointer]: Создать документ
+            - button "📂 Открыть" [ref=e26] [cursor=pointer]:
+              - generic [ref=e27] [cursor=pointer]: 📂
+              - generic [ref=e28] [cursor=pointer]: Открыть
+          - generic [ref=e29]:
+            - heading "Статистика" [level=3] [ref=e30]
+            - generic [ref=e31]:
+              - generic [ref=e32]:
+                - generic [ref=e33]: "0"
+                - generic [ref=e34]: Документов
+              - generic [ref=e35]:
+                - generic [ref=e36]: "0"
+                - generic [ref=e37]: Шаблонов
+          - generic [ref=e38]:
+            - heading "Последние документы" [level=3] [ref=e39]
+            - paragraph [ref=e42]: Нет документов
+    - main [ref=e43]:
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - heading "Добро пожаловать в XML Editor Desktop" [level=1] [ref=e48]
+          - paragraph [ref=e49]: Создавайте пояснительные записки в формате XML для Министерства строительства РФ
+        - generic [ref=e50]:
+          - button "➕ Создать документ Новая пояснительная записка" [ref=e51] [cursor=pointer]:
+            - generic [ref=e52] [cursor=pointer]: ➕
+            - generic [ref=e53] [cursor=pointer]: Создать документ
+            - generic [ref=e54] [cursor=pointer]: Новая пояснительная записка
+          - button "📂 Открыть документ Продолжить работу" [ref=e55] [cursor=pointer]:
+            - generic [ref=e56] [cursor=pointer]: 📂
+            - generic [ref=e57] [cursor=pointer]: Открыть документ
+            - generic [ref=e58] [cursor=pointer]: Продолжить работу
+          - button "🎨 Из шаблона Использовать шаблон" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60] [cursor=pointer]: 🎨
+            - generic [ref=e61] [cursor=pointer]: Из шаблона
+            - generic [ref=e62] [cursor=pointer]: Использовать шаблон
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - heading "Статистика" [level=3] [ref=e65]
+            - generic [ref=e66]:
+              - generic [ref=e67]:
+                - generic [ref=e68]: "0"
+                - generic [ref=e69]: Документов
+              - generic [ref=e70]:
+                - generic [ref=e71]: "0"
+                - generic [ref=e72]: Шаблонов
+          - generic [ref=e73]:
+            - heading "Последняя активность" [level=3] [ref=e74]
+            - list [ref=e76]:
+              - listitem [ref=e77]: Нет активности
+          - generic [ref=e78]:
+            - heading "Поддерживаемые версии схем" [level=3] [ref=e79]
+            - list [ref=e81]:
+              - listitem [ref=e82]:
+                - strong [ref=e83]: "01.03"
+                - text: — Устаревшая версия (до марта 2025)
+              - listitem [ref=e84]:
+                - strong [ref=e85]: "01.04"
+                - text: — Переходная версия (до марта 2025)
+              - listitem [ref=e86]:
+                - strong [ref=e87]: "01.05"
+                - text: — Актуальная версия (с марта 2025)
+  - contentinfo [ref=e88]:
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]: XML Editor Desktop v2.0.0
+        - generic [ref=e92]: "|"
+        - generic [ref=e93]: Готов к работе
+      - generic [ref=e95]:
+        - generic [ref=e96]: 💾
+        - generic [ref=e97]: Автосохранение включено
+```

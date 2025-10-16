@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "{{schema-id}}",
+  "title": "{{SchemaTitle}}",
+  "description": "JSON Schema для валидации {{entity-description}}",
+  "type": "object",
+  "required": [
+    "{{required-field-1}}",
+    "{{required-field-2}}"
+  ],
+  "properties": {
+    "{{field-1}}": {
+      "type": "string",
+      "title": "{{Field1Title}}",
+      "description": "{{field-1-description}}",
+      "minLength": 1,
+      "maxLength": 255,
+      "examples": [
+        "{{example-value-1}}"
+      ]
+    },
+    "{{field-2}}": {
+      "type": "number",
+      "title": "{{Field2Title}}",
+      "description": "{{field-2-description}}",
+      "minimum": 0,
+      "examples": [
+        100
+      ]
+    },
+    "{{field-3}}": {
+      "type": "boolean",
+      "title": "{{Field3Title}}",
+      "description": "{{field-3-description}}",
+      "default": false
+    },
+    "{{field-4-array}}": {
+      "type": "array",
+      "title": "{{Field4Title}}",
+      "description": "{{field-4-description}}",
+      "items": {
+        "type": "object",
+        "required": ["{{nested-required-field}}"],
+        "properties": {
+          "{{nested-field-1}}": {
+            "type": "string",
+            "title": "{{NestedField1Title}}"
+          },
+          "{{nested-field-2}}": {
+            "type": "string",
+            "title": "{{NestedField2Title}}"
+          }
+        }
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "{{field-5-enum}}": {
+      "type": "string",
+      "title": "{{Field5Title}}",
+      "description": "{{field-5-description}}",
+      "enum": [
+        "{{enum-value-1}}",
+        "{{enum-value-2}}",
+        "{{enum-value-3}}"
+      ],
+      "examples": [
+        "{{enum-value-1}}"
+      ]
+    },
+    "{{field-6-date}}": {
+      "type": "string",
+      "title": "{{Field6Title}}",
+      "description": "{{field-6-description}}",
+      "format": "date",
+      "examples": [
+        "2025-10-01"
+      ]
+    },
+    "{{field-7-email}}": {
+      "type": "string",
+      "title": "{{Field7Title}}",
+      "description": "{{field-7-description}}",
+      "format": "email",
+      "examples": [
+        "example@example.com"
+      ]
+    },
+    "{{field-8-pattern}}": {
+      "type": "string",
+      "title": "{{Field8Title}}",
+      "description": "{{field-8-description}}",
+      "pattern": "^{{regex-pattern}}$",
+      "examples": [
+        "{{pattern-example}}"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "{{DefinitionName}}": {
+      "type": "object",
+      "description": "{{definition-description}}",
+      "properties": {
+        "{{def-field-1}}": {
+          "type": "string"
+        },
+        "{{def-field-2}}": {
+          "type": "number"
+        }
+      },
+      "required": ["{{def-required-field}}"]
+    }
+  }
+}
