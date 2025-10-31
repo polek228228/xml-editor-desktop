@@ -1,0 +1,218 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation "Главная навигация" [ref=e3]:
+    - generic [ref=e4]:
+      - link "Главная" [ref=e5] [cursor=pointer]:
+        - /url: "#home"
+        - generic [ref=e6] [cursor=pointer]: 🏠
+        - generic [ref=e7] [cursor=pointer]: Главная
+      - link "Документы" [ref=e8] [cursor=pointer]:
+        - /url: "#documents"
+        - generic [ref=e9] [cursor=pointer]: 📄
+        - generic [ref=e10] [cursor=pointer]: Документы
+      - link "Сервисы" [ref=e11] [cursor=pointer]:
+        - /url: "#services"
+        - generic [ref=e12] [cursor=pointer]: 🔧
+        - generic [ref=e13] [cursor=pointer]: Сервисы
+      - link "Настройки" [ref=e14] [cursor=pointer]:
+        - /url: "#settings"
+        - generic [ref=e15] [cursor=pointer]: ⚙️
+        - generic [ref=e16] [cursor=pointer]: Настройки
+  - navigation "Activity Bar" [ref=e17]:
+    - button "Главная" [ref=e18] [cursor=pointer]:
+      - generic [ref=e19] [cursor=pointer]: 🏠
+    - button "Документы" [ref=e20] [cursor=pointer]:
+      - generic [ref=e21] [cursor=pointer]: 📄
+    - button "Сервисы" [ref=e22] [cursor=pointer]:
+      - generic [ref=e23] [cursor=pointer]: 🔧
+    - button "Настройки" [ref=e24] [cursor=pointer]:
+      - generic [ref=e25] [cursor=pointer]: ⚙️
+  - complementary [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Сервисы" [level=2] [ref=e29]
+      - generic [ref=e30]:
+        - textbox "Поиск сервисов..." [ref=e32]
+        - generic [ref=e33]:
+          - heading "Категории" [level=3] [ref=e34]
+          - generic [ref=e35]:
+            - button "📄 Документы 12 ▼" [active] [ref=e36] [cursor=pointer]:
+              - generic [ref=e37] [cursor=pointer]: 📄
+              - generic [ref=e38] [cursor=pointer]: Документы
+              - generic [ref=e39] [cursor=pointer]: "12"
+              - generic [ref=e40] [cursor=pointer]: ▼
+            - list:
+              - listitem [ref=e41] [cursor=pointer]:
+                - generic [ref=e42] [cursor=pointer]: ✅
+                - generic [ref=e43] [cursor=pointer]: ПЗ 01.05
+              - listitem [ref=e44] [cursor=pointer]:
+                - generic [ref=e45] [cursor=pointer]: 🔒
+                - generic [ref=e46] [cursor=pointer]: Экспертиза
+                - generic [ref=e47] [cursor=pointer]: Pro
+          - button "🔧 Утилиты 6 ▶" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50] [cursor=pointer]: 🔧
+            - generic [ref=e51] [cursor=pointer]: Утилиты
+            - generic [ref=e52] [cursor=pointer]: "6"
+            - generic [ref=e53] [cursor=pointer]: ▶
+          - button "🔌 Интеграции 5 ▶" [ref=e55] [cursor=pointer]:
+            - generic [ref=e56] [cursor=pointer]: 🔌
+            - generic [ref=e57] [cursor=pointer]: Интеграции
+            - generic [ref=e58] [cursor=pointer]: "5"
+            - generic [ref=e59] [cursor=pointer]: ▶
+        - generic [ref=e60]:
+          - heading "Быстрые фильтры" [level=3] [ref=e61]
+          - generic [ref=e62]:
+            - button "Все" [ref=e63] [cursor=pointer]
+            - button "Установленные" [ref=e64] [cursor=pointer]
+            - button "Доступные" [ref=e65] [cursor=pointer]
+  - main [ref=e66]:
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - heading "Магазин сервисов" [level=1] [ref=e70]
+        - textbox "Поиск сервисов..." [ref=e71]
+        - generic [ref=e72]:
+          - button "Все" [ref=e73] [cursor=pointer]
+          - button "Установленные" [ref=e74] [cursor=pointer]
+          - button "Бесплатные" [ref=e75] [cursor=pointer]
+          - button "Pro & Enterprise" [ref=e76] [cursor=pointer]
+      - generic [ref=e77]:
+        - heading "⭐ Рекомендуемые" [level=2] [ref=e78]
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: users
+            - heading "Реестр экспертов + Dadata" [level=3] [ref=e83]
+            - paragraph [ref=e84]: База данных экспертов с автозаполнением по ИНН через Dadata API
+            - generic [ref=e85]:
+              - generic [ref=e86]: utility
+              - generic [ref=e87]: Utilities
+            - generic [ref=e88]:
+              - generic [ref=e89]:
+                - generic [ref=e90]: Pro
+                - text: 3990 ₽
+              - button "💳 Купить" [ref=e91] [cursor=pointer]
+          - generic [ref=e92]:
+            - generic [ref=e93]: file-text
+            - generic [ref=e94]:
+              - heading "Пояснительная записка v01.05" [level=3] [ref=e95]
+              - generic [ref=e96]: Установлен
+            - paragraph [ref=e97]: Создание XML пояснительных записок по стандарту Минстроя 01.05 (актуальный с 29.03.2025)
+            - generic [ref=e98]:
+              - generic [ref=e99]: Документ
+              - generic [ref=e100]: Documents
+            - generic [ref=e101]:
+              - generic [ref=e102]:
+                - generic [ref=e103]: Pro
+                - text: 5990 ₽
+              - button "Активировать" [ref=e104] [cursor=pointer]
+              - button "Удалить" [ref=e105] [cursor=pointer]
+          - generic [ref=e106]:
+            - generic [ref=e107]: file-check
+            - heading "Заключение экспертизы v01.03" [level=3] [ref=e109]
+            - paragraph [ref=e110]: Создание XML заключений государственной экспертизы по стандарту Минстроя 01.03
+            - generic [ref=e111]:
+              - generic [ref=e112]: Документ
+              - generic [ref=e113]: Documents
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - generic [ref=e116]: Pro
+                - text: 7990 ₽
+              - button "💳 Купить" [ref=e117] [cursor=pointer]
+      - generic [ref=e118]:
+        - heading "📦 Все сервисы" [level=2] [ref=e119]
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - generic [ref=e122]: 📦
+            - heading "Utilities" [level=3] [ref=e123]
+            - generic [ref=e124]: "3"
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - generic [ref=e127]: users
+              - heading "Реестр экспертов + Dadata" [level=3] [ref=e129]
+              - paragraph [ref=e130]: База данных экспертов с автозаполнением по ИНН через Dadata API
+              - generic [ref=e131]:
+                - generic [ref=e132]: utility
+                - generic [ref=e133]: Utilities
+              - generic [ref=e134]:
+                - generic [ref=e135]:
+                  - generic [ref=e136]: Pro
+                  - text: 3990 ₽
+                - button "💳 Купить" [ref=e137] [cursor=pointer]
+            - generic [ref=e138]:
+              - generic [ref=e139]: check-square
+              - heading "Чек-листы самопроверки" [level=3] [ref=e141]
+              - paragraph [ref=e142]: Автоматические чек-листы для проверки заполнения документов перед отправкой на экспертизу
+              - generic [ref=e143]:
+                - generic [ref=e144]: utility
+                - generic [ref=e145]: Utilities
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - generic [ref=e148]: Pro
+                  - text: 1990 ₽
+                - button "💳 Купить" [ref=e149] [cursor=pointer]
+            - generic [ref=e150]:
+              - generic [ref=e151]: refresh-cw
+              - heading "Конвертер 01.03 → 01.05" [level=3] [ref=e153]
+              - paragraph [ref=e154]: Автоматическая конвертация пояснительных записок из старого формата 01.03 в актуальный 01.05
+              - generic [ref=e155]:
+                - generic [ref=e156]: utility
+                - generic [ref=e157]: Utilities
+              - generic [ref=e158]:
+                - generic [ref=e159]:
+                  - generic [ref=e160]: Pro
+                  - text: 2990 ₽
+                - button "💳 Купить" [ref=e161] [cursor=pointer]
+          - generic [ref=e162]:
+            - generic [ref=e163]: 📦
+            - heading "Documents" [level=3] [ref=e164]
+            - generic [ref=e165]: "3"
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - generic [ref=e168]: file-text
+              - generic [ref=e169]:
+                - heading "Пояснительная записка v01.05" [level=3] [ref=e170]
+                - generic [ref=e171]: Установлен
+              - paragraph [ref=e172]: Создание XML пояснительных записок по стандарту Минстроя 01.05 (актуальный с 29.03.2025)
+              - generic [ref=e173]:
+                - generic [ref=e174]: Документ
+                - generic [ref=e175]: Documents
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - generic [ref=e178]: Pro
+                  - text: 5990 ₽
+                - button "Активировать" [ref=e179] [cursor=pointer]
+                - button "Удалить" [ref=e180] [cursor=pointer]
+            - generic [ref=e181]:
+              - generic [ref=e182]: file-check
+              - heading "Заключение экспертизы v01.03" [level=3] [ref=e184]
+              - paragraph [ref=e185]: Создание XML заключений государственной экспертизы по стандарту Минстроя 01.03
+              - generic [ref=e186]:
+                - generic [ref=e187]: Документ
+                - generic [ref=e188]: Documents
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - generic [ref=e191]: Pro
+                  - text: 7990 ₽
+                - button "💳 Купить" [ref=e192] [cursor=pointer]
+            - generic [ref=e193]:
+              - generic [ref=e194]: calculator
+              - heading "Локальная смета" [level=3] [ref=e196]
+              - paragraph [ref=e197]: Создание локальных смет (базисно-индексный метод)
+              - generic [ref=e198]:
+                - generic [ref=e199]: Документ
+                - generic [ref=e200]: Documents
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - generic [ref=e203]: Pro
+                  - text: 10990 ₽
+                - button "💳 Купить" [ref=e204] [cursor=pointer]
+  - contentinfo [ref=e205]:
+    - generic [ref=e206]:
+      - generic [ref=e207]:
+        - generic [ref=e208]: XML Editor Desktop v2.0.0
+        - generic [ref=e209]: "|"
+        - generic [ref=e210]: Магазин сервисов
+      - generic [ref=e212]:
+        - generic [ref=e213]: 💾
+        - generic [ref=e214]: Автосохранение включено
+```

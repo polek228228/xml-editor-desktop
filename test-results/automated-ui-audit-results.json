@@ -1,0 +1,79 @@
+{
+  "passed": [
+    "Body element exists",
+    "Activity Bar exists",
+    "Sidebar exists",
+    "Content area exists",
+    "Activity Bar has 4 nav items",
+    "Activity Bar has active item",
+    "Sidebar has glassmorphism",
+    "Service Store exists",
+    "Service Store has 9 cards",
+    "Service Store has search input",
+    "CSS variable --blue-500 defined",
+    "CSS variable --space-4 defined",
+    "CSS variable --shadow-md defined",
+    "CSS variable --font-base defined",
+    "electronAPI is exposed"
+  ],
+  "warnings": [],
+  "errors": [
+    {
+      "message": "Main app container (.app) not found",
+      "details": ""
+    }
+  ],
+  "info": [
+    {
+      "message": "Found nav items using selector: .activity-bar__item",
+      "data": 4
+    },
+    {
+      "message": "Found service cards using selector: .service-card",
+      "data": 9
+    },
+    {
+      "message": "Total buttons found: 46",
+      "data": null
+    }
+  ],
+  "domStructure": {
+    "hasBody": true,
+    "hasApp": false,
+    "hasActivityBar": true,
+    "hasSidebar": true,
+    "hasContent": true,
+    "activityBarHTML": "<button class=\"activity-bar__item activity-bar__item--active\" data-item-id=\"home\" title=\"Главная\" aria-label=\"Главная\"><span class=\"activity-bar__item-icon\">🏠</span></button><button class=\"activity-bar__item\" data-item-id=\"documents\" title=\"Документы\" aria-label=\"Документы\"><span class=\"activity-bar__item-icon\">📄</span></button><button class=\"activity-bar__item\" data-item-id=\"services\" title=\"Сервисы\" aria-label=\"Сервисы\"><span class=\"activity-bar__item-icon\">🔧</span></button><button class=\"a",
+    "sidebarHTML": "\n            <!-- ========================================== -->\n            <!-- HOME SIDEBAR SECTION                      -->\n            <!-- Quick actions and statistics              -->\n            <!-- ========================================== -->\n            <div class=\"sidebar__section sidebar__section--home\" id=\"sidebar-home\" style=\"display: block;\">\n                <div class=\"sidebar__header\">\n                    <h2 class=\"sidebar__title\">Главная</h2>\n                </div>\n        ",
+    "navItemsCount": 4,
+    "navItemsSelector": "activity-bar__item activity-bar__item--active, activity-bar__item, activity-bar__item, activity-bar__item",
+    "hasServiceStore": true,
+    "serviceCardsCount": 9,
+    "totalButtons": 46,
+    "hasElectronAPI": true,
+    "electronAPIKeys": [
+      "createDocument",
+      "saveDocument",
+      "loadDocument",
+      "listDocuments",
+      "deleteDocument",
+      "autosaveDocument",
+      "getSetting",
+      "setSetting",
+      "showSaveDialog",
+      "showOpenDialog"
+    ]
+  },
+  "measurements": {
+    "activityBarWidth": "48px",
+    "activityBarPosition": "fixed",
+    "sidebarWidth": "220px",
+    "sidebarPosition": "fixed",
+    "sidebarBackdropFilter": "blur(24px)",
+    "--blue-500": "#3b82f6",
+    "--space-4": "16px",
+    "--shadow-md": "0 4px 16px rgba(0, 0, 0, 0.12),\n               0 2px 8px rgba(0, 0, 0, 0.08)",
+    "--font-base": "15px"
+  },
+  "healthScore": 94
+}

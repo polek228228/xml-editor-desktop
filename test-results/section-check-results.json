@@ -1,0 +1,26 @@
+{
+  "home": {
+    "navigated": false,
+    "found": true,
+    "visible": true,
+    "selector": ".home-dashboard"
+  },
+  "documents": {
+    "navigated": false,
+    "found": true,
+    "visible": true,
+    "selector": "[data-section=\"documents\"]"
+  },
+  "services": {
+    "navigated": false,
+    "found": true,
+    "visible": true,
+    "selector": "[data-section=\"services\"]"
+  },
+  "settings": {
+    "navigated": false,
+    "found": true,
+    "visible": true,
+    "selector": "[data-section=\"settings\"]"
+  }
+}

@@ -1,0 +1,431 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation "Главная навигация" [ref=e3]:
+      - generic [ref=e4]:
+        - link "Главная" [ref=e5] [cursor=pointer]:
+          - /url: "#home"
+          - generic [ref=e6] [cursor=pointer]: 🏠
+          - generic [ref=e7] [cursor=pointer]: Главная
+        - link "Документы" [ref=e8] [cursor=pointer]:
+          - /url: "#documents"
+          - generic [ref=e9] [cursor=pointer]: 📄
+          - generic [ref=e10] [cursor=pointer]: Документы
+        - link "Сервисы" [ref=e11] [cursor=pointer]:
+          - /url: "#services"
+          - generic [ref=e12] [cursor=pointer]: 🔧
+          - generic [ref=e13] [cursor=pointer]: Сервисы
+        - link "Настройки" [ref=e14] [cursor=pointer]:
+          - /url: "#settings"
+          - generic [ref=e15] [cursor=pointer]: ⚙️
+          - generic [ref=e16] [cursor=pointer]: Настройки
+    - navigation "Activity Bar" [ref=e17]:
+      - button "Главная" [ref=e18] [cursor=pointer]:
+        - generic [ref=e19] [cursor=pointer]: 🏠
+      - button "Документы" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21] [cursor=pointer]: 📄
+      - button "Сервисы" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23] [cursor=pointer]: 🔧
+      - button "Настройки" [ref=e24] [cursor=pointer]:
+        - generic [ref=e25] [cursor=pointer]: ⚙️
+    - complementary [ref=e26]:
+      - generic [ref=e27]:
+        - heading "Главная" [level=2] [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - button "+ Создать документ" [ref=e32] [cursor=pointer]:
+              - generic [ref=e33] [cursor=pointer]: +
+              - generic [ref=e34] [cursor=pointer]: Создать документ
+            - button "📂 Открыть" [ref=e35] [cursor=pointer]:
+              - generic [ref=e36] [cursor=pointer]: 📂
+              - generic [ref=e37] [cursor=pointer]: Открыть
+          - generic [ref=e38]:
+            - heading "Статистика" [level=3] [ref=e39]
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - generic [ref=e42]: "57"
+                - generic [ref=e43]: Документов
+              - generic [ref=e44]:
+                - generic [ref=e45]: "0"
+                - generic [ref=e46]: Шаблонов
+          - generic [ref=e47]:
+            - heading "Последние документы" [level=3] [ref=e48]
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - generic [ref=e51]: ПОЛНЫЙ ТЕСТ 01.05 - 1761742658063
+                - generic [ref=e52]: "Схема: 01.05 | только что"
+              - generic [ref=e53]:
+                - generic [ref=e54]: ПОЛНЫЙ ТЕСТ 01.04 - 1761742615481
+                - generic [ref=e55]: "Схема: 01.04 | только что"
+              - generic [ref=e56]:
+                - generic [ref=e57]: ПОЛНЫЙ ТЕСТ 01.03 - 1761742573151
+                - generic [ref=e58]: "Схема: 01.03 | 1 мин назад"
+              - generic [ref=e59]:
+                - generic [ref=e60]: Недавний документ 1
+                - generic [ref=e61]: "Схема: 01.05 | 23.10.2025, 12:58"
+              - generic [ref=e62]:
+                - generic [ref=e63]: Недавний документ 1
+                - generic [ref=e64]: "Схема: 01.05 | 17.10.2025, 16:36"
+              - generic [ref=e65]:
+                - generic [ref=e66]: Шаблон для обновления
+                - generic [ref=e67]: "Схема: 01.05 | 17.10.2025, 16:35"
+              - generic [ref=e68]:
+                - generic [ref=e69]: Документ-основа для шаблона
+                - generic [ref=e70]: "Схема: 01.05 | 17.10.2025, 16:35"
+              - generic [ref=e71]:
+                - generic [ref=e72]: Документ для шаблона
+                - generic [ref=e73]: "Схема: 01.05 | 17.10.2025, 16:34"
+              - generic [ref=e74]:
+                - generic [ref=e75]: Документ с ошибками валидации
+                - generic [ref=e76]: "Схема: 01.05 | 17.10.2025, 16:34"
+              - generic [ref=e77]:
+                - generic [ref=e78]: Невалидный документ
+                - generic [ref=e79]: "Схема: 01.05 | 17.10.2025, 16:33"
+    - main [ref=e80]:
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - heading "Добро пожаловать в XML Editor Desktop" [level=1] [ref=e85]
+          - paragraph [ref=e86]: Создавайте пояснительные записки в формате XML для Министерства строительства РФ
+        - generic [ref=e87]:
+          - button "➕ Создать документ Новая пояснительная записка" [ref=e88] [cursor=pointer]:
+            - generic [ref=e89] [cursor=pointer]: ➕
+            - generic [ref=e90] [cursor=pointer]: Создать документ
+            - generic [ref=e91] [cursor=pointer]: Новая пояснительная записка
+          - button "📂 Открыть документ Продолжить работу" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93] [cursor=pointer]: 📂
+            - generic [ref=e94] [cursor=pointer]: Открыть документ
+            - generic [ref=e95] [cursor=pointer]: Продолжить работу
+          - button "🎨 Из шаблона Использовать шаблон" [ref=e96] [cursor=pointer]:
+            - generic [ref=e97] [cursor=pointer]: 🎨
+            - generic [ref=e98] [cursor=pointer]: Из шаблона
+            - generic [ref=e99] [cursor=pointer]: Использовать шаблон
+        - generic [ref=e100]:
+          - generic [ref=e101]:
+            - heading "Статистика" [level=3] [ref=e102]
+            - generic [ref=e103]:
+              - generic [ref=e104]:
+                - generic [ref=e105]: "57"
+                - generic [ref=e106]: Документов
+              - generic [ref=e107]:
+                - generic [ref=e108]: "0"
+                - generic [ref=e109]: Шаблонов
+          - generic [ref=e110]:
+            - heading "Последняя активность" [level=3] [ref=e111]
+            - list [ref=e113]:
+              - listitem [ref=e114]: Нет активности
+          - generic [ref=e115]:
+            - heading "Поддерживаемые версии схем" [level=3] [ref=e116]
+            - list [ref=e118]:
+              - listitem [ref=e119]:
+                - strong [ref=e120]: "01.03"
+                - text: — Устаревшая версия (до марта 2025)
+              - listitem [ref=e121]:
+                - strong [ref=e122]: "01.04"
+                - text: — Переходная версия (до марта 2025)
+              - listitem [ref=e123]:
+                - strong [ref=e124]: "01.05"
+                - text: — Актуальная версия (с марта 2025)
+    - contentinfo [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]: XML Editor Desktop v2.0.0
+          - generic [ref=e129]: "|"
+          - generic [ref=e130]: Главная страница
+        - generic [ref=e132]:
+          - generic [ref=e133]: 💾
+          - generic [ref=e134]: Автосохранение включено
+  - generic [ref=e136]:
+    - generic [ref=e137]:
+      - heading "Выберите документ" [level=2] [ref=e138]
+      - button "Закрыть" [ref=e139] [cursor=pointer]: ×
+    - textbox "Поиск по названию..." [active] [ref=e141]
+    - generic [ref=e142]:
+      - generic [ref=e143] [cursor=pointer]:
+        - generic [ref=e144] [cursor=pointer]: ПОЛНЫЙ ТЕСТ 01.05 - 1761742658063
+        - generic [ref=e145] [cursor=pointer]:
+          - generic [ref=e146] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e147] [cursor=pointer]: только что
+      - generic [ref=e148] [cursor=pointer]:
+        - generic [ref=e149] [cursor=pointer]: ПОЛНЫЙ ТЕСТ 01.04 - 1761742615481
+        - generic [ref=e150] [cursor=pointer]:
+          - generic [ref=e151] [cursor=pointer]: "Схема: 01.04"
+          - generic [ref=e152] [cursor=pointer]: только что
+      - generic [ref=e153] [cursor=pointer]:
+        - generic [ref=e154] [cursor=pointer]: ПОЛНЫЙ ТЕСТ 01.03 - 1761742573151
+        - generic [ref=e155] [cursor=pointer]:
+          - generic [ref=e156] [cursor=pointer]: "Схема: 01.03"
+          - generic [ref=e157] [cursor=pointer]: 1 мин. назад
+      - generic [ref=e158] [cursor=pointer]:
+        - generic [ref=e159] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e160] [cursor=pointer]:
+          - generic [ref=e161] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e162] [cursor=pointer]: 6 дн. назад
+      - generic [ref=e163] [cursor=pointer]:
+        - generic [ref=e164] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e165] [cursor=pointer]:
+          - generic [ref=e166] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e167] [cursor=pointer]: 17.10.2025
+      - generic [ref=e168] [cursor=pointer]:
+        - generic [ref=e169] [cursor=pointer]: Шаблон для обновления
+        - generic [ref=e170] [cursor=pointer]:
+          - generic [ref=e171] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e172] [cursor=pointer]: 17.10.2025
+      - generic [ref=e173] [cursor=pointer]:
+        - generic [ref=e174] [cursor=pointer]: Документ-основа для шаблона
+        - generic [ref=e175] [cursor=pointer]:
+          - generic [ref=e176] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e177] [cursor=pointer]: 17.10.2025
+      - generic [ref=e178] [cursor=pointer]:
+        - generic [ref=e179] [cursor=pointer]: Документ для шаблона
+        - generic [ref=e180] [cursor=pointer]:
+          - generic [ref=e181] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e182] [cursor=pointer]: 17.10.2025
+      - generic [ref=e183] [cursor=pointer]:
+        - generic [ref=e184] [cursor=pointer]: Документ с ошибками валидации
+        - generic [ref=e185] [cursor=pointer]:
+          - generic [ref=e186] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e187] [cursor=pointer]: 17.10.2025
+      - generic [ref=e188] [cursor=pointer]:
+        - generic [ref=e189] [cursor=pointer]: Невалидный документ
+        - generic [ref=e190] [cursor=pointer]:
+          - generic [ref=e191] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e192] [cursor=pointer]: 17.10.2025
+      - generic [ref=e193] [cursor=pointer]:
+        - generic [ref=e194] [cursor=pointer]: Валидный документ для проверки
+        - generic [ref=e195] [cursor=pointer]:
+          - generic [ref=e196] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e197] [cursor=pointer]: 17.10.2025
+      - generic [ref=e198] [cursor=pointer]:
+        - generic [ref=e199] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e200] [cursor=pointer]:
+          - generic [ref=e201] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e202] [cursor=pointer]: 17.10.2025
+      - generic [ref=e203] [cursor=pointer]:
+        - generic [ref=e204] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e205] [cursor=pointer]:
+          - generic [ref=e206] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e207] [cursor=pointer]: 17.10.2025
+      - generic [ref=e208] [cursor=pointer]:
+        - generic [ref=e209] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e210] [cursor=pointer]:
+          - generic [ref=e211] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e212] [cursor=pointer]: 17.10.2025
+      - generic [ref=e213] [cursor=pointer]:
+        - generic [ref=e214] [cursor=pointer]: Шаблон для обновления
+        - generic [ref=e215] [cursor=pointer]:
+          - generic [ref=e216] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e217] [cursor=pointer]: 17.10.2025
+      - generic [ref=e218] [cursor=pointer]:
+        - generic [ref=e219] [cursor=pointer]: Документ-основа для шаблона
+        - generic [ref=e220] [cursor=pointer]:
+          - generic [ref=e221] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e222] [cursor=pointer]: 17.10.2025
+      - generic [ref=e223] [cursor=pointer]:
+        - generic [ref=e224] [cursor=pointer]: Документ для шаблона
+        - generic [ref=e225] [cursor=pointer]:
+          - generic [ref=e226] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e227] [cursor=pointer]: 17.10.2025
+      - generic [ref=e228] [cursor=pointer]:
+        - generic [ref=e229] [cursor=pointer]: Документ с ошибками валидации
+        - generic [ref=e230] [cursor=pointer]:
+          - generic [ref=e231] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e232] [cursor=pointer]: 17.10.2025
+      - generic [ref=e233] [cursor=pointer]:
+        - generic [ref=e234] [cursor=pointer]: Невалидный документ
+        - generic [ref=e235] [cursor=pointer]:
+          - generic [ref=e236] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e237] [cursor=pointer]: 17.10.2025
+      - generic [ref=e238] [cursor=pointer]:
+        - generic [ref=e239] [cursor=pointer]: Валидный документ для проверки
+        - generic [ref=e240] [cursor=pointer]:
+          - generic [ref=e241] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e242] [cursor=pointer]: 17.10.2025
+      - generic [ref=e243] [cursor=pointer]:
+        - generic [ref=e244] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e245] [cursor=pointer]:
+          - generic [ref=e246] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e247] [cursor=pointer]: 17.10.2025
+      - generic [ref=e248] [cursor=pointer]:
+        - generic [ref=e249] [cursor=pointer]: Шаблон для обновления
+        - generic [ref=e250] [cursor=pointer]:
+          - generic [ref=e251] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e252] [cursor=pointer]: 17.10.2025
+      - generic [ref=e253] [cursor=pointer]:
+        - generic [ref=e254] [cursor=pointer]: Документ-основа для шаблона
+        - generic [ref=e255] [cursor=pointer]:
+          - generic [ref=e256] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e257] [cursor=pointer]: 17.10.2025
+      - generic [ref=e258] [cursor=pointer]:
+        - generic [ref=e259] [cursor=pointer]: Документ для шаблона
+        - generic [ref=e260] [cursor=pointer]:
+          - generic [ref=e261] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e262] [cursor=pointer]: 17.10.2025
+      - generic [ref=e263] [cursor=pointer]:
+        - generic [ref=e264] [cursor=pointer]: Документ с ошибками валидации
+        - generic [ref=e265] [cursor=pointer]:
+          - generic [ref=e266] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e267] [cursor=pointer]: 17.10.2025
+      - generic [ref=e268] [cursor=pointer]:
+        - generic [ref=e269] [cursor=pointer]: Невалидный документ
+        - generic [ref=e270] [cursor=pointer]:
+          - generic [ref=e271] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e272] [cursor=pointer]: 17.10.2025
+      - generic [ref=e273] [cursor=pointer]:
+        - generic [ref=e274] [cursor=pointer]: Валидный документ для проверки
+        - generic [ref=e275] [cursor=pointer]:
+          - generic [ref=e276] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e277] [cursor=pointer]: 17.10.2025
+      - generic [ref=e278] [cursor=pointer]:
+        - generic [ref=e279] [cursor=pointer]: Стресс-тест документ №5
+        - generic [ref=e280] [cursor=pointer]:
+          - generic [ref=e281] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e282] [cursor=pointer]: 17.10.2025
+      - generic [ref=e283] [cursor=pointer]:
+        - generic [ref=e284] [cursor=pointer]: Стресс-тест документ №4
+        - generic [ref=e285] [cursor=pointer]:
+          - generic [ref=e286] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e287] [cursor=pointer]: 17.10.2025
+      - generic [ref=e288] [cursor=pointer]:
+        - generic [ref=e289] [cursor=pointer]: Стресс-тест документ №3
+        - generic [ref=e290] [cursor=pointer]:
+          - generic [ref=e291] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e292] [cursor=pointer]: 17.10.2025
+      - generic [ref=e293] [cursor=pointer]:
+        - generic [ref=e294] [cursor=pointer]: Стресс-тест документ №2
+        - generic [ref=e295] [cursor=pointer]:
+          - generic [ref=e296] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e297] [cursor=pointer]: 17.10.2025
+      - generic [ref=e298] [cursor=pointer]:
+        - generic [ref=e299] [cursor=pointer]: Стресс-тест документ №1
+        - generic [ref=e300] [cursor=pointer]:
+          - generic [ref=e301] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e302] [cursor=pointer]: 17.10.2025
+      - generic [ref=e303] [cursor=pointer]:
+        - generic [ref=e304] [cursor=pointer]: Полный E2E тест - Пояснительная записка
+        - generic [ref=e305] [cursor=pointer]:
+          - generic [ref=e306] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e307] [cursor=pointer]: 17.10.2025
+      - generic [ref=e308] [cursor=pointer]:
+        - generic [ref=e309] [cursor=pointer]: Недавний документ 1
+        - generic [ref=e310] [cursor=pointer]:
+          - generic [ref=e311] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e312] [cursor=pointer]: 17.10.2025
+      - generic [ref=e313] [cursor=pointer]:
+        - generic [ref=e314] [cursor=pointer]: Шаблон для обновления
+        - generic [ref=e315] [cursor=pointer]:
+          - generic [ref=e316] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e317] [cursor=pointer]: 17.10.2025
+      - generic [ref=e318] [cursor=pointer]:
+        - generic [ref=e319] [cursor=pointer]: Документ-основа для шаблона
+        - generic [ref=e320] [cursor=pointer]:
+          - generic [ref=e321] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e322] [cursor=pointer]: 17.10.2025
+      - generic [ref=e323] [cursor=pointer]:
+        - generic [ref=e324] [cursor=pointer]: Документ для шаблона
+        - generic [ref=e325] [cursor=pointer]:
+          - generic [ref=e326] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e327] [cursor=pointer]: 17.10.2025
+      - generic [ref=e328] [cursor=pointer]:
+        - generic [ref=e329] [cursor=pointer]: Документ с ошибками валидации
+        - generic [ref=e330] [cursor=pointer]:
+          - generic [ref=e331] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e332] [cursor=pointer]: 17.10.2025
+      - generic [ref=e333] [cursor=pointer]:
+        - generic [ref=e334] [cursor=pointer]: Невалидный документ
+        - generic [ref=e335] [cursor=pointer]:
+          - generic [ref=e336] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e337] [cursor=pointer]: 17.10.2025
+      - generic [ref=e338] [cursor=pointer]:
+        - generic [ref=e339] [cursor=pointer]: Валидный документ для проверки
+        - generic [ref=e340] [cursor=pointer]:
+          - generic [ref=e341] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e342] [cursor=pointer]: 17.10.2025
+      - generic [ref=e343] [cursor=pointer]:
+        - generic [ref=e344] [cursor=pointer]: Тест отмены экспорта
+        - generic [ref=e345] [cursor=pointer]:
+          - generic [ref=e346] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e347] [cursor=pointer]: 17.10.2025
+      - generic [ref=e348] [cursor=pointer]:
+        - generic [ref=e349] [cursor=pointer]: Пояснительная записка с кириллицей
+        - generic [ref=e350] [cursor=pointer]:
+          - generic [ref=e351] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e352] [cursor=pointer]: 17.10.2025
+      - generic [ref=e353] [cursor=pointer]:
+        - generic [ref=e354] [cursor=pointer]: Данные поля 2
+        - generic [ref=e355] [cursor=pointer]:
+          - generic [ref=e356] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e357] [cursor=pointer]: 17.10.2025
+      - generic [ref=e358] [cursor=pointer]:
+        - generic [ref=e359] [cursor=pointer]: Сохранение XML контента
+        - generic [ref=e360] [cursor=pointer]:
+          - generic [ref=e361] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e362] [cursor=pointer]: 17.10.2025
+      - generic [ref=e363] [cursor=pointer]:
+        - generic [ref=e364] [cursor=pointer]: Документ схемы 01.05
+        - generic [ref=e365] [cursor=pointer]:
+          - generic [ref=e366] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e367] [cursor=pointer]: 17.10.2025
+      - generic [ref=e368] [cursor=pointer]:
+        - generic [ref=e369] [cursor=pointer]: Документ схемы 01.04
+        - generic [ref=e370] [cursor=pointer]:
+          - generic [ref=e371] [cursor=pointer]: "Схема: 01.04"
+          - generic [ref=e372] [cursor=pointer]: 17.10.2025
+      - generic [ref=e373] [cursor=pointer]:
+        - generic [ref=e374] [cursor=pointer]: Документ схемы 01.03
+        - generic [ref=e375] [cursor=pointer]:
+          - generic [ref=e376] [cursor=pointer]: "Схема: 01.03"
+          - generic [ref=e377] [cursor=pointer]: 17.10.2025
+      - generic [ref=e378] [cursor=pointer]:
+        - generic [ref=e379] [cursor=pointer]: XML Preview Test
+        - generic [ref=e380] [cursor=pointer]:
+          - generic [ref=e381] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e382] [cursor=pointer]: 17.10.2025
+      - generic [ref=e383] [cursor=pointer]:
+        - generic [ref=e384] [cursor=pointer]: Валидация перед экспортом
+        - generic [ref=e385] [cursor=pointer]:
+          - generic [ref=e386] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e387] [cursor=pointer]: 17.10.2025
+      - generic [ref=e388] [cursor=pointer]:
+        - generic [ref=e389] [cursor=pointer]: Экспорт XML файла
+        - generic [ref=e390] [cursor=pointer]:
+          - generic [ref=e391] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e392] [cursor=pointer]: 17.10.2025
+      - generic [ref=e393] [cursor=pointer]:
+        - generic [ref=e394] [cursor=pointer]: Документ для экспорта
+        - generic [ref=e395] [cursor=pointer]:
+          - generic [ref=e396] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e397] [cursor=pointer]: 17.10.2025
+      - generic [ref=e398] [cursor=pointer]:
+        - generic [ref=e399] [cursor=pointer]: Проект для генерации XML
+        - generic [ref=e400] [cursor=pointer]:
+          - generic [ref=e401] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e402] [cursor=pointer]: 17.10.2025
+      - generic [ref=e403] [cursor=pointer]:
+        - generic [ref=e404] [cursor=pointer]: Без названия
+        - generic [ref=e405] [cursor=pointer]:
+          - generic [ref=e406] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e407] [cursor=pointer]: 17.10.2025
+      - generic [ref=e408] [cursor=pointer]:
+        - generic [ref=e409] [cursor=pointer]: Второй документ
+        - generic [ref=e410] [cursor=pointer]:
+          - generic [ref=e411] [cursor=pointer]: "Схема: 01.04"
+          - generic [ref=e412] [cursor=pointer]: 17.10.2025
+      - generic [ref=e413] [cursor=pointer]:
+        - generic [ref=e414] [cursor=pointer]: Первый документ
+        - generic [ref=e415] [cursor=pointer]:
+          - generic [ref=e416] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e417] [cursor=pointer]: 17.10.2025
+      - generic [ref=e418] [cursor=pointer]:
+        - generic [ref=e419] [cursor=pointer]: Документ для загрузки
+        - generic [ref=e420] [cursor=pointer]:
+          - generic [ref=e421] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e422] [cursor=pointer]: 17.10.2025
+      - generic [ref=e423] [cursor=pointer]:
+        - generic [ref=e424] [cursor=pointer]: Документ для сохранения
+        - generic [ref=e425] [cursor=pointer]:
+          - generic [ref=e426] [cursor=pointer]: "Схема: 01.05"
+          - generic [ref=e427] [cursor=pointer]: 17.10.2025
+    - button "Отмена" [ref=e429] [cursor=pointer]
+```

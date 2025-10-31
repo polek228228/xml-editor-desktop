@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "pz-01.05-schema.json",
+  "title": "Пояснительная записка v01.05",
+  "description": "JSON Schema для создания XML пояснительных записок по стандарту Минстроя РФ версии 01.05 (актуальный с 29.03.2025)",
+  "type": "object",
+  "required": [
+    "documentInfo",
+    "basicInfo"
+  ],
+  "properties": {
+    "documentInfo": {
+      "type": "object",
+      "title": "Информация о документе",
+      "required": ["docType", "docVersion", "docDate"],
+      "properties": {
+        "docType": {
+          "type": "string",
+          "title": "Тип документа",
+          "const": "PZ",
+          "description": "Тип документа - Пояснительная записка"
+        },
+        "docVersion": {
+          "type": "string",
+          "title": "Версия схемы",
+          "const": "01.05",
+          "description": "Версия XML-схемы Минстроя"
+        },
+        "docDate": {
+          "type": "string",
+          "title": "Дата создания документа",
+          "format": "date",
+          "description": "Дата создания документа в формате YYYY-MM-DD"
+        },
+        "docNumber": {
+          "type": "string",
+          "title": "Номер документа",
+          "description": "Регистрационный номер документа"
+        }
+      }
+    },
+    "basicInfo": {
+      "type": "object",
+      "title": "Раздел 1. Основная информация",
+      "description": "Общие сведения о проекте",
+      "required": ["projectName", "organizationName"],
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "title": "Наименование проекта",
+          "minLength": 1,
+          "maxLength": 1000,
+          "description": "Полное наименование объекта капитального строительства"
+        },
+        "projectAddress": {
+          "type": "object",
+          "title": "Адрес объекта",
+          "properties": {
+            "region": {
+              "type": "string",
+              "title": "Субъект РФ",
+              "description": "Наименование субъекта Российской Федерации"
+            },
+            "city": {
+              "type": "string",
+              "title": "Населенный пункт",
+              "description": "Город, поселок, село"
+            },
+            "street": {
+              "type": "string",
+              "title": "Улица"
+            },
+            "building": {
+              "type": "string",
+              "title": "Номер дома/строения"
+            },
+            "cadastralNumber": {
+              "type": "string",
+              "title": "Кадастровый номер",
+              "pattern": "^\\d{2}:\\d{2}:\\d{6,7}:\\d+$",
+              "description": "Кадастровый номер земельного участка"
+            }
+          }
+        },
+        "organizationName": {
+          "type": "string",
+          "title": "Заказчик",
+          "description": "Наименование организации-заказчика"
+        },
+        "organizationINN": {
+          "type": "string",
+          "title": "ИНН заказчика",
+          "pattern": "^(\\d{10}|\\d{12})$",
+          "description": "ИНН организации (10 или 12 цифр)"
+        },
+        "organizationOGRN": {
+          "type": "string",
+          "title": "ОГРН заказчика",
+          "pattern": "^\\d{13}$",
+          "description": "ОГРН организации (13 цифр)"
+        },
+        "projectStage": {
+          "type": "string",
+          "title": "Стадия проектирования",
+          "enum": ["П", "Р", "ПД"],
+          "description": "П - Проект, Р - Рабочая документация, ПД - Проектная документация"
+        },
+        "projectType": {
+          "type": "string",
+          "title": "Тип объекта",
+          "enum": [
+            "Жилое здание",
+            "Общественное здание",
+            "Производственное здание",
+            "Сооружение",
+            "Линейный объект",
+            "Иное"
+          ],
+          "description": "Функциональное назначение объекта"
+        }
+      }
+    },
+    "technicalData": {
+      "type": "object",
+      "title": "Раздел 2. Технико-экономические показатели",
+      "description": "Основные технико-экономические показатели проекта",
+      "properties": {
+        "totalArea": {
+          "type": "number",
+          "title": "Общая площадь, м²",
+          "minimum": 0,
+          "description": "Общая площадь здания/сооружения"
+        },
+        "buildingVolume": {
+          "type": "number",
+          "title": "Строительный объем, м³",
+          "minimum": 0,
+          "description": "Строительный объем здания"
+        },
+        "floors": {
+          "type": "integer",
+          "title": "Количество этажей",
+          "minimum": 1,
+          "maximum": 200,
+          "description": "Этажность здания (надземные этажи)"
+        },
+        "undergroundFloors": {
+          "type": "integer",
+          "title": "Количество подземных этажей",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "Количество подземных этажей"
+        },
+        "height": {
+          "type": "number",
+          "title": "Высота здания, м",
+          "minimum": 0,
+          "description": "Высота здания от уровня земли до верха парапета"
+        },
+        "capacity": {
+          "type": "integer",
+          "title": "Вместимость/количество мест",
+          "minimum": 0,
+          "description": "Количество посетителей, учащихся, рабочих мест и т.д."
+        },
+        "estimatedCost": {
+          "type": "number",
+          "title": "Сметная стоимость, руб.",
+          "minimum": 0,
+          "description": "Сметная стоимость строительства"
+        }
+      }
+    },
+    "engineering": {
+      "type": "object",
+      "title": "Раздел 3. Инженерные системы",
+      "description": "Описание инженерных систем и сетей",
+      "properties": {
+        "waterSupply": {
+          "type": "object",
+          "title": "Водоснабжение",
+          "properties": {
+            "source": {
+              "type": "string",
+              "title": "Источник водоснабжения",
+              "description": "Централизованное, автономное, и т.д."
+            },
+            "consumption": {
+              "type": "number",
+              "title": "Расход воды, м³/сут",
+              "minimum": 0
+            }
+          }
+        },
+        "sewerage": {
+          "type": "object",
+          "title": "Канализация",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Тип канализации",
+              "description": "Централизованная, автономная, и т.д."
+            },
+            "volume": {
+              "type": "number",
+              "title": "Объем стоков, м³/сут",
+              "minimum": 0
+            }
+          }
+        },
+        "heating": {
+          "type": "object",
+          "title": "Отопление",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Тип системы отопления",
+              "description": "Централизованное, автономное, и т.д."
+            },
+            "heatLoad": {
+              "type": "number",
+              "title": "Тепловая нагрузка, Гкал/ч",
+              "minimum": 0
+            }
+          }
+        },
+        "ventilation": {
+          "type": "object",
+          "title": "Вентиляция",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Тип вентиляции",
+              "enum": ["Естественная", "Механическая", "Смешанная"]
+            },
+            "airflow": {
+              "type": "number",
+              "title": "Воздухообмен, м³/ч",
+              "minimum": 0
+            }
+          }
+        },
+        "electricity": {
+          "type": "object",
+          "title": "Электроснабжение",
+          "properties": {
+            "power": {
+              "type": "number",
+              "title": "Установленная мощность, кВт",
+              "minimum": 0
+            },
+            "voltage": {
+              "type": "string",
+              "title": "Напряжение сети",
+              "description": "220В, 380В, и т.д."
+            }
+          }
+        }
+      }
+    },
+    "materials": {
+      "type": "object",
+      "title": "Раздел 4. Строительные материалы",
+      "description": "Основные строительные материалы и конструкции",
+      "properties": {
+        "foundation": {
+          "type": "string",
+          "title": "Тип фундамента",
+          "description": "Свайный, ленточный, плитный, и т.д."
+        },
+        "walls": {
+          "type": "string",
+          "title": "Материал стен",
+          "description": "Кирпич, бетон, каркас, и т.д."
+        },
+        "roof": {
+          "type": "string",
+          "title": "Тип кровли",
+          "description": "Плоская, скатная, и т.д."
+        },
+        "roofMaterial": {
+          "type": "string",
+          "title": "Материал кровли",
+          "description": "Металлочерепица, профнастил, и т.д."
+        },
+        "facade": {
+          "type": "string",
+          "title": "Отделка фасада",
+          "description": "Штукатурка, облицовка, и т.д."
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Примечания",
+      "description": "Дополнительные сведения и примечания"
+    }
+  },
+  "xmlMapping": {
+    "description": "Правила маппинга JSON → XML для экспорта",
+    "rootElement": "ExplanatoryNote",
+    "attributes": {
+      "version": "documentInfo.docVersion",
+      "xmlns": "http://minstroyrf.gov.ru/pz/v01.05"
+    },
+    "elements": {
+      "DocumentInfo": {
+        "DocType": "documentInfo.docType",
+        "DocVersion": "documentInfo.docVersion",
+        "DocDate": "documentInfo.docDate",
+        "DocNumber": "documentInfo.docNumber"
+      },
+      "BasicInfo": {
+        "ProjectName": "basicInfo.projectName",
+        "ProjectAddress": {
+          "Region": "basicInfo.projectAddress.region",
+          "City": "basicInfo.projectAddress.city",
+          "Street": "basicInfo.projectAddress.street",
+          "Building": "basicInfo.projectAddress.building",
+          "CadastralNumber": "basicInfo.projectAddress.cadastralNumber"
+        },
+        "Customer": {
+          "Name": "basicInfo.organizationName",
+          "INN": "basicInfo.organizationINN",
+          "OGRN": "basicInfo.organizationOGRN"
+        },
+        "ProjectStage": "basicInfo.projectStage",
+        "ProjectType": "basicInfo.projectType"
+      },
+      "TechnicalData": {
+        "TotalArea": "technicalData.totalArea",
+        "BuildingVolume": "technicalData.buildingVolume",
+        "Floors": "technicalData.floors",
+        "UndergroundFloors": "technicalData.undergroundFloors",
+        "Height": "technicalData.height",
+        "Capacity": "technicalData.capacity",
+        "EstimatedCost": "technicalData.estimatedCost"
+      },
+      "Engineering": {
+        "WaterSupply": {
+          "Source": "engineering.waterSupply.source",
+          "Consumption": "engineering.waterSupply.consumption"
+        },
+        "Sewerage": {
+          "Type": "engineering.sewerage.type",
+          "Volume": "engineering.sewerage.volume"
+        },
+        "Heating": {
+          "Type": "engineering.heating.type",
+          "HeatLoad": "engineering.heating.heatLoad"
+        },
+        "Ventilation": {
+          "Type": "engineering.ventilation.type",
+          "Airflow": "engineering.ventilation.airflow"
+        },
+        "Electricity": {
+          "Power": "engineering.electricity.power",
+          "Voltage": "engineering.electricity.voltage"
+        }
+      },
+      "Materials": {
+        "Foundation": "materials.foundation",
+        "Walls": "materials.walls",
+        "Roof": "materials.roof",
+        "RoofMaterial": "materials.roofMaterial",
+        "Facade": "materials.facade"
+      },
+      "Notes": "notes"
+    }
+  }
+}

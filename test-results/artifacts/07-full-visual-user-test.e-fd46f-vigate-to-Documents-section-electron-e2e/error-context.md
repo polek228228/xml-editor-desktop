@@ -1,0 +1,100 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation "Главная навигация" [ref=e3]:
+    - generic [ref=e4]:
+      - link "Главная" [ref=e5] [cursor=pointer]:
+        - /url: "#home"
+        - generic [ref=e6] [cursor=pointer]: 🏠
+        - generic [ref=e7] [cursor=pointer]: Главная
+      - link "Документы" [ref=e8] [cursor=pointer]:
+        - /url: "#documents"
+        - generic [ref=e9] [cursor=pointer]: 📄
+        - generic [ref=e10] [cursor=pointer]: Документы
+      - link "Сервисы" [ref=e11] [cursor=pointer]:
+        - /url: "#services"
+        - generic [ref=e12] [cursor=pointer]: 🔧
+        - generic [ref=e13] [cursor=pointer]: Сервисы
+      - link "Настройки" [ref=e14] [cursor=pointer]:
+        - /url: "#settings"
+        - generic [ref=e15] [cursor=pointer]: ⚙️
+        - generic [ref=e16] [cursor=pointer]: Настройки
+  - navigation "Activity Bar" [ref=e17]:
+    - button "Главная" [ref=e18] [cursor=pointer]:
+      - generic [ref=e19] [cursor=pointer]: 🏠
+    - button "Документы" [ref=e20] [cursor=pointer]:
+      - generic [ref=e21] [cursor=pointer]: 📄
+    - button "Сервисы" [ref=e22] [cursor=pointer]:
+      - generic [ref=e23] [cursor=pointer]: 🔧
+    - button "Настройки" [ref=e24] [cursor=pointer]:
+      - generic [ref=e25] [cursor=pointer]: ⚙️
+  - complementary [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Документы" [level=2] [ref=e29]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - button "+ Создать документ" [ref=e32] [cursor=pointer]:
+            - generic [ref=e33] [cursor=pointer]: +
+            - generic [ref=e34] [cursor=pointer]: Создать документ
+          - button "📂 Открыть" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36] [cursor=pointer]: 📂
+            - generic [ref=e37] [cursor=pointer]: Открыть
+        - textbox "Поиск документов..." [ref=e39]
+        - generic [ref=e40]:
+          - heading "Фильтры" [level=3] [ref=e41]
+          - generic [ref=e42]:
+            - button "Все документы" [ref=e43] [cursor=pointer]
+            - button "ПЗ 01.05" [ref=e44] [cursor=pointer]
+            - button "ПЗ 01.04" [ref=e45] [cursor=pointer]
+            - button "Черновики" [ref=e46] [cursor=pointer]
+        - generic [ref=e47]:
+          - heading "Недавние документы" [level=3] [ref=e48]
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e51]: Недавний документ 1
+              - generic [ref=e52]: "Схема: 01.05 | 17 мин назад"
+            - generic [ref=e53]:
+              - generic [ref=e54]: Недавний документ 1
+              - generic [ref=e55]: "Схема: 01.05 | 17.10.2025, 16:36"
+            - generic [ref=e56]:
+              - generic [ref=e57]: Шаблон для обновления
+              - generic [ref=e58]: "Схема: 01.05 | 17.10.2025, 16:35"
+            - generic [ref=e59]:
+              - generic [ref=e60]: Документ-основа для шаблона
+              - generic [ref=e61]: "Схема: 01.05 | 17.10.2025, 16:35"
+            - generic [ref=e62]:
+              - generic [ref=e63]: Документ для шаблона
+              - generic [ref=e64]: "Схема: 01.05 | 17.10.2025, 16:34"
+            - generic [ref=e65]:
+              - generic [ref=e66]: Документ с ошибками валидации
+              - generic [ref=e67]: "Схема: 01.05 | 17.10.2025, 16:34"
+            - generic [ref=e68]:
+              - generic [ref=e69]: Невалидный документ
+              - generic [ref=e70]: "Схема: 01.05 | 17.10.2025, 16:33"
+            - generic [ref=e71]:
+              - generic [ref=e72]: Валидный документ для проверки
+              - generic [ref=e73]: "Схема: 01.05 | 17.10.2025, 16:33"
+            - generic [ref=e74]:
+              - generic [ref=e75]: Недавний документ 1
+              - generic [ref=e76]: "Схема: 01.05 | 17.10.2025, 16:29"
+            - generic [ref=e77]:
+              - generic [ref=e78]: Недавний документ 1
+              - generic [ref=e79]: "Схема: 01.05 | 17.10.2025, 16:24"
+        - generic [ref=e80]:
+          - heading "Быстрый доступ" [level=3] [ref=e81]
+          - button "📋 Создать из шаблона" [ref=e82] [cursor=pointer]:
+            - generic [ref=e83] [cursor=pointer]: 📋
+            - generic [ref=e84] [cursor=pointer]: Создать из шаблона
+  - main [ref=e85]:
+    - paragraph [ref=e91]: Выберите версию схемы для начала работы
+  - contentinfo [ref=e92]:
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - generic [ref=e95]: XML Editor Desktop v2.0.0
+        - generic [ref=e96]: "|"
+        - generic [ref=e97]: Готов к работе
+      - generic [ref=e99]:
+        - generic [ref=e100]: 💾
+        - generic [ref=e101]: Автосохранение включено
+```
