@@ -1,0 +1,38 @@
+stages:
+  - build
+
+variables:
+  NODE_ENV: production
+  ELECTRON_BUILDER_CACHE: "$CI_PROJECT_DIR/.cache"
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - node_modules/
+    - .cache/
+
+# Сборка Windows установщика на GitLab shared runners
+build:windows:
+  stage: build
+  # Используем GitLab.com shared Windows runner
+  tags:
+    - saas-windows-medium-amd64
+  image: mcr.microsoft.com/windows/servercore:ltsc2019
+  before_script:
+    - choco install nodejs-lts -y --force
+    - choco install git -y --force
+    - choco install nsis -y --force
+    - refreshenv
+    - npm install
+  script:
+    - npm run build:win
+  artifacts:
+    name: "windows-installer-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - dist/*.exe
+    expire_in: 30 days
+  only:
+    - main
+    - tags
+    - merge_requests
