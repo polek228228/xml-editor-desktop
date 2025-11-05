@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://minstroyrf.gov.ru/schemas/explanatorynote/01.05"
+           targetNamespace="http://minstroyrf.gov.ru/schemas/explanatorynote/01.05"
+           elementFormDefault="qualified"
+           xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+           vc:minVersion="1.1">
 
     <!--
 		Изменения в соответствии с Постановлением правительства от 22.05.2022 №963 (относительно версии 01.01):

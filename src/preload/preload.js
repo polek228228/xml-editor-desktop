@@ -49,6 +49,19 @@ contextBridge.exposeInMainWorld('electronAPI', {
   listDocuments: () => ipcRenderer.invoke('document:list'),
 
   /**
+   * Get all documents (alias for listDocuments)
+   * @returns {Promise<Object>} - Result with success flag and documents array
+   */
+  getDocuments: () => ipcRenderer.invoke('document:list'),
+
+  /**
+   * Get document by ID (alias for loadDocument)
+   * @param {number} documentId - Document ID
+   * @returns {Promise<Object>} - Result with success flag and document data
+   */
+  getDocument: (documentId) => ipcRenderer.invoke('document:load', documentId),
+
+  /**
    * Delete document
    * @param {number} documentId - Document ID
    * @returns {Promise<Object>} - Result with success flag
@@ -104,6 +117,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
    */
   showOpenDialog: (options) => ipcRenderer.invoke('dialog:show-open', options),
 
+  /**
+   * Write file to disk
+   * @param {string} filePath - Path where to write file
+   * @param {string} content - File content
+   * @returns {Promise<void>}
+   */
+  writeFile: (filePath, content) => ipcRenderer.invoke('file:write', filePath, content),
+
   // ==================== TEMPLATE OPERATIONS ====================
 
   /**
@@ -153,6 +174,18 @@ contextBridge.exposeInMainWorld('electronAPI', {
    * @returns {Promise<Object>} - Result with success flag
    */
   writeXMLFile: (filePath, content) => ipcRenderer.invoke('file:write-xml', { filePath, content }),
+
+  // ==================== PDF GENERATION OPERATIONS ====================
+
+  /**
+   * Generate PDF from document
+   * @param {Object} data - PDF generation data
+   * @param {number} data.documentId - Document ID
+   * @param {string} data.outputPath - Output PDF file path
+   * @param {string} [data.templateName] - Optional template name (default: 'explanatory-note-template')
+   * @returns {Promise<Object>} - Result with success flag and PDF path
+   */
+  generatePDF: (data) => ipcRenderer.invoke('pdf:generate', data),
 
   // ==================== XML VALIDATION OPERATIONS ====================
 
@@ -268,7 +301,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
    */
   removeMenuListener: (channel, callback) => {
     ipcRenderer.removeListener(channel, callback);
-  }
+  },
+
+  /**
+   * Load schema JSON via main process
+   * @param {string} version - Schema version (e.g. "01.05")
+   * @returns {Promise<Object>} Parsed schema JSON
+   */
+  loadSchemaFile: (version) => ipcRenderer.invoke('schema:load', version)
 });
 
 /**

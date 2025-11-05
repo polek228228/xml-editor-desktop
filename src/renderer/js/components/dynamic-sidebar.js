@@ -54,6 +54,12 @@ class DynamicSidebar {
     // Показать home секцию по умолчанию
     this.showSection('home');
 
+    // Принудительно свернуть все категории в Services при инициализации
+    const serviceCategories = document.querySelectorAll('#sidebar-services .sidebar__category');
+    serviceCategories.forEach(category => {
+      category.classList.remove('sidebar__category--open');
+    });
+
     console.log('[DynamicSidebar] Initialized with sections:', Array.from(this.sections.keys()));
   }
 
@@ -207,27 +213,36 @@ class DynamicSidebar {
    * @private
    */
   _attachServicesSectionListeners() {
-    // Категории (аккордеон)
-    const categoryHeaders = document.querySelectorAll('#sidebar-services .sidebar__category-header');
+    // Категории (аккордеон) — делегирование для надёжности
+    const servicesSection = document.getElementById('sidebar-services');
+    if (servicesSection) {
+      servicesSection.addEventListener('click', (e) => {
+        const header = e.target.closest('.sidebar__category-header');
+        if (!header || !servicesSection.contains(header)) return;
 
-    categoryHeaders.forEach(header => {
-      header.addEventListener('click', () => {
-        const category = header.getAttribute('data-category');
+        // Найти родительский элемент .sidebar__category
+        const category = header.closest('.sidebar__category');
+        if (!category) return;
+
         const categoryList = header.nextElementSibling;
-
         if (categoryList && categoryList.classList.contains('sidebar__category-list')) {
-          // Toggle display
-          const isHidden = categoryList.style.display === 'none';
-          categoryList.style.display = isHidden ? 'block' : 'none';
+          // Переключить класс --open на родительском элементе
+          const isOpen = category.classList.contains('sidebar__category--open');
 
-          // Toggle arrow
-          const toggle = header.querySelector('.sidebar__category-toggle');
-          if (toggle) {
-            toggle.textContent = isHidden ? '▲' : '▼';
+          if (isOpen) {
+            // Закрыть категорию
+            category.classList.remove('sidebar__category--open');
+            categoryList.style.display = 'none'; // Явно скрываем
+          } else {
+            // Открыть категорию
+            category.classList.add('sidebar__category--open');
+            categoryList.style.display = 'block'; // Явно показываем
           }
+
+          console.log('[DynamicSidebar] Category toggled:', header.getAttribute('data-category'), 'open:', !isOpen);
         }
       });
-    });
+    }
 
     // Клик по сервису
     const serviceItems = document.querySelectorAll('#sidebar-services .sidebar__category-item');
@@ -251,6 +266,9 @@ class DynamicSidebar {
     const filters = document.querySelectorAll('#sidebar-services .sidebar__filter');
     filters.forEach(filter => {
       filter.addEventListener('click', () => {
+        // Скроллим фильтр в видимую область
+        filter.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
         filters.forEach(f => f.classList.remove('sidebar__filter--active'));
         filter.classList.add('sidebar__filter--active');
 

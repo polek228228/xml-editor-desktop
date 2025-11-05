@@ -11,9 +11,15 @@
 class BaseModule {
   /**
    * @param {Object} metadata - Module metadata from the registry
+   * @param {ModuleAPI} api - Module API instance for system access
    */
-  constructor(metadata) {
+  constructor(metadata, api) {
     this.metadata = metadata;
+    this.api = api;
+
+    if (!api) {
+      console.warn(`[${metadata?.name || 'BaseModule'}] No API provided - module will have limited functionality`);
+    }
   }
 
   /**

@@ -143,6 +143,19 @@
   console.log('%cStarting comprehensive UI testing...', 'color: #666;');
   console.log('━'.repeat(60));
 
+  // Wait for app to fully initialize
+  console.log('%cℹ️  Waiting for app initialization...', 'color: #3b82f6;');
+  if (!window.xmlEditorApp) {
+    console.warn('⚠️  xmlEditorApp not found, waiting 2 seconds...');
+    await utils.sleep(2000);
+  }
+
+  // Wait for Service Store if it exists
+  if (window.serviceStore) {
+    console.log('✅ Service Store found, waiting for initialization...');
+    await utils.sleep(500); // Give it time to load catalog
+  }
+
   const startTime = Date.now();
 
   try {
@@ -387,6 +400,11 @@
 
     // Test listModules
     try {
+      // Check if electronAPI has listModules method
+      if (!window.electronAPI || typeof window.electronAPI.listModules !== 'function') {
+        throw new Error('electronAPI.listModules is not a function. Check preload.js');
+      }
+
       const result = await Promise.race([
         window.electronAPI.listModules({ type: 'all' }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), config.asyncTimeout))

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пояснительная Записка {{noteNumber}}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm 2cm 2cm 3cm;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 14pt;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+    }
+
+    /* Титульная страница */
+    .title-page {
+      page-break-after: always;
+      text-align: center;
+      padding-top: 5cm;
+    }
+
+    .title-page__header {
+      font-size: 12pt;
+      margin-bottom: 2cm;
+      line-height: 1.3;
+    }
+
+    .title-page__title {
+      font-size: 18pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 3cm 0 1cm;
+    }
+
+    .title-page__subtitle {
+      font-size: 14pt;
+      margin: 1cm 0;
+    }
+
+    .title-page__document-info {
+      margin-top: 3cm;
+      font-size: 12pt;
+    }
+
+    .title-page__footer {
+      position: absolute;
+      bottom: 2cm;
+      left: 0;
+      right: 0;
+      font-size: 12pt;
+      text-align: center;
+    }
+
+    /* Основной контент */
+    h1 {
+      font-size: 18pt;
+      font-weight: bold;
+      text-align: center;
+      margin: 1cm 0 0.5cm;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: 16pt;
+      font-weight: bold;
+      margin: 0.8cm 0 0.4cm;
+    }
+
+    h3 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin: 0.5cm 0 0.3cm;
+    }
+
+    p {
+      text-align: justify;
+      text-indent: 1.25cm;
+      margin-bottom: 0.5cm;
+    }
+
+    .no-indent {
+      text-indent: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5cm 0;
+      font-size: 12pt;
+    }
+
+    table th,
+    table td {
+      border: 1px solid #000;
+      padding: 0.2cm;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table th {
+      background-color: #f0f0f0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .info-block {
+      margin: 0.5cm 0;
+      padding: 0.5cm;
+      border: 1px solid #000;
+    }
+
+    .info-block__title {
+      font-weight: bold;
+      margin-bottom: 0.3cm;
+    }
+
+    .info-row {
+      display: flex;
+      margin-bottom: 0.2cm;
+    }
+
+    .info-row__label {
+      font-weight: bold;
+      min-width: 5cm;
+    }
+
+    .info-row__value {
+      flex: 1;
+    }
+
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 1cm;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    /* Подписи */
+    .signatures {
+      margin-top: 2cm;
+    }
+
+    .signature {
+      display: flex;
+      justify-content: space-between;
+      margin: 1cm 0;
+      align-items: flex-end;
+    }
+
+    .signature__title {
+      flex: 1;
+    }
+
+    .signature__line {
+      flex: 1;
+      border-bottom: 1px solid #000;
+      margin: 0 1cm;
+    }
+
+    .signature__name {
+      flex: 1;
+      text-align: right;
+    }
+
+    /* Содержание */
+    .toc {
+      page-break-after: always;
+    }
+
+    .toc__title {
+      text-align: center;
+      font-size: 18pt;
+      font-weight: bold;
+      margin-bottom: 1cm;
+    }
+
+    .toc__item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.3cm 0;
+    }
+
+    .toc__item-name {
+      flex: 1;
+    }
+
+    .toc__item-dots {
+      flex: 2;
+      border-bottom: 1px dotted #000;
+      margin: 0 0.5cm;
+      height: 0.5cm;
+    }
+
+    .toc__item-page {
+      width: 1cm;
+      text-align: right;
+    }
+
+    /* Печать */
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Титульная страница -->
+  <div class="title-page">
+    <div class="title-page__header">
+      <div>{{issuerName}}</div>
+      <div>ОГРН {{issuerOgrn}}, ИНН {{issuerInn}}, КПП {{issuerKpp}}</div>
+      <div>{{issuerAddress}}</div>
+    </div>
+
+    <div class="title-page__title">
+      Пояснительная записка
+    </div>
+
+    <div class="title-page__subtitle">
+      к проектной документации
+    </div>
+
+    <div class="title-page__document-info">
+      <p class="no-indent">Номер: <strong>{{noteNumber}}</strong></p>
+      <p class="no-indent">Год: <strong>{{noteYear}}</strong></p>
+      <p class="no-indent">Версия схемы: <strong>{{schemaVersion}}</strong></p>
+    </div>
+
+    <div class="title-page__footer">
+      <p class="no-indent">{{city}}</p>
+      <p class="no-indent">{{year}} г.</p>
+    </div>
+  </div>
+
+  <!-- Содержание -->
+  <div class="toc">
+    <h1 class="toc__title">Содержание</h1>
+
+    <div class="toc__item">
+      <span class="toc__item-name">1. Общие сведения</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">3</span>
+    </div>
+
+    <div class="toc__item">
+      <span class="toc__item-name">2. Основные технические данные</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">5</span>
+    </div>
+
+    <div class="toc__item">
+      <span class="toc__item-name">3. Участники строительства</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">7</span>
+    </div>
+
+    <div class="toc__item">
+      <span class="toc__item-name">4. Земельный участок</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">9</span>
+    </div>
+
+    <div class="toc__item">
+      <span class="toc__item-name">5. Инженерные изыскания</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">11</span>
+    </div>
+
+    <div class="toc__item">
+      <span class="toc__item-name">6. Задание на проектирование</span>
+      <span class="toc__item-dots"></span>
+      <span class="toc__item-page">13</span>
+    </div>
+  </div>
+
+  <!-- Раздел 1: Общие сведения -->
+  <div class="section">
+    <h1>1. Общие сведения</h1>
+
+    <h2>1.1 Наименование объекта</h2>
+    <p>{{objectName}}</p>
+
+    <h2>1.2 Сведения о застройщике</h2>
+    <table>
+      <tr>
+        <th>Наименование</th>
+        <td>{{customerName}}</td>
+      </tr>
+      <tr>
+        <th>ОГРН</th>
+        <td>{{customerOgrn}}</td>
+      </tr>
+      <tr>
+        <th>ИНН</th>
+        <td>{{customerInn}}</td>
+      </tr>
+      <tr>
+        <th>КПП</th>
+        <td>{{customerKpp}}</td>
+      </tr>
+      <tr>
+        <th>Адрес</th>
+        <td>{{customerAddress}}</td>
+      </tr>
+    </table>
+
+    <h2>1.3 Сведения о проектной организации</h2>
+    <table>
+      <tr>
+        <th>Наименование</th>
+        <td>{{issuerName}}</td>
+      </tr>
+      <tr>
+        <th>ОГРН</th>
+        <td>{{issuerOgrn}}</td>
+      </tr>
+      <tr>
+        <th>ИНН</th>
+        <td>{{issuerInn}}</td>
+      </tr>
+      <tr>
+        <th>КПП</th>
+        <td>{{issuerKpp}}</td>
+      </tr>
+      <tr>
+        <th>Адрес</th>
+        <td>{{issuerAddress}}</td>
+      </tr>
+    </table>
+
+    <h2>1.4 Главный инженер проекта</h2>
+    <table>
+      <tr>
+        <th>ФИО</th>
+        <td>{{chiefName}}</td>
+      </tr>
+      <tr>
+        <th>СНИЛС</th>
+        <td>{{chiefSnils}}</td>
+      </tr>
+      <tr>
+        <th>НОПРИЗ</th>
+        <td>{{chiefNopriz}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Раздел 2: Основные технические данные -->
+  <div class="section page-break">
+    <h1>2. Основные технические данные</h1>
+
+    <h2>2.1 Размещение объекта</h2>
+    <p><strong>Размещение:</strong> {{placement}}</p>
+
+    <h2>2.2 Назначение объекта</h2>
+    <p>{{objectPurpose}}</p>
+
+    <h2>2.3 Технические характеристики</h2>
+    <table>
+      <tr>
+        <th>Показатель</th>
+        <th>Значение</th>
+      </tr>
+      <tr>
+        <td>Общая площадь</td>
+        <td>{{totalArea}} м²</td>
+      </tr>
+      <tr>
+        <td>Количество этажей</td>
+        <td>{{floors}}</td>
+      </tr>
+      <tr>
+        <td>Высота здания</td>
+        <td>{{height}} м</td>
+      </tr>
+      <tr>
+        <td>Вместимость</td>
+        <td>{{capacity}} чел.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Раздел 3: Участники строительства -->
+  <div class="section page-break">
+    <h1>3. Участники строительства</h1>
+
+    <h2>3.1 Застройщик</h2>
+    <div class="info-block">
+      <div class="info-row">
+        <span class="info-row__label">Наименование:</span>
+        <span class="info-row__value">{{customerName}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">ОГРН:</span>
+        <span class="info-row__value">{{customerOgrn}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">ИНН:</span>
+        <span class="info-row__value">{{customerInn}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">Адрес:</span>
+        <span class="info-row__value">{{customerAddress}}</span>
+      </div>
+    </div>
+
+    <h2>3.2 Проектная организация</h2>
+    <div class="info-block">
+      <div class="info-row">
+        <span class="info-row__label">Наименование:</span>
+        <span class="info-row__value">{{issuerName}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">ОГРН:</span>
+        <span class="info-row__value">{{issuerOgrn}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">ИНН:</span>
+        <span class="info-row__value">{{issuerInn}}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-row__label">Адрес:</span>
+        <span class="info-row__value">{{issuerAddress}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Подписи -->
+  <div class="signatures page-break">
+    <h2>Подписи</h2>
+
+    <div class="signature">
+      <span class="signature__title">Главный инженер проекта</span>
+      <span class="signature__line"></span>
+      <span class="signature__name">{{chiefName}}</span>
+    </div>
+
+    <div class="signature">
+      <span class="signature__title">Дата</span>
+      <span class="signature__line"></span>
+      <span class="signature__name">{{date}}</span>
+    </div>
+  </div>
+
+</body>
+</html>

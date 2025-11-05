@@ -1,4 +1,10 @@
+
+
+
+
+
 /**
+ *
  * @file module-registry.js
  * @description Module registry and lifecycle management
  * @module module-registry
@@ -6,20 +12,31 @@
 
 const path = require('path');
 const fs = require('fs-extra');
+const ModuleAPI = require('./module-api');
 
 /**
  * ModuleRegistry manages module registration, installation, and lifecycle
  */
 class ModuleRegistry {
   /**
-   * @param {StorageManager} storageManager - Database storage manager
+   * @param {XMLEditorApplication} app - Main application instance
    */
-  constructor(storageManager) {
-    this.storageManager = storageManager;
+  constructor(app) {
+    this.app = app;
+    this.storageManager = app.storage;
+
     /** @type {Map<string, Object>} */
     this.loadedModules = new Map();
     /** @type {Map<string, any>} */
     this.moduleInstances = new Map();
+
+    /**
+     * Module API instance - provides secure interface for modules
+     * @type {ModuleAPI}
+     */
+    this.moduleAPI = new ModuleAPI(app);
+
+    console.log('[ModuleRegistry] Initialized with Module API');
   }
 
   /**
@@ -241,11 +258,13 @@ class ModuleRegistry {
       // If module has entry point, load it
       if (module.module_path && await fs.pathExists(module.module_path)) {
         const ModuleClass = require(module.module_path);
-        const instance = new ModuleClass(moduleMetadata);
 
-        // Initialize module if it has init method
-        if (typeof instance.init === 'function') {
-          await instance.init();
+        // Create module instance with API access
+        const instance = new ModuleClass(moduleMetadata, this.moduleAPI);
+
+        // Call activate() lifecycle hook
+        if (typeof instance.activate === 'function') {
+          await instance.activate();
         }
 
         this.moduleInstances.set(moduleId, instance);
@@ -270,10 +289,18 @@ class ModuleRegistry {
     }
 
     try {
-      // Call destroy if module has it
       const instance = this.moduleInstances.get(moduleId);
-      if (instance && typeof instance.destroy === 'function') {
-        await instance.destroy();
+
+      if (instance) {
+        // Call deactivate() lifecycle hook
+        if (typeof instance.deactivate === 'function') {
+          await instance.deactivate();
+        }
+
+        // Legacy: Call destroy if module has it
+        if (typeof instance.destroy === 'function') {
+          await instance.destroy();
+        }
       }
 
       this.moduleInstances.delete(moduleId);

@@ -18,7 +18,8 @@
       [
         "html",
         {
-          "outputFolder": "test-results/html-report"
+          "outputFolder": "test-results/html-report",
+          "open": "never"
         }
       ],
       [
@@ -64,21 +65,21 @@
   },
   "suites": [
     {
-      "title": "05-modules.e2e.js",
-      "file": "05-modules.e2e.js",
+      "title": "14-week8-week9-user-flow.e2e.js",
+      "file": "14-week8-week9-user-flow.e2e.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Module System Tests",
-          "file": "05-modules.e2e.js",
-          "line": 11,
+          "title": "Week 8 & Week 9 user flow",
+          "file": "14-week8-week9-user-flow.e2e.js",
+          "line": 51,
           "column": 6,
           "specs": [
             {
-              "title": "should list all modules",
-              "ok": false,
+              "title": "should cover PDF export and 14-section form workflow",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -91,541 +92,57 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3713,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:20:28",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 28,
-                          "line": 20
-                        },
-                        "snippet": "  18 |     });\n  19 |\n> 20 |     expect(result.success).toBe(true);\n     |                            ^\n  21 |     expect(result.modules).toBeDefined();\n  22 |     expect(Array.isArray(result.modules)).toBe(true);\n  23 |     expect(result.modules.length).toBeGreaterThan(0);"
-                      },
-                      "errors": [
+                      "status": "passed",
+                      "duration": 18301,
+                      "errors": [],
+                      "stdout": [
                         {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 28,
-                            "line": 20
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  18 |     });\n  19 |\n> 20 |     expect(result.success).toBe(true);\n     |                            ^\n  21 |     expect(result.modules).toBeDefined();\n  22 |     expect(Array.isArray(result.modules)).toBe(true);\n  23 |     expect(result.modules.length).toBeGreaterThan(0);\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:20:28"
+                          "text": "[Week8-9] Step 1: Creating new document\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 2: Filling key sections\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 3: Verifying 14 sections presence\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 4: Saving document\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 5: Switching schema versions (01.04 → 01.03 → 01.05)\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 6: Stubbing save dialog for PDF/XML exports\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 7: Exporting PDF\n"
+                        },
+                        {
+                          "text": "[Week8-9] ✅ PDF generated at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/artifacts/week8-week9-user-flow/Автотест Week8-9 1761998171747.pdf\n"
+                        },
+                        {
+                          "text": "[Week8-9] Step 8: Exporting XML\n"
+                        },
+                        {
+                          "text": "[Week8-9] ✅ XML exported at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/artifacts/week8-week9-user-flow/Автотест Week8-9 1761998171747.xml\n"
+                        },
+                        {
+                          "text": "[Week8-9] Test completed successfully\n"
                         }
                       ],
-                      "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-16T09:56:31.963Z",
+                      "startTime": "2025-11-01T11:56:09.330Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-148b2-sts-should-list-all-modules-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-148b2-sts-should-list-all-modules-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 28,
-                        "line": 20
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "36c8e6536d1b0ed9d1f7-a3e1697a6a6fa1429f0e",
-              "file": "05-modules.e2e.js",
-              "line": 13,
-              "column": 3
-            },
-            {
-              "title": "should filter modules by installed",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2658,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:33:28",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 28,
-                          "line": 33
-                        },
-                        "snippet": "  31 |     });\n  32 |\n> 33 |     expect(result.success).toBe(true);\n     |                            ^\n  34 |     const allInstalled = result.modules.every(m => m.is_installed === 1);\n  35 |     expect(allInstalled).toBe(true);\n  36 |   });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 28,
-                            "line": 33
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  31 |     });\n  32 |\n> 33 |     expect(result.success).toBe(true);\n     |                            ^\n  34 |     const allInstalled = result.modules.every(m => m.is_installed === 1);\n  35 |     expect(allInstalled).toBe(true);\n  36 |   });\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:33:28"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:36.312Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-fa940-filter-modules-by-installed-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-fa940-filter-modules-by-installed-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 28,
-                        "line": 33
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-e001b8dd6865c9903237",
-              "file": "05-modules.e2e.js",
-              "line": 26,
-              "column": 3
-            },
-            {
-              "title": "should get module by ID",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3769,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:45:28",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 28,
-                          "line": 45
-                        },
-                        "snippet": "  43 |     });\n  44 |\n> 45 |     expect(result.success).toBe(true);\n     |                            ^\n  46 |     expect(result.module).toBeDefined();\n  47 |     expect(result.module.id).toBe('pz-01.05');\n  48 |   });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 28,
-                            "line": 45
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  43 |     });\n  44 |\n> 45 |     expect(result.success).toBe(true);\n     |                            ^\n  46 |     expect(result.module).toBeDefined();\n  47 |     expect(result.module.id).toBe('pz-01.05');\n  48 |   });\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:45:28"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:39.640Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-5ebda-sts-should-get-module-by-ID-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-5ebda-sts-should-get-module-by-ID-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 28,
-                        "line": 45
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-967a3a57b433fafef26a",
-              "file": "05-modules.e2e.js",
-              "line": 38,
-              "column": 3
-            },
-            {
-              "title": "should install a module",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3694,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:57:35",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 35,
-                          "line": 57
-                        },
-                        "snippet": "  55 |     });\n  56 |\n> 57 |     expect(installResult.success).toBe(true);\n     |                                   ^\n  58 |\n  59 |     const moduleAfter = await window.evaluate(async () => {\n  60 |       return await window.electronAPI.getModule('pz-01.05');"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 35,
-                            "line": 57
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  55 |     });\n  56 |\n> 57 |     expect(installResult.success).toBe(true);\n     |                                   ^\n  58 |\n  59 |     const moduleAfter = await window.evaluate(async () => {\n  60 |       return await window.electronAPI.getModule('pz-01.05');\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:57:35"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:44.207Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-9a8ce-sts-should-install-a-module-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-9a8ce-sts-should-install-a-module-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 35,
-                        "line": 57
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-6fa03f9b9cea44710733",
-              "file": "05-modules.e2e.js",
-              "line": 50,
-              "column": 3
-            },
-            {
-              "title": "should uninstall a module",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3506,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:77:37",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 37,
-                          "line": 77
-                        },
-                        "snippet": "  75 |     });\n  76 |\n> 77 |     expect(uninstallResult.success).toBe(true);\n     |                                     ^\n  78 |\n  79 |     const moduleAfter = await window.evaluate(async () => {\n  80 |       return await window.electronAPI.getModule('pz-01.04');"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 37,
-                            "line": 77
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  75 |     });\n  76 |\n> 77 |     expect(uninstallResult.success).toBe(true);\n     |                                     ^\n  78 |\n  79 |     const moduleAfter = await window.evaluate(async () => {\n  80 |       return await window.electronAPI.getModule('pz-01.04');\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:77:37"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:48.843Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-cb16b-s-should-uninstall-a-module-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-cb16b-s-should-uninstall-a-module-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 37,
-                        "line": 77
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-81727a2981761d941a24",
-              "file": "05-modules.e2e.js",
-              "line": 66,
-              "column": 3
-            },
-            {
-              "title": "should activate a module",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3369,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:97:36",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 36,
-                          "line": 97
-                        },
-                        "snippet": "   95 |     });\n   96 |\n>  97 |     expect(activateResult.success).toBe(true);\n      |                                    ^\n   98 |\n   99 |     const moduleAfter = await window.evaluate(async () => {\n  100 |       return await window.electronAPI.getModule('xml-validator');"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 36,
-                            "line": 97
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   95 |     });\n   96 |\n>  97 |     expect(activateResult.success).toBe(true);\n      |                                    ^\n   98 |\n   99 |     const moduleAfter = await window.evaluate(async () => {\n  100 |       return await window.electronAPI.getModule('xml-validator');\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:97:36"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:53.437Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-f1e41-ts-should-activate-a-module-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-f1e41-ts-should-activate-a-module-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 36,
-                        "line": 97
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-d491d58a6371c55e4efe",
-              "file": "05-modules.e2e.js",
-              "line": 86,
-              "column": 3
-            },
-            {
-              "title": "should get module statistics",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3417,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:113:28",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 28,
-                          "line": 113
-                        },
-                        "snippet": "  111 |     });\n  112 |\n> 113 |     expect(result.success).toBe(true);\n      |                            ^\n  114 |     expect(result.statistics).toBeDefined();\n  115 |     expect(result.statistics.total).toBeGreaterThan(0);\n  116 |   });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 28,
-                            "line": 113
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  111 |     });\n  112 |\n> 113 |     expect(result.success).toBe(true);\n      |                            ^\n  114 |     expect(result.statistics).toBeDefined();\n  115 |     expect(result.statistics.total).toBeGreaterThan(0);\n  116 |   });\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:113:28"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:56:57.988Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-45a8f-hould-get-module-statistics-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-45a8f-hould-get-module-statistics-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 28,
-                        "line": 113
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-341b58d8db0c6871a79a",
-              "file": "05-modules.e2e.js",
-              "line": 106,
-              "column": 3
-            },
-            {
-              "title": "should have 8 test modules registered",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 300000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "electron-e2e",
-                  "projectName": "electron-e2e",
-                  "results": [
-                    {
-                      "workerIndex": 7,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3936,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:125:28",
-                        "location": {
-                          "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                          "column": 28,
-                          "line": 125
-                        },
-                        "snippet": "  123 |     });\n  124 |\n> 125 |     expect(result.success).toBe(true);\n      |                            ^\n  126 |     expect(result.modules.length).toBe(8);\n  127 |   });\n  128 | });"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                            "column": 28,
-                            "line": 125
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  123 |     });\n  124 |\n> 125 |     expect(result.success).toBe(true);\n      |                            ^\n  126 |     expect(result.modules.length).toBe(8);\n  127 |   });\n  128 | });\n    at /Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js:125:28"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-16T09:57:02.153Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-c77b3-e-8-test-modules-registered-electron-e2e/test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/test-results/artifacts/05-modules.e2e.js-Module-S-c77b3-e-8-test-modules-registered-electron-e2e/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/PotapovViS/Downloads/Discord-Telegram-Bridge-development/xmlPZ/e2e/05-modules.e2e.js",
-                        "column": 28,
-                        "line": 125
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "36c8e6536d1b0ed9d1f7-0a3eb7433c70dae1b941",
-              "file": "05-modules.e2e.js",
-              "line": 118,
+              "id": "d88ce3f35bbe1bc87579-d2d82cfa8c850a8ee236",
+              "file": "14-week8-week9-user-flow.e2e.js",
+              "line": 56,
               "column": 3
             }
           ]
@@ -635,11 +152,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-10-16T09:56:31.431Z",
-    "duration": 34783.136,
-    "expected": 0,
+    "startTime": "2025-11-01T11:56:08.956Z",
+    "duration": 18740.267,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 8,
+    "unexpected": 0,
     "flaky": 0
   }
 }

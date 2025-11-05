@@ -1,41 +1,54 @@
 # Инструкция по сборке для Windows
 
+## ⚠️ ВАЖНО!
+Сборка для Windows ДОЛЖНА выполняться на Windows машине!
+Нативные модули (sqlite3, libxmljs2) нельзя кросс-компилировать с macOS.
+
 ## Требования
 - Windows 10/11
 - Node.js 18+ установлен
 - Git (опционально)
+- Visual C++ Build Tools (устанавливаются автоматически через npm)
 
 ## Шаги
 
 ### 1. Скопировать проект на Windows машину
-Скопируйте всю папку `xmlPZ` на Windows компьютер.
-
-### 2. Установить зависимости
-Открыть PowerShell или CMD в папке проекта:
-```bash
-npm install
+Скопируйте всю папку `xmlPZ` на Windows компьютер:
+```
+xmlPZ/
+├── src/
+├── package.json
+├── package-lock.json
+├── build-windows.bat
+└── все остальные файлы
 ```
 
-### 3. Собрать приложение
-```bash
-npm run build:win
+### 2. Запустить автоматическую сборку
+Двойной клик на `build-windows.bat`
+
+**ИЛИ** через PowerShell/CMD:
+```cmd
+build-windows.bat
 ```
 
-**ИЛИ** для быстрой сборки без установщика:
-```bash
-npx electron-packager . "XML Editor Desktop" --platform=win32 --arch=x64 --out=dist --overwrite
+Скрипт автоматически:
+- Установит зависимости (`npm install`)
+- Соберет приложение (electron-packager)
+- Создаст ZIP архив
+
+### 3. Результат
+После сборки (~5-10 минут):
+```
+dist/
+├── XML Editor Desktop-win32-x64/
+│   └── XML Editor Desktop.exe   ← Запускаемый файл
+└── XML-Editor-Desktop-Windows-x64.zip   ← Архив для распространения
 ```
 
-### 4. Результат
-Приложение будет в папке:
+### 4. Распространение
+Отдай пользователям файл:
 ```
-dist/XML Editor Desktop-win32-x64/XML Editor Desktop.exe
-```
-
-### 5. Создать ZIP для распространения
-```bash
-cd dist
-tar -a -c -f XML-Editor-Desktop-Windows-x64.zip "XML Editor Desktop-win32-x64"
+dist/XML-Editor-Desktop-Windows-x64.zip
 ```
 
 ## База данных

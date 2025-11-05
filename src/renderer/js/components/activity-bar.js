@@ -269,12 +269,14 @@ class ActivityBar {
     // Скрыть все секции
     document.querySelectorAll('.sidebar__section').forEach(el => {
       el.style.display = 'none';
+      el.classList.remove('sidebar__section--active');
     });
 
     // Показать нужную секцию
     const targetSection = document.getElementById(`sidebar-${section}`);
     if (targetSection) {
       targetSection.style.display = 'block';
+      targetSection.classList.add('sidebar__section--active');
     }
   }
 
@@ -292,6 +294,27 @@ class ActivityBar {
     const targetNav = document.querySelector(`.app-nav__item[data-section="${section}"]`);
     if (targetNav) {
       targetNav.classList.add('app-nav__item--active');
+    }
+
+    // ========== ВАЖНО: ПЕРЕКЛЮЧЕНИЕ КОНТЕНТА ==========
+    // Скрыть все content views
+    const homeDashboard = document.getElementById('home-dashboard');
+    const serviceStore = document.getElementById('service-store');
+    const editorScreen = document.getElementById('editor-screen');
+    const contextToolbar = document.getElementById('context-toolbar');
+
+    if (homeDashboard) homeDashboard.style.display = 'none';
+    if (serviceStore) serviceStore.style.display = 'none';
+    if (editorScreen) editorScreen.style.display = 'none';
+    if (contextToolbar) contextToolbar.classList.remove('context-toolbar--visible');
+
+    // Показать только активную секцию
+    if (section === 'home' && homeDashboard) {
+      homeDashboard.style.display = 'block';
+    } else if (section === 'services' && serviceStore) {
+      serviceStore.style.display = 'block';
+    } else if (section === 'documents' && editorScreen) {
+      editorScreen.style.display = 'block';
     }
   }
 

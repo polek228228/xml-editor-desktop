@@ -32,8 +32,8 @@ class XMLValidator {
    */
   getSchemaPath(schemaVersion) {
     const schemaMap = {
-      '01.03': path.join(this.schemasPath, 'expertise-01.03/conclusion-01-03.xsd'),
-      '01.04': path.join(this.schemasPath, 'pz-01.05/explanatorynote-01-05.xsd'), // Use 01.05 for 01.04
+      '01.03': path.join(this.schemasPath, 'pz-01.03/explanatorynote-01-03.xsd'),
+      '01.04': path.join(this.schemasPath, 'pz-01.04/explanatorynote-01-04.xsd'),
       '01.05': path.join(this.schemasPath, 'pz-01.05/explanatorynote-01-05.xsd')
     };
 

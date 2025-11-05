@@ -16,7 +16,6 @@ class FormManager {
     this.onChange = options.onChange || (() => {});
     this.schemaLoader = new SchemaLoader();
     this.accordions = [];
-    this.richTextEditors = {};
     this.errors = {};
 
     this._boundHandleRepeaterClick = this._handleRepeaterClick.bind(this);
@@ -115,10 +114,15 @@ class FormManager {
 
     return `
       <div class="repeater-field__item" data-index="${index}">
-        <div class="repeater-field__item-content">${itemHTML}</div>
-        <div class="repeater-field__item-actions">
-          <button type="button" class="repeater-field__delete-btn" aria-label="Удалить элемент">×</button>
+        <div class="repeater-field__item-header">
+          <span class="repeater-field__item-number">#${index + 1}</span>
+          <div class="repeater-field__item-actions">
+            <button type="button" class="btn btn--icon repeater-field__move-up-btn" title="Переместить вверх" ${index === 0 ? 'disabled' : ''}>↑</button>
+            <button type="button" class="btn btn--icon repeater-field__move-down-btn" title="Переместить вниз">↓</button>
+            <button type="button" class="btn btn--danger btn--sm repeater-field__delete-btn" title="Удалить" aria-label="Удалить элемент">×</button>
+          </div>
         </div>
+        <div class="repeater-field__item-content">${itemHTML}</div>
       </div>
     `;
   }
@@ -139,18 +143,20 @@ class FormManager {
   }
 
   _handleRepeaterClick(e) {
+    // Add new item
     if (e.target.classList.contains('repeater-field__add-btn')) {
       const repeaterField = e.target.closest('.repeater-field');
       if (repeaterField) this._addRepeaterItem(repeaterField);
     }
 
+    // Delete item
     if (e.target.classList.contains('repeater-field__delete-btn')) {
       const itemElement = e.target.closest('.repeater-field__item');
       const repeaterField = e.target.closest('.repeater-field');
       if (itemElement && repeaterField) {
         const indexToRemove = parseInt(itemElement.dataset.index, 10);
         const fieldPath = repeaterField.dataset.fieldPath;
-        
+
         let arrayData = this.getFieldValue(fieldPath) || [];
         if (Array.isArray(arrayData)) {
             arrayData.splice(indexToRemove, 1);
@@ -162,6 +168,50 @@ class FormManager {
         repeaterField.outerHTML = newHTML;
       }
     }
+
+    // Move up
+    if (e.target.classList.contains('repeater-field__move-up-btn')) {
+      const itemElement = e.target.closest('.repeater-field__item');
+      const repeaterField = e.target.closest('.repeater-field');
+      if (itemElement && repeaterField) {
+        const index = parseInt(itemElement.dataset.index, 10);
+        if (index > 0) {
+          this._moveRepeaterItem(repeaterField, index, index - 1);
+        }
+      }
+    }
+
+    // Move down
+    if (e.target.classList.contains('repeater-field__move-down-btn')) {
+      const itemElement = e.target.closest('.repeater-field__item');
+      const repeaterField = e.target.closest('.repeater-field');
+      if (itemElement && repeaterField) {
+        const index = parseInt(itemElement.dataset.index, 10);
+        const arrayData = this.getFieldValue(repeaterField.dataset.fieldPath) || [];
+        if (index < arrayData.length - 1) {
+          this._moveRepeaterItem(repeaterField, index, index + 1);
+        }
+      }
+    }
+  }
+
+  _moveRepeaterItem(repeaterField, fromIndex, toIndex) {
+    const fieldPath = repeaterField.dataset.fieldPath;
+    let arrayData = this.getFieldValue(fieldPath) || [];
+
+    if (!Array.isArray(arrayData) || fromIndex < 0 || toIndex < 0 ||
+        fromIndex >= arrayData.length || toIndex >= arrayData.length) {
+      return;
+    }
+
+    // Swap items in array
+    [arrayData[fromIndex], arrayData[toIndex]] = [arrayData[toIndex], arrayData[fromIndex]];
+    this.setFieldValue(fieldPath, arrayData);
+
+    // Re-render repeater field
+    const fieldDefinition = this.getNestedValue(this.schema.properties, fieldPath.replace(/-/g, '.properties.'));
+    const newHTML = this.generateRepeaterField(fieldDefinition, fieldPath.split('.')[0]);
+    repeaterField.outerHTML = newHTML;
   }
 
   generateNestedFieldsHTML(field, sectionId) {
@@ -238,9 +288,16 @@ class FormManager {
     return `
       <div class="input-field" data-field-id="${fieldId}">
         <label class="input-field__label ${field.required ? 'input-field__label--required' : ''}" for="${fieldId}">${field.label}</label>
-        <div class="input-field__richtext">
-          <textarea id="${fieldId}" name="${fieldId}" class="input-field__richtext-editor" ${field.required ? 'required' : ''}>${value || ''}</textarea>
-        </div>
+        <textarea
+          id="${fieldId}"
+          name="${fieldId}"
+          class="input-field__textarea input-field__textarea--richtext"
+          rows="8"
+          ${field.required ? 'required' : ''}
+          ${field.minLength ? `minlength="${field.minLength}"` : ''}
+          ${field.maxLength ? `maxlength="${field.maxLength}"` : ''}
+          placeholder="${field.placeholder || 'Введите текст...'}"
+        >${value || ''}</textarea>
         ${helpText ? `<span class="input-field__help">${helpText}</span>` : ''}
         <span class="input-field__error" style="display: none;"></span>
       </div>
@@ -260,19 +317,16 @@ class FormManager {
   }
 
   async initializeRichTextEditors(sectionId) {
-    const editorElements = this.container.querySelectorAll(`[id^="${sectionId}-"] .input-field__richtext-editor`);
-    for (const element of editorElements) {
-      const editor = new RichTextEditor({ element, onChange: (content) => this.handleFieldChange(element.id, content) });
-      await editor.init();
-      this.richTextEditors[element.id] = editor;
-    }
+    // Rich text fields now use plain textarea (no TinyMCE initialization needed)
+    // This method is kept for backwards compatibility but does nothing
+    console.log(`[FormManager] Using plain textarea for richtext fields in section: ${sectionId}`);
   }
 
   attachValidation() {
     this.container.addEventListener('click', this._boundHandleRepeaterClick);
     const inputs = this.container.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
-      if (input.classList.contains('input-field__richtext-editor')) return;
+
       input.addEventListener('input', (e) => {
         this.handleFieldChange(e.target.id, e.target.value);
         this.clearFieldError(e.target.id);
@@ -298,8 +352,51 @@ class FormManager {
   }
 
   validateForm() {
-    // ... (existing validation logic remains the same)
-    return true;
+    let isValid = true;
+    this.errors = {};
+
+    // Validate regular fields
+    const inputs = this.container.querySelectorAll('input[required], select[required], textarea[required]');
+    inputs.forEach(input => {
+      if (input.closest('.repeater-field')) return; // Skip repeater items (validated separately)
+
+      if (!input.value || input.value.trim() === '') {
+        this.setFieldError(input.id, 'Обязательное поле');
+        isValid = false;
+      }
+    });
+
+    // Validate repeater fields (arrays)
+    const repeaterFields = this.container.querySelectorAll('.repeater-field');
+    repeaterFields.forEach(repeater => {
+      const fieldPath = repeater.dataset.fieldPath;
+      const arrayData = this.getFieldValue(fieldPath) || [];
+
+      // Check if array is required and empty
+      const fieldSchema = this.getNestedValue(this.schema.properties, fieldPath.replace(/-/g, '.properties.'));
+      if (fieldSchema && fieldSchema.minItems && arrayData.length < fieldSchema.minItems) {
+        this.setFieldError(repeater.id, `Минимум ${fieldSchema.minItems} элементов`);
+        isValid = false;
+      }
+
+      // Validate each item in array
+      arrayData.forEach((item, index) => {
+        if (fieldSchema && fieldSchema.items && fieldSchema.items.required) {
+          fieldSchema.items.required.forEach(requiredField => {
+            if (!item[requiredField] || item[requiredField].toString().trim() === '') {
+              const itemInput = repeater.querySelector(`[data-index="${index}"] [id$="-${requiredField}"]`);
+              if (itemInput) {
+                this.setFieldError(itemInput.id, 'Обязательное поле');
+                isValid = false;
+              }
+            }
+          });
+        }
+      });
+    });
+
+    console.log('Form validation:', isValid ? 'PASSED' : 'FAILED', this.errors);
+    return isValid;
   }
 
   showFieldError(fieldId, message) {
@@ -336,7 +433,6 @@ class FormManager {
     this.container.querySelectorAll('input, select, textarea').forEach(input => {
         const repeaterParent = input.closest('.repeater-field');
         if (repeaterParent) return; // Skip inputs inside repeaters
-        if (input.classList.contains('input-field__richtext-editor')) return;
 
         const fieldPath = input.id.replace(/-/g, '.');
         const value = input.type === 'checkbox' ? input.checked : (input.type === 'number' ? (input.value ? parseFloat(input.value) : null) : input.value);
@@ -351,12 +447,6 @@ class FormManager {
     this.data = data;
     this.generateFormFromSchema().then(() => {
         this.attachValidation();
-        // After form is generated, populate rich text editors
-        for (const [editorId, editor] of Object.entries(this.richTextEditors)) {
-            const fieldPath = editorId.replace(/-/g, '.');
-            const value = this.getFieldValue(fieldPath);
-            if (value) editor.setContent(value);
-        }
         console.log('Form populated with data');
     });
   }
@@ -384,8 +474,6 @@ class FormManager {
 
   clearForm() {
     this.container.removeEventListener('click', this._boundHandleRepeaterClick);
-    Object.values(this.richTextEditors).forEach(editor => editor.destroy());
-    this.richTextEditors = {};
     this.accordions.forEach(accordion => accordion.destroy());
     this.accordions = [];
     this.errors = {};

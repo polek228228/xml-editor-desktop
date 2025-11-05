@@ -66,40 +66,46 @@ test.describe('Module System Tests', () => {
   test('should uninstall a module', async ({ electronApp }) => {
     const { window } = electronApp;
 
+    // Install module first
     await window.evaluate(async () => {
-      await window.electronAPI.installModule('pz-01.04');
+      await window.electronAPI.installModule('expertise-01.03');
     });
 
     const uninstallResult = await window.evaluate(async () => {
-      return await window.electronAPI.uninstallModule('pz-01.04');
+      return await window.electronAPI.uninstallModule('expertise-01.03');
     });
 
     expect(uninstallResult.success).toBe(true);
 
     const moduleAfter = await window.evaluate(async () => {
-      return await window.electronAPI.getModule('pz-01.04');
+      return await window.electronAPI.getModule('expertise-01.03');
     });
 
+    expect(moduleAfter.success).toBe(true);
+    expect(moduleAfter.module).toBeDefined();
     expect(moduleAfter.module.is_installed).toBe(0);
   });
 
   test('should activate a module', async ({ electronApp }) => {
     const { window } = electronApp;
 
+    // Install module first if not already installed
     await window.evaluate(async () => {
-      await window.electronAPI.installModule('xml-validator');
+      await window.electronAPI.installModule('registry-experts');
     });
 
     const activateResult = await window.evaluate(async () => {
-      return await window.electronAPI.activateModule('xml-validator');
+      return await window.electronAPI.activateModule('registry-experts');
     });
 
     expect(activateResult.success).toBe(true);
 
     const moduleAfter = await window.evaluate(async () => {
-      return await window.electronAPI.getModule('xml-validator');
+      return await window.electronAPI.getModule('registry-experts');
     });
 
+    expect(moduleAfter.success).toBe(true);
+    expect(moduleAfter.module).toBeDefined();
     expect(moduleAfter.module.is_active).toBe(1);
   });
 
@@ -115,7 +121,7 @@ test.describe('Module System Tests', () => {
     expect(result.statistics.total).toBeGreaterThan(0);
   });
 
-  test('should have 8 test modules registered', async ({ electronApp }) => {
+  test('should have 6 test modules registered', async ({ electronApp }) => {
     const { window } = electronApp;
 
     const result = await window.evaluate(async () => {
@@ -123,6 +129,6 @@ test.describe('Module System Tests', () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.modules.length).toBe(8);
+    expect(result.modules.length).toBe(6);
   });
 });

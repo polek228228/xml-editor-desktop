@@ -23,6 +23,10 @@ class SchemaLoader {
    * @returns {Promise<Object>} - Loaded schema object
    */
   async loadSchema(version) {
+    if (!version) {
+      throw new Error('Schema version is required');
+    }
+
     // Check cache first
     if (this.schemas[version]) {
       console.log(`Schema ${version} loaded from cache`);
@@ -30,19 +34,15 @@ class SchemaLoader {
     }
 
     try {
-      const schemaPath = `${this.basePath}/pz-${version}-schema.json`;
-      const response = await fetch(schemaPath);
+      let schema;
 
-      if (!response.ok) {
-        throw new Error(`Failed to load schema: ${response.statusText}`);
+      if (typeof window !== 'undefined' && window.electronAPI && typeof window.electronAPI.loadSchemaFile === 'function') {
+        schema = await window.electronAPI.loadSchemaFile(version);
+      } else {
+        schema = await this._fetchSchemaFallback(version);
       }
 
-      const schema = await response.json();
-
-      // Validate schema structure
       this.validateSchemaStructure(schema);
-
-      // Cache the schema
       this.schemas[version] = schema;
 
       console.log(`Schema ${version} loaded successfully`);
@@ -51,6 +51,23 @@ class SchemaLoader {
       console.error(`Error loading schema ${version}:`, error);
       throw error;
     }
+  }
+
+  /**
+   * Fetch schema via fetch API (development fallback)
+   * @private
+   * @param {string} version
+   * @returns {Promise<Object>}
+   */
+  async _fetchSchemaFallback(version) {
+    const schemaPath = `${this.basePath}/pz-${version}-schema.json`;
+    const response = await fetch(schemaPath);
+
+    if (!response.ok) {
+      throw new Error(`Failed to load schema: ${response.statusText}`);
+    }
+
+    return response.json();
   }
 
   /**

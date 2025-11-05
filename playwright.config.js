@@ -34,7 +34,8 @@ module.exports = defineConfig({
 
   // Reporter to use
   reporter: [
-    ['html', { outputFolder: 'test-results/html-report' }],
+    // Не открывать/не держать сервер отчёта после прогонов
+    ['html', { outputFolder: 'test-results/html-report', open: 'never' }],
     ['json', { outputFile: 'test-results/test-results.json' }],
     ['list'],
   ],

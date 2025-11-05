@@ -58,8 +58,16 @@ class ServiceStore {
     this.elements.searchInput = document.querySelector('.service-store__search');
     this.elements.filters = document.querySelectorAll('.service-store__filter');
 
+    console.log('[ServiceStore] Elements found:', {
+      container: !!this.elements.container,
+      featuredGrid: !!this.elements.featuredGrid,
+      allGrid: !!this.elements.allGrid,
+      searchInput: !!this.elements.searchInput,
+      filters: this.elements.filters.length
+    });
+
     if (!this.elements.container) {
-      console.error('[ServiceStore] Container not found');
+      console.error('[ServiceStore] Container #service-store not found in DOM');
       return;
     }
 
@@ -72,6 +80,14 @@ class ServiceStore {
     // Обработчики событий
     this._attachEventListeners();
 
+    // Гарантировать кликабельность фильтров (не перекрыты элементами сверху)
+    if (this.elements.filters) {
+      this.elements.filters.forEach((f) => {
+        const parent = f.parentElement;
+        if (parent && !parent.style.zIndex) parent.style.zIndex = '1';
+      });
+    }
+
     console.log('[ServiceStore] Initialized with', this.catalog.length, 'services');
   }
 
@@ -80,45 +96,112 @@ class ServiceStore {
    */
   async loadCatalog() {
     try {
-      // Загрузка из JSON файла
-      const response = await fetch('../data/service-catalog.json');
-      const data = await response.json();
+      console.log('[ServiceStore] Loading catalog from backend...');
 
-      this.catalog = data.services || [];
-      this.categories = data.categories || {};
+      // Show loading state
+      this._showLoadingState();
 
-      // Синхронизация с установленными сервисами
-      await this._syncWithInstalled();
+      // Load modules from backend via IPC
+      const result = await window.electronAPI.listModules({ type: 'all' });
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to load modules');
+      }
+
+      // Map modules to service format
+      this.catalog = this._mapModulesToServices(result.modules || []);
+
+      // Extract categories from modules
+      this._buildCategories();
 
       console.log('[ServiceStore] Catalog loaded:', this.catalog.length, 'services');
+
+      // Hide loading state
+      this._hideLoadingState();
+
     } catch (error) {
       console.error('[ServiceStore] Failed to load catalog:', error);
       this.catalog = [];
+
+      // Hide loading state and show error
+      this._hideLoadingState();
+      this._showErrorState(error.message);
     }
   }
 
   /**
-   * Синхронизация с установленными сервисами
+   * Map backend modules to service store format
    * @private
    */
-  async _syncWithInstalled() {
-    if (!window.lifecycleManager) {
-      console.warn('[ServiceStore] LifecycleManager not available');
-      return;
+  _mapModulesToServices(modules) {
+    return modules.map(module => ({
+      id: module.id,
+      name: module.name,
+      description: module.description || 'Нет описания',
+      version: module.version,
+      category: module.category,
+      type: module.type,
+      icon: module.icon || '📦',
+      price: module.price || 0,
+      license: module.price > 0 ? 'pro' : 'free',
+      installed: Boolean(module.is_installed),
+      active: Boolean(module.is_active),
+      featured: Boolean(module.is_featured),
+      rating: module.rating || 0,
+      downloads: module.downloads || 0,
+      tags: this._generateTagsFromModule(module)
+    }));
+  }
+
+  /**
+   * Generate tags from module metadata
+   * @private
+   */
+  _generateTagsFromModule(module) {
+    const tags = [];
+
+    if (module.type) {
+      const typeLabels = {
+        'document': 'Документ',
+        'form': 'Форма',
+        'tool': 'Инструмент',
+        'integration': 'Интеграция'
+      };
+      tags.push(typeLabels[module.type] || module.type);
     }
 
-    // Получить список установленных сервисов
-    const installedServices = window.lifecycleManager.getAllServicesWithStates();
+    if (module.category) {
+      tags.push(module.category);
+    }
 
-    // Обновить статусы в каталоге
+    return tags;
+  }
+
+  /**
+   * Build categories object from modules
+   * @private
+   */
+  _buildCategories() {
+    const categoryMap = {};
+    const categoryIcons = {
+      'documents': { name: 'Документы', icon: '📄', order: 1 },
+      'forms': { name: 'Формы', icon: '📝', order: 2 },
+      'tools': { name: 'Инструменты', icon: '🛠️', order: 3 },
+      'integrations': { name: 'Интеграции', icon: '🔌', order: 4 }
+    };
+
     this.catalog.forEach(service => {
-      const installed = installedServices.find(s => s.id === service.id);
-
-      if (installed) {
-        service.installed = true;
-        service.active = installed.state === 'active';
+      if (service.category && !categoryMap[service.category]) {
+        const categoryInfo = categoryIcons[service.category] || {
+          name: service.category,
+          icon: '📦',
+          order: 999
+        };
+        categoryMap[service.category] = categoryInfo;
       }
     });
+
+    this.categories = categoryMap;
   }
 
   /**
@@ -173,11 +256,33 @@ class ServiceStore {
     icon.textContent = service.icon || '📦';
     card.appendChild(icon);
 
-    // Заголовок
+    // Заголовок с бэйджем статуса
+    const titleContainer = document.createElement('div');
+    titleContainer.style.display = 'flex';
+    titleContainer.style.alignItems = 'center';
+    titleContainer.style.gap = '8px';
+
     const title = document.createElement('h3');
     title.className = 'service-card__title';
     title.textContent = service.name;
-    card.appendChild(title);
+    titleContainer.appendChild(title);
+
+    // Бэйдж статуса
+    if (service.active) {
+      const badge = document.createElement('span');
+      badge.className = 'service-card__badge service-card__badge--active';
+      badge.textContent = '✓ Активен';
+      badge.style.cssText = 'padding: 2px 8px; border-radius: 4px; font-size: 11px; background: #10b981; color: white;';
+      titleContainer.appendChild(badge);
+    } else if (service.installed) {
+      const badge = document.createElement('span');
+      badge.className = 'service-card__badge service-card__badge--installed';
+      badge.textContent = 'Установлен';
+      badge.style.cssText = 'padding: 2px 8px; border-radius: 4px; font-size: 11px; background: #6b7280; color: white;';
+      titleContainer.appendChild(badge);
+    }
+
+    card.appendChild(titleContainer);
 
     // Описание
     const desc = document.createElement('p');
@@ -219,31 +324,53 @@ class ServiceStore {
 
     footer.appendChild(price);
 
-    // Кнопка действия
-    const button = document.createElement('button');
-    button.className = 'btn btn--sm';
-
+    // Кнопки действия
     if (service.active) {
-      button.classList.add('btn--success');
-      button.textContent = 'Активен';
-      button.disabled = true;
+      // Active module: Show Deactivate and Uninstall buttons
+      const deactivateBtn = document.createElement('button');
+      deactivateBtn.className = 'btn btn--sm btn--secondary';
+      deactivateBtn.textContent = 'Деактивировать';
+      deactivateBtn.setAttribute('data-action', 'deactivate');
+      footer.appendChild(deactivateBtn);
+
+      const uninstallBtn = document.createElement('button');
+      uninstallBtn.className = 'btn btn--sm btn--danger';
+      uninstallBtn.textContent = 'Удалить';
+      uninstallBtn.setAttribute('data-action', 'uninstall');
+      footer.appendChild(uninstallBtn);
+
     } else if (service.installed) {
-      button.classList.add('btn--primary');
-      button.textContent = 'Активировать';
-      button.setAttribute('data-action', 'activate');
+      // Installed but not active: Show Activate and Uninstall buttons
+      const activateBtn = document.createElement('button');
+      activateBtn.className = 'btn btn--sm btn--primary';
+      activateBtn.textContent = 'Активировать';
+      activateBtn.setAttribute('data-action', 'activate');
+      footer.appendChild(activateBtn);
+
+      const uninstallBtn = document.createElement('button');
+      uninstallBtn.className = 'btn btn--sm btn--secondary';
+      uninstallBtn.textContent = 'Удалить';
+      uninstallBtn.setAttribute('data-action', 'uninstall');
+      footer.appendChild(uninstallBtn);
+
     } else {
+      // Not installed: Show Install or Buy button
+      const button = document.createElement('button');
+      button.className = 'btn btn--sm';
+
       if (service.license === 'free') {
         button.classList.add('btn--primary');
         button.textContent = 'Установить';
         button.setAttribute('data-action', 'install');
       } else {
         button.classList.add('btn--accent');
-        button.innerHTML = '💳 Купить';
+        button.textContent = '💳 Купить';
         button.setAttribute('data-action', 'buy');
       }
+
+      footer.appendChild(button);
     }
 
-    footer.appendChild(button);
     card.appendChild(footer);
 
     return card;
@@ -363,8 +490,16 @@ class ServiceStore {
     }
 
     // Фильтры
-    this.elements.filters.forEach(filter => {
-      filter.addEventListener('click', () => {
+    // Делегирование кликов по фильтрам, чтобы исключить перекрытия
+    const header = this.elements.container?.querySelector('.service-store__header');
+    if (header) {
+      header.addEventListener('click', (e) => {
+        const filter = e.target.closest('.service-store__filter');
+        if (!filter) return;
+
+        // Убедиться, что фильтры видимы пользователю
+        header.scrollIntoView({ block: 'start', behavior: 'instant' });
+
         // Убрать активный класс со всех
         this.elements.filters.forEach(f => f.classList.remove('service-store__filter--active'));
         // Добавить активный класс
@@ -373,7 +508,7 @@ class ServiceStore {
         this.currentFilter = filter.getAttribute('data-filter');
         this.render();
       });
-    });
+    }
 
     // Клик по карточкам (делегирование)
     if (this.elements.container) {
@@ -407,6 +542,10 @@ class ServiceStore {
         await this.installService(service);
       } else if (action === 'activate') {
         await this.activateService(service);
+      } else if (action === 'deactivate') {
+        await this.deactivateService(service);
+      } else if (action === 'uninstall') {
+        await this.uninstallService(service);
       } else if (action === 'buy') {
         this.showPurchaseDialog(service);
       }
@@ -420,59 +559,211 @@ class ServiceStore {
    * Установка сервиса
    */
   async installService(service) {
-    if (!window.lifecycleManager) {
-      throw new Error('LifecycleManager not available');
-    }
-
     console.log('[ServiceStore] Installing service:', service.id);
 
-    // Создание манифеста
-    const manifest = {
-      id: service.id,
-      name: service.name,
-      version: service.version,
-      entry: service.main,
-      permissions: service.permissions || []
-    };
+    // Find button and show loading state
+    const button = document.querySelector(`[data-service-id="${service.id}"] button[data-action="install"]`);
+    const originalText = button?.textContent;
 
-    // Установка через LifecycleManager
-    await window.lifecycleManager.install(manifest);
+    try {
+      // Show loading state
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-sm"></span> Установка...';
+      }
 
-    // Обновление статуса
-    service.installed = true;
+      // Install via IPC
+      const result = await window.electronAPI.installModule(service.id);
 
-    // Перерендеринг
-    this.render();
+      if (!result.success) {
+        throw new Error(result.error || 'Installation failed');
+      }
 
-    // Уведомление
-    window.xmlEditorApp?.showToast(`Сервис "${service.name}" установлен`, 'success');
+      // Reload catalog to sync status
+      await this.loadCatalog();
 
-    console.log('[ServiceStore] Service installed:', service.id);
+      // Re-render
+      this.render();
+
+      // Show success notification
+      window.xmlEditorApp?.showToast(`Модуль "${service.name}" успешно установлен`, 'success');
+
+      console.log('[ServiceStore] Service installed:', service.id);
+
+    } catch (error) {
+      console.error('[ServiceStore] Installation failed:', error);
+
+      // Restore button state
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || 'Установить';
+      }
+
+      // Show error notification
+      window.xmlEditorApp?.showToast(`Ошибка установки: ${error.message}`, 'error');
+
+      throw error;
+    }
   }
 
   /**
    * Активация сервиса
    */
   async activateService(service) {
-    if (!window.lifecycleManager) {
-      throw new Error('LifecycleManager not available');
-    }
-
     console.log('[ServiceStore] Activating service:', service.id);
 
-    // Активация через LifecycleManager
-    await window.lifecycleManager.activate(service.id);
+    // Find button and show loading state
+    const button = document.querySelector(`[data-service-id="${service.id}"] button[data-action="activate"]`);
+    const originalText = button?.textContent;
 
-    // Обновление статуса
-    service.active = true;
+    try {
+      // Show loading state
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-sm"></span> Активация...';
+      }
 
-    // Перерендеринг
-    this.render();
+      // Activate via IPC
+      const result = await window.electronAPI.activateModule(service.id);
 
-    // Уведомление
-    window.xmlEditorApp?.showToast(`Сервис "${service.name}" активирован`, 'success');
+      if (!result.success) {
+        throw new Error(result.error || 'Activation failed');
+      }
 
-    console.log('[ServiceStore] Service activated:', service.id);
+      // Reload catalog to sync status
+      await this.loadCatalog();
+
+      // Re-render
+      this.render();
+
+      // Show success notification
+      window.xmlEditorApp?.showToast(`Модуль "${service.name}" успешно активирован`, 'success');
+
+      console.log('[ServiceStore] Service activated:', service.id);
+
+    } catch (error) {
+      console.error('[ServiceStore] Activation failed:', error);
+
+      // Restore button state
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || 'Активировать';
+      }
+
+      // Show error notification
+      window.xmlEditorApp?.showToast(`Ошибка активации: ${error.message}`, 'error');
+
+      throw error;
+    }
+  }
+
+  /**
+   * Деактивация сервиса
+   */
+  async deactivateService(service) {
+    console.log('[ServiceStore] Deactivating service:', service.id);
+
+    // Find button and show loading state
+    const button = document.querySelector(`[data-service-id="${service.id}"] button[data-action="deactivate"]`);
+    const originalText = button?.textContent;
+
+    try {
+      // Show loading state
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-sm"></span> Деактивация...';
+      }
+
+      // Deactivate via IPC
+      const result = await window.electronAPI.deactivateModule(service.id);
+
+      if (!result.success) {
+        throw new Error(result.error || 'Deactivation failed');
+      }
+
+      // Reload catalog to sync status
+      await this.loadCatalog();
+
+      // Re-render
+      this.render();
+
+      // Show success notification
+      window.xmlEditorApp?.showToast(`Модуль "${service.name}" успешно деактивирован`, 'success');
+
+      console.log('[ServiceStore] Service deactivated:', service.id);
+
+    } catch (error) {
+      console.error('[ServiceStore] Deactivation failed:', error);
+
+      // Restore button state
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || 'Деактивировать';
+      }
+
+      // Show error notification
+      window.xmlEditorApp?.showToast(`Ошибка деактивации: ${error.message}`, 'error');
+
+      throw error;
+    }
+  }
+
+  /**
+   * Удаление сервиса
+   */
+  async uninstallService(service) {
+    console.log('[ServiceStore] Uninstalling service:', service.id);
+
+    // Confirmation dialog
+    const confirmed = confirm(`Вы уверены, что хотите удалить модуль "${service.name}"?`);
+    if (!confirmed) {
+      console.log('[ServiceStore] Uninstall cancelled by user');
+      return;
+    }
+
+    // Find button and show loading state
+    const button = document.querySelector(`[data-service-id="${service.id}"] button[data-action="uninstall"]`);
+    const originalText = button?.textContent;
+
+    try {
+      // Show loading state
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = '<span class="spinner-sm"></span> Удаление...';
+      }
+
+      // Uninstall via IPC
+      const result = await window.electronAPI.uninstallModule(service.id);
+
+      if (!result.success) {
+        throw new Error(result.error || 'Uninstallation failed');
+      }
+
+      // Reload catalog to sync status
+      await this.loadCatalog();
+
+      // Re-render
+      this.render();
+
+      // Show success notification
+      window.xmlEditorApp?.showToast(`Модуль "${service.name}" успешно удален`, 'success');
+
+      console.log('[ServiceStore] Service uninstalled:', service.id);
+
+    } catch (error) {
+      console.error('[ServiceStore] Uninstallation failed:', error);
+
+      // Restore button state
+      if (button) {
+        button.disabled = false;
+        button.textContent = originalText || 'Удалить';
+      }
+
+      // Show error notification
+      window.xmlEditorApp?.showToast(`Ошибка удаления: ${error.message}`, 'error');
+
+      throw error;
+    }
   }
 
   /**
@@ -486,6 +777,52 @@ class ServiceStore {
       `Покупка сервисов будет доступна в следующих версиях.\n\nСервис: ${service.name}\nЦена: ${service.price} ₽`,
       'info'
     );
+  }
+
+  /**
+   * Show loading state
+   * @private
+   */
+  _showLoadingState() {
+    if (this.elements.featuredGrid) {
+      this.elements.featuredGrid.innerHTML = '<div class="service-store__loading">Загрузка сервисов...</div>';
+    }
+    if (this.elements.allGrid) {
+      this.elements.allGrid.innerHTML = '<div class="service-store__loading">Загрузка сервисов...</div>';
+    }
+  }
+
+  /**
+   * Hide loading state
+   * @private
+   */
+  _hideLoadingState() {
+    // Loading state will be replaced by render()
+  }
+
+  /**
+   * Show error state
+   * @private
+   */
+  _showErrorState(message) {
+    const errorHtml = `
+      <div class="service-store__error">
+        <div class="service-store__error-icon">⚠️</div>
+        <div class="service-store__error-message">
+          Ошибка загрузки каталога: ${message}
+        </div>
+        <button class="btn btn--primary" onclick="window.serviceStore?.loadCatalog()">
+          Повторить попытку
+        </button>
+      </div>
+    `;
+
+    if (this.elements.featuredGrid) {
+      this.elements.featuredGrid.innerHTML = errorHtml;
+    }
+    if (this.elements.allGrid) {
+      this.elements.allGrid.innerHTML = '';
+    }
   }
 
   /**

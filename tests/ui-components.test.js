@@ -4,6 +4,28 @@
  */
 
 // Mock DOM and global objects
+const createModuleResponse = () => ({
+  success: true,
+  modules: [
+    {
+      id: 'test-service',
+      name: 'Test Service',
+      description: 'Mock service',
+      version: '1.0.0',
+      category: 'documents',
+      type: 'document',
+      icon: '🧪',
+      price: 0,
+      is_installed: false,
+      is_active: false,
+      is_featured: true,
+      rating: 4.5,
+      downloads: 120,
+      tags: ['test']
+    }
+  ]
+});
+
 global.window = {
   eventBus: {
     on: jest.fn(),
@@ -12,6 +34,9 @@ global.window = {
   },
   lifecycleManager: {
     getAllServicesWithStates: jest.fn(() => [])
+  },
+  electronAPI: {
+    listModules: jest.fn(() => Promise.resolve(createModuleResponse()))
   }
 };
 
@@ -161,25 +186,7 @@ describe('Service Store Component', () => {
     jest.clearAllMocks();
 
     // Mock fetch
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({
-          services: [
-            {
-              id: 'test-service',
-              name: 'Test Service',
-              category: 'core',
-              license: 'free',
-              price: 0,
-              tags: ['test']
-            }
-          ],
-          categories: {
-            core: { name: 'Core', icon: '⭐', order: 1 }
-          }
-        })
-      })
-    );
+    global.window.electronAPI.listModules.mockResolvedValue(createModuleResponse());
 
     ServiceStore = require('../src/renderer/js/components/service-store.js');
     serviceStore = new ServiceStore();
@@ -193,6 +200,7 @@ describe('Service Store Component', () => {
   test('should load catalog from JSON', async () => {
     await serviceStore.loadCatalog();
 
+    expect(global.window.electronAPI.listModules).toHaveBeenCalledTimes(1);
     expect(serviceStore.catalog.length).toBe(1);
     expect(serviceStore.catalog[0].id).toBe('test-service');
   });

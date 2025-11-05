@@ -1,348 +1,209 @@
 /**
  * @file rich-text-editor.js
- * @description Rich text editor wrapper for TinyMCE
- * @module renderer/rich-text-editor
+ * @description Rich Text Editor component using TinyMCE
+ * @module components/rich-text-editor
  */
 
 /**
- * Rich Text Editor class
- * Wrapper for TinyMCE with Russian localization and custom configuration
+ * RichTextEditor - WYSIWYG editor component for rich text fields
+ *
+ * Features:
+ * - TinyMCE integration
+ * - Customizable toolbar
+ * - HTML output
+ * - Auto-save support
+ * - Validation support
  */
 class RichTextEditor {
   /**
-   * @param {Object} options - Editor options
-   * @param {HTMLElement} options.element - Textarea element to convert
-   * @param {Function} options.onChange - Callback when content changes
-   * @param {Object} options.config - Additional TinyMCE configuration
+   * @param {Object} config - Configuration object
+   * @param {string} config.id - Unique ID for the editor
+   * @param {HTMLElement} config.container - Container element
+   * @param {string} [config.value] - Initial HTML value
+   * @param {Function} [config.onChange] - Change callback
+   * @param {Object} [config.options] - TinyMCE options override
    */
-  constructor(options) {
-    this.element = options.element;
-    this.onChange = options.onChange || (() => {});
-    this.config = options.config || {};
+  constructor(config) {
+    this.id = config.id || `tinymce-${Date.now()}`;
+    this.container = config.container;
+    this.value = config.value || '';
+    this.onChange = config.onChange || (() => {});
+    this.options = config.options || {};
 
-    /** @type {Object} TinyMCE editor instance */
+    /**
+     * TinyMCE editor instance
+     * @type {Object|null}
+     */
     this.editor = null;
 
-    /** @type {boolean} Editor initialization status */
-    this.initialized = false;
+    /**
+     * Textarea element
+     * @type {HTMLTextAreaElement|null}
+     */
+    this.textarea = null;
+
+    console.log('[RichTextEditor] Initialized:', this.id);
+  }
+
+  /**
+   * Render the editor
+   * @returns {HTMLElement} - Editor container element
+   */
+  render() {
+    // Create textarea element
+    this.textarea = document.createElement('textarea');
+    this.textarea.id = this.id;
+    this.textarea.className = 'richtext-editor__textarea';
+    this.textarea.value = this.value;
+
+    // Wrap in container
+    const wrapper = document.createElement('div');
+    wrapper.className = 'richtext-editor';
+    wrapper.appendChild(this.textarea);
+
+    if (this.container) {
+      this.container.appendChild(wrapper);
+    }
+
+    // Initialize TinyMCE after a short delay to ensure DOM is ready
+    setTimeout(() => this.init(), 100);
+
+    return wrapper;
   }
 
   /**
    * Initialize TinyMCE editor
-   * @returns {Promise<void>}
+   * @private
    */
   async init() {
-    if (this.initialized) {
-      console.warn('Editor already initialized');
-      return;
-    }
-
-    // Check if TinyMCE is loaded
-    if (typeof tinymce === 'undefined') {
-      console.error('TinyMCE is not loaded. Please include TinyMCE script in HTML.');
-      return;
-    }
-
     try {
-      const defaultConfig = this.getDefaultConfig();
-      const mergedConfig = { ...defaultConfig, ...this.config };
+      // Check if TinyMCE is loaded
+      if (typeof tinymce === 'undefined') {
+        console.error('[RichTextEditor] TinyMCE not loaded');
+        return;
+      }
 
-      await tinymce.init({
-        target: this.element,
-        ...mergedConfig,
+      // Default TinyMCE configuration
+      const defaultConfig = {
+        selector: `#${this.id}`,
+        base_url: 'vendor/tinymce', // Path to local TinyMCE files
+        suffix: '.min',              // Use minified files
+        height: 400,
+        menubar: false,
+        license_key: 'gpl', // Use GPL license
+        promotion: false,
+        branding: false,
+        plugins: [
+          'advlist', 'autolink', 'lists', 'link', 'charmap',
+          'preview', 'anchor', 'searchreplace', 'visualblocks', 'code',
+          'fullscreen', 'insertdatetime', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | bold italic underline | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | removeformat | table | help',
+        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; }',
         setup: (editor) => {
+          // Store editor instance
           this.editor = editor;
 
-          // Content change handler
+          // Handle content changes
           editor.on('change', () => {
             const content = editor.getContent();
+            this.value = content;
             this.onChange(content);
           });
 
-          // Blur event for autosave
+          // Handle blur (for autosave)
           editor.on('blur', () => {
             const content = editor.getContent();
+            this.value = content;
             this.onChange(content);
           });
 
-          // Call custom setup if provided
-          if (mergedConfig.setup) {
-            mergedConfig.setup(editor);
-          }
+          console.log(`[RichTextEditor] TinyMCE initialized: ${this.id}`);
         }
-      });
+      };
 
-      this.initialized = true;
-      console.log(`TinyMCE editor initialized for ${this.element.id}`);
+      // Merge with custom options
+      const config = { ...defaultConfig, ...this.options };
+
+      // Initialize TinyMCE
+      await tinymce.init(config);
+
     } catch (error) {
-      console.error('Error initializing TinyMCE editor:', error);
-      throw error;
+      console.error('[RichTextEditor] Failed to initialize TinyMCE:', error);
     }
   }
 
   /**
-   * Get default TinyMCE configuration
-   * @private
-   * @returns {Object} - Default configuration
+   * Get current HTML content
+   * @returns {string} - HTML content
    */
-  getDefaultConfig() {
-    return {
-      // Language
-      language: 'ru',
-
-      // Skin
-      skin: 'oxide',
-
-      // Height
-      height: 300,
-      min_height: 200,
-      max_height: 600,
-
-      // Menubar
-      menubar: false,
-
-      // Toolbar
-      toolbar: [
-        'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor',
-        'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat'
-      ].join(' | '),
-
-      // Plugins
-      plugins: [
-        'lists',
-        'link',
-        'autolink',
-        'autoresize',
-        'searchreplace',
-        'wordcount'
-      ],
-
-      // Block formats
-      block_formats: 'Параграф=p; Заголовок 1=h1; Заголовок 2=h2; Заголовок 3=h3; Заголовок 4=h4',
-
-      // Content style
-      content_style: `
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          font-size: 14px;
-          line-height: 1.6;
-          color: #1e293b;
-          padding: 10px;
-        }
-        p {
-          margin: 0 0 10px;
-        }
-        h1, h2, h3, h4 {
-          margin: 15px 0 10px;
-          font-weight: 600;
-        }
-        h1 { font-size: 24px; }
-        h2 { font-size: 20px; }
-        h3 { font-size: 18px; }
-        h4 { font-size: 16px; }
-        ul, ol {
-          margin: 10px 0;
-          padding-left: 30px;
-        }
-        li {
-          margin: 5px 0;
-        }
-      `,
-
-      // Autoresize
-      autoresize_bottom_margin: 20,
-
-      // Browser spell check
-      browser_spellcheck: true,
-
-      // Convert URLs
-      convert_urls: false,
-
-      // Paste settings
-      paste_as_text: false,
-      paste_retain_style_properties: 'font-size font-weight font-style text-decoration color',
-
-      // Advanced settings
-      entity_encoding: 'raw',
-      remove_script_host: false,
-      relative_urls: false,
-
-      // Statusbar
-      statusbar: true,
-      elementpath: false,
-
-      // Resize
-      resize: true,
-
-      // Promotion
-      promotion: false,
-      branding: false
-    };
-  }
-
-  /**
-   * Get editor content
-   * @returns {string} - Editor content (HTML)
-   */
-  getContent() {
+  getValue() {
     if (this.editor) {
       return this.editor.getContent();
     }
-    return this.element.value;
+    return this.value;
   }
 
   /**
-   * Set editor content
-   * @param {string} content - Content to set (HTML)
+   * Set HTML content
+   * @param {string} value - HTML content
    */
-  setContent(content) {
+  setValue(value) {
+    this.value = value;
+
     if (this.editor) {
-      this.editor.setContent(content || '');
-    } else {
-      this.element.value = content || '';
+      this.editor.setContent(value);
+    } else if (this.textarea) {
+      this.textarea.value = value;
     }
   }
 
   /**
-   * Get plain text content
-   * @returns {string} - Plain text content
+   * Get plain text content (without HTML tags)
+   * @returns {string} - Plain text
    */
   getPlainText() {
     if (this.editor) {
       return this.editor.getContent({ format: 'text' });
     }
-    return this.element.value;
+
+    // Fallback: strip HTML tags manually
+    const div = document.createElement('div');
+    div.innerHTML = this.value;
+    return div.textContent || div.innerText || '';
   }
 
   /**
-   * Clear editor content
+   * Check if editor has content
+   * @returns {boolean}
    */
-  clear() {
-    this.setContent('');
+  isEmpty() {
+    const text = this.getPlainText().trim();
+    return text.length === 0;
   }
 
   /**
-   * Focus editor
+   * Set focus on editor
    */
   focus() {
     if (this.editor) {
       this.editor.focus();
+    } else if (this.textarea) {
+      this.textarea.focus();
     }
   }
 
   /**
-   * Check if editor is dirty (modified)
-   * @returns {boolean} - True if content has been modified
+   * Enable/disable editor
+   * @param {boolean} enabled
    */
-  isDirty() {
+  setEnabled(enabled) {
     if (this.editor) {
-      return this.editor.isDirty();
-    }
-    return false;
-  }
-
-  /**
-   * Set editor as clean (not modified)
-   */
-  setClean() {
-    if (this.editor) {
-      this.editor.setDirty(false);
-    }
-  }
-
-  /**
-   * Disable editor
-   */
-  disable() {
-    if (this.editor) {
-      this.editor.mode.set('readonly');
-    }
-  }
-
-  /**
-   * Enable editor
-   */
-  enable() {
-    if (this.editor) {
-      this.editor.mode.set('design');
-    }
-  }
-
-  /**
-   * Check if editor is enabled
-   * @returns {boolean} - True if editor is enabled
-   */
-  isEnabled() {
-    if (this.editor) {
-      return this.editor.mode.get() === 'design';
-    }
-    return true;
-  }
-
-  /**
-   * Get word count
-   * @returns {number} - Word count
-   */
-  getWordCount() {
-    if (this.editor) {
-      const plugin = this.editor.plugins.wordcount;
-      if (plugin) {
-        return plugin.body.getWordCount();
-      }
-    }
-    return 0;
-  }
-
-  /**
-   * Get character count
-   * @returns {number} - Character count
-   */
-  getCharacterCount() {
-    if (this.editor) {
-      const plugin = this.editor.plugins.wordcount;
-      if (plugin) {
-        return plugin.body.getCharacterCount();
-      }
-    }
-    return this.getPlainText().length;
-  }
-
-  /**
-   * Insert content at cursor position
-   * @param {string} content - Content to insert
-   */
-  insertContent(content) {
-    if (this.editor) {
-      this.editor.insertContent(content);
-    }
-  }
-
-  /**
-   * Execute editor command
-   * @param {string} command - Command name
-   * @param {any} value - Command value
-   */
-  execCommand(command, value) {
-    if (this.editor) {
-      this.editor.execCommand(command, false, value);
-    }
-  }
-
-  /**
-   * Show editor (if hidden)
-   */
-  show() {
-    if (this.editor) {
-      this.editor.show();
-    }
-  }
-
-  /**
-   * Hide editor
-   */
-  hide() {
-    if (this.editor) {
-      this.editor.hide();
+      this.editor.mode.set(enabled ? 'design' : 'readonly');
+    } else if (this.textarea) {
+      this.textarea.disabled = !enabled;
     }
   }
 
@@ -352,46 +213,93 @@ class RichTextEditor {
   destroy() {
     if (this.editor) {
       try {
-        this.editor.destroy();
+        tinymce.remove(`#${this.id}`);
         this.editor = null;
-        this.initialized = false;
-        console.log('TinyMCE editor destroyed');
+        console.log(`[RichTextEditor] Destroyed: ${this.id}`);
       } catch (error) {
-        console.error('Error destroying TinyMCE editor:', error);
+        console.error('[RichTextEditor] Error destroying editor:', error);
       }
     }
   }
 
   /**
-   * Static method to check if TinyMCE is loaded
-   * @returns {boolean} - True if TinyMCE is loaded
+   * Convert HTML to plain XML text (strip HTML tags)
+   * Useful for XML export when HTML formatting is not needed
+   *
+   * @param {string} html - HTML content
+   * @returns {string} - Plain text for XML
    */
-  static isLoaded() {
-    return typeof tinymce !== 'undefined';
+  static htmlToXmlText(html) {
+    if (!html) return '';
+
+    // Create temporary div to parse HTML
+    const div = document.createElement('div');
+    div.innerHTML = html;
+
+    // Replace <br> with newlines
+    const brs = div.querySelectorAll('br');
+    brs.forEach(br => {
+      br.replaceWith('\n');
+    });
+
+    // Replace </p> with double newlines
+    const ps = div.querySelectorAll('p');
+    ps.forEach(p => {
+      const text = p.textContent;
+      p.replaceWith(text + '\n\n');
+    });
+
+    // Get plain text
+    let text = div.textContent || div.innerText || '';
+
+    // Clean up extra whitespace
+    text = text.trim();
+    text = text.replace(/\n{3,}/g, '\n\n'); // Max 2 consecutive newlines
+
+    return text;
   }
 
   /**
-   * Static method to get TinyMCE version
-   * @returns {string|null} - TinyMCE version or null if not loaded
+   * Convert HTML to formatted XML (preserve some formatting)
+   * Converts HTML tags to XML-safe format
+   *
+   * @param {string} html - HTML content
+   * @returns {string} - XML-formatted text
    */
-  static getVersion() {
-    if (RichTextEditor.isLoaded()) {
-      return tinymce.majorVersion + '.' + tinymce.minorVersion;
-    }
-    return null;
-  }
+  static htmlToXmlFormatted(html) {
+    if (!html) return '';
 
-  /**
-   * Static method to remove all TinyMCE editors
-   */
-  static removeAll() {
-    if (RichTextEditor.isLoaded()) {
-      tinymce.remove();
-    }
+    let text = html;
+
+    // Replace HTML entities
+    text = text.replace(/&nbsp;/g, ' ');
+    text = text.replace(/&amp;/g, '&');
+    text = text.replace(/&lt;/g, '<');
+    text = text.replace(/&gt;/g, '>');
+    text = text.replace(/&quot;/g, '"');
+
+    // Convert basic formatting to XML-safe format
+    text = text.replace(/<strong>(.*?)<\/strong>/g, '**$1**'); // Bold
+    text = text.replace(/<b>(.*?)<\/b>/g, '**$1**'); // Bold
+    text = text.replace(/<em>(.*?)<\/em>/g, '*$1*'); // Italic
+    text = text.replace(/<i>(.*?)<\/i>/g, '*$1*'); // Italic
+    text = text.replace(/<u>(.*?)<\/u>/g, '_$1_'); // Underline
+
+    // Remove all other HTML tags
+    text = text.replace(/<[^>]+>/g, '');
+
+    // Clean up whitespace
+    text = text.trim();
+
+    return text;
   }
 }
 
-// Export for module usage
+// Export
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = RichTextEditor;
+}
+
+if (typeof window !== 'undefined') {
+  window.RichTextEditor = RichTextEditor;
 }

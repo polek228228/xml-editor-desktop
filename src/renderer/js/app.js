@@ -53,7 +53,7 @@ class XMLEditorApp {
     this.cacheUIElements();
     this.disableDocumentControls(); // Disable controls on startup
     this.initNavigation();
-    await this.initPluginSystem(); // Initialize plugin system first
+    // await this.initPluginSystem(); // DISABLED - Will be reimplemented in Week 6
     await this.initUIComponents(); // Week 3-4: Activity Bar, Tab Bar, Service Store
     this.setupEventListeners();
     this.setupMenuListeners();
@@ -65,8 +65,26 @@ class XMLEditorApp {
   /**
    * Initialize Plugin System
    * @private
+   *
+   * DISABLED until Week 6 - Module Loading System
+   *
+   * This method was using old Gemini code that was removed during cleanup.
+   * Will be reimplemented in Week 6 with:
+   * - ModuleRegistry class (track loaded modules)
+   * - PluginLoader class (dynamically load modules)
+   * - Module API (expose app features to modules)
+   * - Sandboxing (permissions system)
    */
   async initPluginSystem() {
+    console.log('🔌 Plugin System initialization skipped (Week 6)');
+
+    // Placeholder - will be implemented in Week 6
+    // For now, Service Store handles module database operations
+    // Actual module loading will come later
+
+    return;
+
+    /* OLD CODE - REMOVED
     console.log('🔌 Initializing Plugin System...');
 
     // Initialize managers
@@ -93,6 +111,7 @@ class XMLEditorApp {
     } catch (error) {
       console.error('❌ Failed to initialize Plugin System:', error);
     }
+    */
   }
 
   /**
@@ -105,6 +124,43 @@ class XMLEditorApp {
     // Listen to navigation changes
     document.addEventListener('navigation:change', (e) => {
       console.log('Navigation changed to:', e.detail.section);
+
+      const section = e.detail.section;
+
+      // Скрывать/показывать основные области в зависимости от секции
+      const home = document.getElementById('home-dashboard');
+      const editor = document.getElementById('editor-screen');
+      const store = document.getElementById('service-store');
+
+      if (section === 'documents') {
+        // В разделе Документы редактор может быть показан, если открыт документ
+        if (this.currentDocument) {
+          this.ui.contextToolbar.style.display = 'flex';
+          if (editor) editor.style.display = 'block';
+        } else {
+          // Нет открытого документа — скрыть тулбар
+          this.ui.contextToolbar.style.display = 'none';
+          if (editor) editor.style.display = 'none';
+        }
+        if (home) home.style.display = 'none';
+        if (store) store.style.display = 'none';
+      } else {
+        // Во всех других секциях скрывать редактор и тулбар
+        if (editor) editor.style.display = 'none';
+        this.ui.contextToolbar.style.display = 'none';
+
+        if (section === 'home') {
+          if (home) home.style.display = 'block';
+          if (store) store.style.display = 'none';
+        } else if (section === 'services') {
+          if (home) home.style.display = 'none';
+          if (store) store.style.display = 'block';
+        } else {
+          // settings etc.
+          if (home) home.style.display = 'none';
+          if (store) store.style.display = 'none';
+        }
+      }
     });
   }
 
@@ -170,8 +226,7 @@ class XMLEditorApp {
     // Document events
     window.eventBus?.on('document:new', () => {
       console.log('New document requested');
-      // TODO: Implement newDocument method
-      this.showToast('Функция "Создать документ" в разработке', 'info');
+      this.newDocument();
     });
 
     window.eventBus?.on('document:open', () => {
@@ -188,8 +243,7 @@ class XMLEditorApp {
 
     window.eventBus?.on('document:export', () => {
       console.log('Export document requested');
-      // TODO: Implement exportXML method
-      this.showToast('Функция "Экспорт XML" в разработке', 'info');
+      this.openExportDialog();
     });
 
     window.eventBus?.on('document:validate', () => {
@@ -732,6 +786,29 @@ class XMLEditorApp {
   }
 
   /**
+   * Create new document - opens creation dialog
+   */
+  async newDocument() {
+    try {
+      const dialog = new DocumentDialog({
+        onSuccess: async (document) => {
+          // Load the created document
+          await this.loadDocument(document.id);
+          this.showToast(`Документ "${document.title}" успешно создан`, 'success');
+        },
+        onCancel: () => {
+          console.log('Document creation cancelled');
+        }
+      });
+
+      dialog.show();
+    } catch (error) {
+      console.error('Error opening document creation dialog:', error);
+      this.showToast('Ошибка при открытии диалога создания', 'error');
+    }
+  }
+
+  /**
    * Save current document as template
    */
   async saveAsTemplate() {
@@ -765,6 +842,114 @@ class XMLEditorApp {
   }
 
   /**
+   * Open Export Dialog
+   */
+  async openExportDialog() {
+    if (!this.currentDocument) {
+      this.showToast('Нет открытого документа для экспорта', 'warning');
+      return;
+    }
+
+    try {
+      // Collect form data
+      const formData = this.formManager.collectFormData();
+
+      // Create export dialog
+      const dialog = new ExportDialog({
+        document: {
+          id: this.currentDocument.id,
+          title: this.currentDocument.title,
+          content: formData,
+          schema_version: this.currentDocument.schema_version
+        },
+        onExport: async (format, schemaVersion, xmlPreview) => {
+          await this.handleExport(format, schemaVersion, xmlPreview);
+        },
+        onCancel: () => {
+          console.log('📋 Export cancelled');
+        }
+      });
+
+      dialog.show();
+    } catch (error) {
+      console.error('❌ Error opening export dialog:', error);
+      this.showToast('Ошибка при открытии диалога экспорта', 'error');
+    }
+  }
+
+  /**
+   * Handle document export (XML or PDF)
+   * @param {string} format - 'xml' or 'pdf'
+   * @param {string} schemaVersion - Schema version (01.03, 01.04, 01.05)
+   * @param {string} xmlContent - Pre-generated XML content
+   */
+  async handleExport(format, schemaVersion, xmlContent) {
+    try {
+      console.log(`📤 Exporting document as ${format.toUpperCase()} (schema: ${schemaVersion})`);
+
+      if (format === 'xml') {
+        // Export as XML
+        const result = await window.electronAPI.showSaveDialog({
+          title: 'Сохранить XML файл',
+          defaultPath: `${this.currentDocument.title || 'document'}.xml`,
+          filters: [
+            { name: 'XML Files', extensions: ['xml'] },
+            { name: 'All Files', extensions: ['*'] }
+          ]
+        });
+
+        if (result.canceled || !result.filePath) {
+          console.log('📋 Export cancelled by user');
+          return;
+        }
+
+        // Write XML to file
+        await window.electronAPI.writeFile(result.filePath, xmlContent);
+
+        this.showToast(`XML файл успешно сохранён: ${result.filePath}`, 'success');
+        console.log(`✅ XML exported to: ${result.filePath}`);
+
+      } else if (format === 'pdf') {
+        // Export as PDF
+        const result = await window.electronAPI.showSaveDialog({
+          title: 'Сохранить PDF файл',
+          defaultPath: `${this.currentDocument.title || 'document'}.pdf`,
+          filters: [
+            { name: 'PDF Files', extensions: ['pdf'] },
+            { name: 'All Files', extensions: ['*'] }
+          ]
+        });
+
+        if (result.canceled || !result.filePath) {
+          console.log('📋 Export cancelled by user');
+          return;
+        }
+
+        // Generate PDF via IPC
+        this.showToast('Генерация PDF...', 'info');
+        console.log('📄 Generating PDF...');
+
+        const pdfResult = await window.electronAPI.generatePDF({
+          documentId: this.currentDocument.id,
+          outputPath: result.filePath,
+          templateName: 'explanatory-note-template'
+        });
+
+        if (pdfResult.success) {
+          this.showToast(`PDF файл успешно создан: ${pdfResult.path}`, 'success');
+          console.log(`✅ PDF exported to: ${pdfResult.path}`);
+        } else {
+          throw new Error(pdfResult.error || 'Неизвестная ошибка генерации PDF');
+        }
+      }
+
+    } catch (error) {
+      console.error('❌ Export error:', error);
+      this.showToast(`Ошибка при экспорте: ${error.message}`, 'error');
+    }
+  }
+
+  /**
    * Validate XML without exporting
    */
   async validateXML() {
@@ -776,8 +961,8 @@ class XMLEditorApp {
     try {
       this.showLoading();
 
-      // Generate XML using XMLGenerator
-      const xmlGenerator = new XMLGenerator();
+      // Generate XML using XMLGeneratorV2 (extracts data from forms)
+      const xmlGenerator = new XMLGeneratorV2();
       const xmlContent = await xmlGenerator.generateXML(
         this.currentDocument.content,
         this.currentDocument.schema_version
@@ -814,7 +999,7 @@ class XMLEditorApp {
   }
 
   /**
-   * Export document to XML
+   * Export document to XML or PDF
    */
   async exportXML() {
     if (!this.currentDocument) {
@@ -823,86 +1008,26 @@ class XMLEditorApp {
     }
 
     try {
-      this.showLoading();
-
-      // Show save dialog
-      const result = await window.electronAPI.showSaveDialog({
-        title: 'Экспорт в XML',
-        defaultPath: `${this.currentDocument.title || 'document'}.xml`,
-        filters: [
-          { name: 'XML Files', extensions: ['xml'] },
-          { name: 'All Files', extensions: ['*'] }
-        ]
+      // Show ExportDialog with XML/PDF choice
+      const exportDialog = new ExportDialog({
+        document: {
+          id: this.currentDocument.id,
+          title: this.currentDocument.title,
+          content: this.currentDocument.content,
+          schema_version: this.currentDocument.schema_version
+        },
+        onExport: async (format, schemaVersion, xmlPreview) => {
+          await this.handleExport(format, schemaVersion, xmlPreview);
+        },
+        onCancel: () => {
+          console.log('📋 Export cancelled');
+        }
       });
 
-      if (result.canceled || !result.filePath) {
-        this.hideLoading();
-        return;
-      }
-
-      // Generate XML using XMLGenerator
-      const xmlGenerator = new XMLGenerator();
-      const xmlContent = await xmlGenerator.generateXML(
-        this.currentDocument.content,
-        this.currentDocument.schema_version
-      );
-
-      // Validate XML against XSD schema
-      console.log('🔍 Validating XML against XSD schema...');
-      const validationResult = await window.electronAPI.validateXML(
-        xmlContent,
-        this.currentDocument.schema_version
-      );
-
-      let isValid = false;
-      if (validationResult.success && validationResult.valid) {
-        console.log('✅ XML validation passed');
-        isValid = true;
-      } else {
-        console.warn('⚠️ XML validation failed:', validationResult.errors);
-
-        // Show validation errors to user
-        const errorMessages = validationResult.errors
-          .slice(0, 3) // Show max 3 errors
-          .map(err => `  • ${err.message} (строка ${err.line})`)
-          .join('\n');
-
-        const shouldContinue = confirm(
-          `XML не прошел валидацию по схеме Минстроя:\n\n${errorMessages}\n\n` +
-          `Всего ошибок: ${validationResult.errors.length}\n\n` +
-          `Продолжить экспорт невалидного XML?`
-        );
-
-        if (!shouldContinue) {
-          this.hideLoading();
-          this.showToast('Экспорт отменен', 'warning');
-          return;
-        }
-      }
-
-      // Write XML to file
-      const writeResult = await window.electronAPI.writeXMLFile(result.filePath, xmlContent);
-
-      this.hideLoading();
-
-      if (writeResult.success) {
-        // Save XML content to document
-        await window.electronAPI.saveDocument({
-          id: this.currentDocument.id,
-          xml_content: xmlContent,
-          is_valid: isValid
-        });
-
-        const validationStatus = isValid ? '✅ валиден' : '⚠️ с ошибками валидации';
-        this.showToast(`XML экспортирован (${validationStatus}): ${result.filePath}`, isValid ? 'success' : 'warning');
-        console.log('✅ XML exported successfully:', result.filePath);
-      } else {
-        throw new Error(writeResult.error || 'Failed to write XML file');
-      }
+      exportDialog.show();
     } catch (error) {
-      this.hideLoading();
-      console.error('Error exporting XML:', error);
-      this.showToast(`Ошибка при экспорте XML: ${error.message}`, 'error');
+      console.error('Error opening export dialog:', error);
+      this.showToast(`Ошибка при открытии диалога экспорта: ${error.message}`, 'error');
     }
   }
 

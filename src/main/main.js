@@ -6,9 +6,11 @@
 
 const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs/promises');
 const StorageManager = require('./storage-manager');
 const ModuleRegistry = require('./module-registry');
 const xmlValidator = require('./xml-validator');
+const PDFGenerator = require('./pdf-generator');
 
 /**
  * Main application class for XML Editor Desktop
@@ -25,7 +27,10 @@ class XMLEditorApplication {
     );
 
     /** @type {ModuleRegistry} */
-    this.moduleRegistry = new ModuleRegistry(this.storage);
+    this.moduleRegistry = new ModuleRegistry(this); // Pass app instance for Module API access
+
+    /** @type {PDFGenerator} */
+    this.pdfGenerator = new PDFGenerator();
 
     this.setupEventHandlers();
   }
@@ -96,7 +101,7 @@ class XMLEditorApplication {
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
-        sandbox: true,
+        sandbox: false,
         preload: path.join(__dirname, '../preload/preload.js')
       }
     });
@@ -118,6 +123,32 @@ class XMLEditorApplication {
    * @private
    */
   setupIPC() {
+    ipcMain.handle('schema:load', async (_event, version) => {
+      if (!version) {
+        throw new Error('Schema version is required');
+      }
+
+      const schemaFile = `pz-${version}-schema.json`;
+      const candidatePaths = [
+        path.join(process.resourcesPath, 'schemas', 'json', schemaFile),
+        path.join(__dirname, '../schemas/json', schemaFile),
+        path.join(__dirname, '../../schemas/json', schemaFile)
+      ];
+
+      for (const candidate of candidatePaths) {
+        try {
+          const content = await fs.readFile(candidate, 'utf-8');
+          return JSON.parse(content);
+        } catch (error) {
+          if (error.code !== 'ENOENT') {
+            console.warn(`[schema:load] Failed to read ${candidate}:`, error);
+          }
+        }
+      }
+
+      throw new Error(`Schema file not found for version ${version}`);
+    });
+
     // Document operations
     ipcMain.handle('document:create', async (event, data) => {
       try {
@@ -305,6 +336,68 @@ class XMLEditorApplication {
       }
     });
 
+    // File operations
+    ipcMain.handle('file:write', async (event, filePath, content) => {
+      try {
+        const fs = require('fs').promises;
+        await fs.writeFile(filePath, content, 'utf8');
+        console.log(`✅ File written successfully: ${filePath}`);
+        return { success: true };
+      } catch (error) {
+        console.error('❌ Error writing file:', error);
+        return { success: false, error: error.message };
+      }
+    });
+
+    // PDF Generation operations
+    ipcMain.handle('pdf:generate', async (event, data) => {
+      try {
+        const { documentId, outputPath, templateName } = data;
+
+        if (!documentId) {
+          throw new Error('Document ID is required');
+        }
+
+        if (!outputPath) {
+          throw new Error('Output path is required');
+        }
+
+        // Load document from database
+        const document = await this.storage.getDocument(documentId);
+        if (!document) {
+          throw new Error('Document not found');
+        }
+
+        // Parse content if needed
+        if (typeof document.content === 'string') {
+          document.content = JSON.parse(document.content);
+        }
+
+        console.log(`[IPC] Generating PDF for document: ${document.title} (ID: ${documentId})`);
+
+        // Generate PDF
+        const pdfPath = await this.pdfGenerator.generatePDF(
+          document,
+          outputPath,
+          templateName || 'explanatory-note-template'
+        );
+
+        console.log(`[IPC] PDF generated successfully: ${pdfPath}`);
+
+        return {
+          success: true,
+          path: pdfPath,
+          message: 'PDF успешно создан'
+        };
+      } catch (error) {
+        console.error('[IPC] Error generating PDF:', error);
+        return {
+          success: false,
+          error: error.message
+        };
+      }
+    });
+
     // Template operations
     ipcMain.handle('template:create', async (event, data) => {
       try {
@@ -434,7 +527,7 @@ class XMLEditorApplication {
 
     ipcMain.handle('module:list', async (event, options) => {
       try {
-        const modules = await this.storageManager.listModules(options || {});
+        const modules = await this.storage.listModules(options || {});
         return { success: true, modules };
       } catch (error) {
         console.error('Error listing modules:', error);
@@ -448,7 +541,7 @@ class XMLEditorApplication {
           throw new Error('Module ID is required');
         }
 
-        const module = await this.storageManager.getModule(moduleId);
+        const module = await this.storage.getModule(moduleId);
         return { success: true, module };
       } catch (error) {
         console.error('Error getting module:', error);
@@ -462,7 +555,7 @@ class XMLEditorApplication {
           throw new Error('Module ID is required');
         }
 
-        await this.storageManager.installModule(moduleId);
+        await this.storage.installModule(moduleId);
         return { success: true };
       } catch (error) {
         console.error('Error installing module:', error);
@@ -476,7 +569,7 @@ class XMLEditorApplication {
           throw new Error('Module ID is required');
         }
 
-        await this.storageManager.uninstallModule(moduleId);
+        await this.storage.uninstallModule(moduleId);
         return { success: true };
       } catch (error) {
         console.error('Error uninstalling module:', error);
@@ -490,7 +583,7 @@ class XMLEditorApplication {
           throw new Error('Module ID is required');
         }
 
-        await this.storageManager.activateModule(moduleId);
+        await this.storage.activateModule(moduleId);
         return { success: true };
       } catch (error) {
         console.error('Error activating module:', error);
@@ -504,7 +597,7 @@ class XMLEditorApplication {
           throw new Error('Module ID is required');
         }
 
-        await this.storageManager.deactivateModule(moduleId);
+        await this.storage.deactivateModule(moduleId);
         return { success: true };
       } catch (error) {
         console.error('Error deactivating module:', error);
@@ -514,7 +607,7 @@ class XMLEditorApplication {
 
     ipcMain.handle('module:statistics', async () => {
       try {
-        const stats = await this.storageManager.getModuleStatistics();
+        const stats = await this.storage.getModuleStatistics();
         return { success: true, statistics: stats };
       } catch (error) {
         console.error('Error getting module statistics:', error);

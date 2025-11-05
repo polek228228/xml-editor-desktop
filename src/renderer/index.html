@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; style-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; font-src 'self' https://cdn.tiny.cloud data:; img-src 'self' data: https://cdn.tiny.cloud; connect-src 'self' https://cdn.tiny.cloud">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; connect-src 'self'">
     <title>XML Editor Desktop</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -195,7 +195,7 @@
                                 <span class="sidebar__category-count">12</span>
                                 <span class="sidebar__category-toggle">▼</span>
                             </button>
-                            <ul class="sidebar__category-list">
+                            <ul class="sidebar__category-list" style="display: none;">
                                 <li class="sidebar__category-item" data-service="pz-01.05">
                                     <span class="sidebar__category-item-icon">✅</span>
                                     <span class="sidebar__category-item-title">ПЗ 01.05</span>
@@ -469,12 +469,11 @@
 
             </div>
         </main>
-    </div>
 
-    <!-- ============================================ -->
-    <!-- FOOTER                                      -->
-    <!-- ============================================ -->
-    <footer class="footer">
+        <!-- ============================================ -->
+        <!-- FOOTER                                      -->
+        <!-- ============================================ -->
+        <footer class="footer">
         <div class="footer__container">
             <div class="footer__info">
                 <span class="footer__text">XML Editor Desktop v2.0.0</span>
@@ -488,7 +487,8 @@
                 </span>
             </div>
         </div>
-    </footer>
+        </footer>
+    </div>
 
     <!-- ============================================ -->
     <!-- OVERLAYS & MODALS                           -->
@@ -507,22 +507,21 @@
     <!-- SCRIPTS                                     -->
     <!-- ============================================ -->
 
-    <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
-    <!-- Plugin System Core -->
+    <!-- Plugin System Core - DISABLED until Week 6 -->
+    <!-- These files were removed during Gemini code cleanup (see GEMINI_AUDIT_REPORT.md) -->
+    <!-- Will be reimplemented in Week 6 with ModuleRegistry and PluginLoader -->
+    <!--
     <script src="../core/plugin-system/event-bus.js"></script>
     <script src="../core/plugin-system/command-registry.js"></script>
     <script src="../core/plugin-system/plugin-api.js"></script>
     <script src="../core/plugin-system/service-registry.js"></script>
     <script src="../core/plugin-system/lifecycle-manager.js"></script>
 
-    <!-- State Management -->
     <script src="../core/state/workspace-manager.js"></script>
     <script src="../core/state/tab-manager.js"></script>
 
-    <!-- Auth (disabled) -->
     <script src="../core/auth/auth-dialog.js"></script>
+    -->
 
     <!-- Components -->
     <script src="js/components/navigation.js"></script>
@@ -532,6 +531,8 @@
     <script src="js/components/validation-panel.js"></script>
     <script src="js/components/template-browser.js"></script>
     <script src="js/components/template-dialog.js"></script>
+    <script src="js/components/document-dialog.js"></script>
+    <script src="js/components/export-dialog.js"></script>
     <!-- Week 3-4: UI Components -->
     <script src="js/components/activity-bar.js"></script>
     <script src="js/components/tab-bar.js"></script>
@@ -542,11 +543,12 @@
     <!-- Form System -->
     <script src="js/validators.js"></script>
     <script src="js/schema-loader.js"></script>
-    <script src="js/rich-text-editor.js"></script>
     <script src="js/form-manager.js"></script>
 
     <!-- XML Generation -->
     <script src="js/xml-generator.js"></script>
+    <script src="js/xml-generator-v2.js"></script>
+    <script src="js/xml-generator-minimal.js"></script>
 
     <!-- Main Application -->
     <script src="js/app.js"></script>
@@ -582,22 +584,35 @@
                     // Update sidebar
                     sidebarSections.forEach(sidebar => {
                         sidebar.style.display = 'none';
+                        sidebar.classList.remove('sidebar__section--active');
                     });
                     const activeSidebar = document.getElementById(`sidebar-${section}`);
                     if (activeSidebar) {
                         activeSidebar.style.display = 'block';
+                        activeSidebar.classList.add('sidebar__section--active');
                     }
 
-                    // Update main content
-                    if (contentViews.home) contentViews.home.style.display = section === 'home' ? 'block' : 'none';
-                    if (contentViews.services) contentViews.services.style.display = section === 'services' ? 'block' : 'none';
+                    // Update main content - hide ALL content views first
+                    if (contentViews.home) contentViews.home.style.display = 'none';
+                    if (contentViews.services) contentViews.services.style.display = 'none';
+                    const editor = document.getElementById('editor-screen');
+                    const toolbar = document.getElementById('context-toolbar');
 
-                    // Hide editor when switching sections (unless in documents section)
-                    if (section !== 'documents') {
-                        const editor = document.getElementById('editor-screen');
-                        const toolbar = document.getElementById('context-toolbar');
+                    // Show only the active section's content
+                    if (section === 'home' && contentViews.home) {
+                        contentViews.home.style.display = 'block';
                         if (editor) editor.style.display = 'none';
-                        if (toolbar) toolbar.style.display = 'none';
+                        if (toolbar) toolbar.classList.remove('context-toolbar--visible');
+                    } else if (section === 'services' && contentViews.services) {
+                        contentViews.services.style.display = 'block';
+                        if (editor) editor.style.display = 'none';
+                        if (toolbar) toolbar.classList.remove('context-toolbar--visible');
+                    } else if (section === 'documents') {
+                        // Управление показом редактора выполняет app.js
+                    } else if (section === 'settings') {
+                        // Settings section - to be implemented
+                        if (editor) editor.style.display = 'none';
+                        if (toolbar) toolbar.classList.remove('context-toolbar--visible');
                     }
 
                     // Update footer status
@@ -611,25 +626,9 @@
                         };
                         footerStatus.textContent = statusTexts[section] || 'Готов к работе';
                     }
-                });
-            });
 
-            // ========================================
-            // SIDEBAR CATEGORY TOGGLE
-            // ========================================
-            const categoryHeaders = document.querySelectorAll('.sidebar__category-header');
-            categoryHeaders.forEach(header => {
-                header.addEventListener('click', function() {
-                    const list = this.nextElementSibling;
-                    const toggle = this.querySelector('.sidebar__category-toggle');
-
-                    if (list && list.classList.contains('sidebar__category-list')) {
-                        const isVisible = list.style.display !== 'none';
-                        list.style.display = isVisible ? 'none' : 'block';
-                        if (toggle) {
-                            toggle.textContent = isVisible ? '▶' : '▼';
-                        }
-                    }
+                    // Сообщить приложению о смене секции (для app.js)
+                    document.dispatchEvent(new CustomEvent('navigation:change', { detail: { section } }));
                 });
             });
 

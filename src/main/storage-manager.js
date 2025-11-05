@@ -495,9 +495,9 @@ class StorageManager {
     const { name, description, schema_version, content, created_at } = data;
 
     const result = await this.runQuery(
-      `INSERT INTO templates (name, description, schema_version, content, template_data, created_at)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [name, description, schema_version, content, content, created_at]
+      `INSERT INTO templates (name, description, schema_version, content, created_at)
+       VALUES (?, ?, ?, ?, ?)`,
+      [name, description, schema_version, content, created_at]
     );
 
     return result.lastID;

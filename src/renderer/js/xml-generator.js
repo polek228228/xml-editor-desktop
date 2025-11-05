@@ -66,16 +66,31 @@ class XMLGenerator {
    */
   async loadMapping(schemaVersion) {
     try {
-      const response = await fetch(`../schemas/mappings/explanatory-note-${schemaVersion}-mapping.json`);
-      if (!response.ok) {
-        throw new Error(`Failed to load mapping for version ${schemaVersion}`);
+      // Load JSON schema which contains xmlMapping
+      let schema;
+      const schemaFile = schemaVersion.replace('.', '-');
+
+      if (typeof window !== 'undefined' && window.electronAPI && typeof window.electronAPI.loadSchemaFile === 'function') {
+        schema = await window.electronAPI.loadSchemaFile(schemaVersion);
+      } else {
+        const response = await fetch(`../schemas/json/pz-${schemaVersion}-schema.json`);
+        if (!response.ok) {
+          throw new Error(`Failed to load schema for version ${schemaVersion}`);
+        }
+
+        schema = await response.json();
       }
 
-      this.mappings[schemaVersion] = await response.json();
-      console.log(`📥 Loaded mapping for schema version ${schemaVersion}`);
+      // Extract xmlMapping from schema
+      if (schema.xmlMapping) {
+        this.mappings[schemaVersion] = schema.xmlMapping;
+        console.log(`📥 Loaded xmlMapping from schema version ${schemaVersion}`);
+      } else {
+        throw new Error('No xmlMapping found in schema');
+      }
     } catch (error) {
-      console.warn(`⚠️ Could not load mapping file, using default mapping`);
-      this.mappings[schemaVersion] = this.getDefaultMapping();
+      console.warn(`⚠️ Could not load schema mapping:`, error);
+      this.mappings[schemaVersion] = this.getDefaultMapping(schemaVersion);
     }
   }
 
@@ -116,6 +131,18 @@ class XMLGenerator {
       if (value === null || value === undefined || value === '') {
         if (config.required) {
           console.warn(`⚠️ Required field missing: ${jsonPath}`);
+        }
+        return;
+      }
+
+      // Handle array fields (repeater fields)
+      if (config.isArray) {
+        if (Array.isArray(value) && value.length > 0) {
+          value.forEach((item, index) => {
+            // Process each array item
+            const transformedItem = this.transformValue(item, config.transformer, config);
+            this.setXMLPath(xmlTree, config.xmlPath, transformedItem, { ...config, arrayIndex: index });
+          });
         }
         return;
       }
@@ -173,6 +200,32 @@ class XMLGenerator {
 
     const lastPart = parts[parts.length - 1];
 
+    // Handle array elements (repeater fields)
+    if (config.arrayIndex !== undefined) {
+      // Initialize array if needed
+      if (!current[lastPart]) {
+        current[lastPart] = [];
+      }
+      // Ensure it's an array
+      if (!Array.isArray(current[lastPart])) {
+        current[lastPart] = [current[lastPart]];
+      }
+      // Add array item
+      if (config.unit && config.unitCode) {
+        current[lastPart].push({
+          _value: value,
+          _attributes: {
+            unit: config.unit,
+            unitCode: config.unitCode
+          }
+        });
+      } else {
+        current[lastPart].push(value);
+      }
+      return;
+    }
+
+    // Handle regular fields
     // Add unit attribute if specified
     if (config.unit && config.unitCode) {
       current[lastPart] = {
@@ -203,6 +256,8 @@ class XMLGenerator {
         return this.formatDecimal(value);
       case 'normalizePhone':
         return this.normalizePhone(value);
+      case 'richtextToPlaintext':
+        return this.richtextToPlaintext(value);
       default:
         return value;
     }
@@ -250,6 +305,30 @@ class XMLGenerator {
   }
 
   /**
+   * Convert richtext (HTML) to plaintext for XML
+   * @private
+   * @param {string} value - HTML content from TinyMCE
+   * @returns {string} Plain text content
+   */
+  richtextToPlaintext(value) {
+    if (!value || typeof value !== 'string') return '';
+
+    // Strip HTML tags and decode entities
+    let text = value
+      .replace(/<br\s*\/?>/gi, '\n')           // Convert <br> to newlines
+      .replace(/<\/p>/gi, '\n')                // Convert </p> to newlines
+      .replace(/<[^>]+>/g, '')                 // Remove all HTML tags
+      .replace(/&nbsp;/g, ' ')                 // Replace &nbsp; with space
+      .replace(/&lt;/g, '<')                   // Decode &lt;
+      .replace(/&gt;/g, '>')                   // Decode &gt;
+      .replace(/&amp;/g, '&')                  // Decode &amp; (must be last)
+      .replace(/\n{3,}/g, '\n\n')              // Max 2 consecutive newlines
+      .trim();                                 // Trim whitespace
+
+    return text;
+  }
+
+  /**
    * Create XML document from tree structure
    * @private
    * @param {Object} tree - XML tree
@@ -259,7 +338,7 @@ class XMLGenerator {
    */
   createXMLDocument(tree, namespace, version) {
     const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
-    const rootStart = `<ExplanatoryNote xmlns="${namespace}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="${namespace} explanatorynote-${version.replace('.', '-')}.xsd" Version="${version}">`;
+    const rootStart = `<ExplanatoryNote xmlns="${namespace}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="${namespace} explanatorynote-${version.replace('.', '-')}.xsd" SchemaVersion="${version}">`;
     const rootEnd = '</ExplanatoryNote>';
 
     // Build XML content from tree
@@ -282,6 +361,32 @@ class XMLGenerator {
     Object.entries(obj).forEach(([key, value]) => {
       if (key === '_value' || key === '_attributes') return;
 
+      // Handle array elements (repeater fields)
+      if (Array.isArray(value)) {
+        value.forEach(item => {
+          if (typeof item === 'object' && item !== null) {
+            // Check if it has _value (element with attributes)
+            if (item._value !== undefined) {
+              const attrs = item._attributes ?
+                Object.entries(item._attributes)
+                  .map(([k, v]) => `${k}="${this.escapeXML(String(v))}"`)
+                  .join(' ') : '';
+              xml += `${indentStr}<${key}${attrs ? ' ' + attrs : ''}>${this.escapeXML(String(item._value))}</${key}>\n`;
+            } else {
+              // Nested object in array
+              xml += `${indentStr}<${key}>\n`;
+              xml += this.treeToXML(item, indent + 1);
+              xml += `${indentStr}</${key}>\n`;
+            }
+          } else {
+            // Simple value in array
+            xml += `${indentStr}<${key}>${this.escapeXML(String(item))}</${key}>\n`;
+          }
+        });
+        return;
+      }
+
+      // Handle regular elements
       if (typeof value === 'object' && value !== null) {
         // Check if it has _value (element with attributes)
         if (value._value !== undefined) {
@@ -374,7 +479,7 @@ class XMLGenerator {
   generateMinimalXML(schemaVersion = '01.05') {
     const namespace = this.namespaces[schemaVersion];
     return `<?xml version="1.0" encoding="UTF-8"?>
-<ExplanatoryNote xmlns="${namespace}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="${schemaVersion}">
+<ExplanatoryNote xmlns="${namespace}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" SchemaVersion="${schemaVersion}">
   <GeneralInfo>
     <DocNumber>Не указан</DocNumber>
     <DocDate>${new Date().toISOString().split('T')[0]}</DocDate>

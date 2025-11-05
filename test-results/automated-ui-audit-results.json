@@ -33,7 +33,7 @@
       "data": 9
     },
     {
-      "message": "Total buttons found: 46",
+      "message": "Total buttons found: 48",
       "data": null
     }
   ],
@@ -49,19 +49,19 @@
     "navItemsSelector": "activity-bar__item activity-bar__item--active, activity-bar__item, activity-bar__item, activity-bar__item",
     "hasServiceStore": true,
     "serviceCardsCount": 9,
-    "totalButtons": 46,
+    "totalButtons": 48,
     "hasElectronAPI": true,
     "electronAPIKeys": [
       "createDocument",
       "saveDocument",
       "loadDocument",
       "listDocuments",
+      "getDocuments",
+      "getDocument",
       "deleteDocument",
       "autosaveDocument",
       "getSetting",
-      "setSetting",
-      "showSaveDialog",
-      "showOpenDialog"
+      "setSetting"
     ]
   },
   "measurements": {

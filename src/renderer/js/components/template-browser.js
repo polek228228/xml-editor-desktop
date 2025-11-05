@@ -52,12 +52,20 @@ class TemplateBrowser {
    * Hide and remove template browser
    */
   hide() {
+    // Снять видимость классов
     this.dialog?.classList.remove('template-browser--visible');
     this.overlay?.classList.remove('template-browser__overlay--visible');
 
+    // Немедленно отключить перехват событий оверлеем, чтобы не блокировать клики по UI
+    if (this.overlay) {
+      this.overlay.style.pointerEvents = 'none';
+      this.overlay.style.opacity = '0';
+    }
+
+    // Ускоренная очистка, чтобы не мешать e2e-навигации
     setTimeout(() => {
       this.cleanup();
-    }, 300);
+    }, 50);
   }
 
   /**
@@ -101,10 +109,14 @@ class TemplateBrowser {
     // Создаем overlay
     this.overlay = document.createElement('div');
     this.overlay.className = 'template-browser__overlay';
+    this.overlay.style.zIndex = '9998';
 
     // Создаем dialog
     this.dialog = document.createElement('div');
     this.dialog.className = 'template-browser';
+    // Явно показать диалог (на случай, если CSS скрывает по умолчанию)
+    this.dialog.style.display = 'block';
+    this.dialog.style.zIndex = '9999';
 
     this.dialog.innerHTML = `
       <div class="template-browser__header">
