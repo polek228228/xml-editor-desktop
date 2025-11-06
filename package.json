@@ -65,6 +65,7 @@
     },
     "asar": true,
     "asarUnpack": [
+      "**/*.node",
       "schemas/**/*",
       "node_modules/sqlite3/**/*",
       "node_modules/libxmljs2/**/*"
@@ -153,17 +154,13 @@
         }
       ],
       "artifactName": "${productName}-Setup-${version}.${ext}",
-      "executableName": "XMLEditorDesktop",
-      "icon": "build/icon.png"
+      "executableName": "XMLEditorDesktop"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "build/icon.png",
-      "uninstallerIcon": "build/icon.png",
-      "installerHeaderIcon": "build/icon.png",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "XML Editor Desktop",
